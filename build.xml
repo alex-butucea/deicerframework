@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="coltframework" default="build">
+
+    <!-- ============================================  -->
+    <!-- (DEFAULT) Target: build                       -->
+    <!-- ============================================  -->
+    <target
+        name="build"
+        description="Execute full build process"
+        depends="clean, prepare, test, generate"
+    />
+
+    <!-- ============================================  -->
+    <!-- Target: clean                                 -->
+    <!-- ============================================  -->
+    <target name="clean" description="Cleanup build artifacts">
+        <delete dir="./build"/>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: prepare                               -->
+    <!-- ============================================  -->
+    <target
+        name="prepare"
+        description="Execute all preparation tasks"
+        depends="prepare-preload-classmap, prepare-build-dir, prepare-coverage-report"
+    />
+
+    <!-- ============================================  -->
+    <!-- Target: prepare-build-dir                     -->
+    <!-- ============================================  -->
+    <target name="prepare-build-dir" description="Prepare build output dir" depends="clean">
+        <mkdir dir="./build"/>
+        <mkdir dir="./build/doc"/>
+        <mkdir dir="./build/test-log"/>
+        <mkdir dir="./build/test-report"/>
+        <mkdir dir="./build/coverage-report"/>
+        <mkdir dir="./build/standards-report"/>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: prepare-preload-classmap              -->
+    <!-- http://www.phing.info/trac/ticket/117         -->
+    <!-- ============================================  -->
+    <target name="prepare-preload-classmap" description="Autoloader incompatibility workaround" depends="clean">
+        <adhoc><![CDATA[
+            require_once('./tests/bootstrap.php');
+            foreach (require('./vendor/composer/autoload_classmap.php') as $path) {
+                require_once($path);
+            }
+        ]]></adhoc>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: prepare-coverage-report               -->
+    <!-- ============================================  -->
+    <target name="prepare-coverage-report" description="Setup test coverage db" depends="prepare-build-dir">
+        <coverage-setup database="./build/coverage-report/database">
+            <fileset dir="./library">
+                <include name="**/*.php"/>
+            </fileset>
+        </coverage-setup>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: test                                  -->
+    <!-- ============================================  -->
+    <target name="test" description="Execute all framework tests" depends="prepare">
+        <phpunit
+            printsummary="true"
+            haltonfailure="true"
+            haltonerror="true"
+            codecoverage="true"
+            bootstrap="./tests/bootstrap.php"
+        >
+            <formatter type="xml" todir="./build/test-log" outfile="tests.xml"/>
+            <batchtest>
+                <fileset dir="./tests">
+                    <include name="**/*Test.php" />
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: generate                              -->
+    <!-- ============================================  -->
+    <target
+        name="generate"
+        description="Execute all generation targets"
+        depends="generate-phpdoc, generate-coverage-report, generate-standards-report"
+    />
+
+    <!-- ============================================  -->
+    <!-- Target: generate-phpdoc                       -->
+    <!-- ============================================  -->
+    <target name="generate-phpdoc" description="Generate PHP Documenter 2 Docs" depends="prepare">
+        <phpdoc2
+            title="API Documentation"
+            destdir="./build/doc"
+            template="responsive"
+        >
+            <fileset dir="./library">
+                <include name="**/*.php" />
+            </fileset>
+        </phpdoc2>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: generate-coverage-report              -->
+    <!-- ============================================  -->
+    <target name="generate-coverage-report" description="Generate code coverage report" depends="prepare">
+        <phpunitreport
+            infile="./build/test-log/tests.xml"
+            styledir="/usr/share/php/data/phing/etc"
+            format="frames"
+            todir="./build/test-report"
+        />
+        <coverage-report outfile="./build/coverage-report/coverage.xml">
+            <report styledir="/usr/share/php/data/phing/etc" todir="./build/coverage-report"/>
+        </coverage-report>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: generate-standards-report             -->
+    <!-- ============================================  -->
+    <target name="generate-standards-report" description="Generate code standards report" depends="prepare">
+        <phpcodesniffer
+            standard="PSR2"
+            allowedFileExtensions="php"
+        >
+            <formatter type="full" outfile="./build/standards-report/standards"/>
+            <fileset dir="./library">
+                <include name="**/*.php" />
+            </fileset>
+            <fileset dir="./tests">
+                <include name="**/*.php" />
+            </fileset>
+        </phpcodesniffer>
+    </target>
+
+</project>
+
