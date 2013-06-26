@@ -2,6 +2,8 @@
 
 namespace Colt\Model;
 
+use Colt\Stdlib\HydratableInterface;
+
 /**
  * Colt Base Component
  *
@@ -14,7 +16,9 @@ namespace Colt\Model;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-abstract class AbstractComponent implements ComponentInterface
+abstract class AbstractComponent implements
+     ComponentInterface,
+     HydratableInterface
 {
     /**
      * Component constructor

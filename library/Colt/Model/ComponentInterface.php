@@ -2,8 +2,6 @@
 
 namespace Colt\Model;
 
-use Colt\Stdlib\HydratableInterface;
-
 /**
  * Colt Component Interface
  *
@@ -16,7 +14,7 @@ use Colt\Stdlib\HydratableInterface;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface ComponentInterface extends HydratableInterface
+interface ComponentInterface
 {
     /**
      * Component constructor
