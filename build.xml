@@ -14,7 +14,11 @@
     <!-- Target: clean                                 -->
     <!-- ============================================  -->
     <target name="clean" description="Cleanup build artifacts">
-        <delete dir="./build"/>
+        <delete dir="./build/doc"/>
+        <delete dir="./build/test-log"/>
+        <delete dir="./build/test-report"/>
+        <delete dir="./build/coverage-report"/>
+        <delete dir="./build/standards-report"/>
     </target>
 
     <!-- ============================================  -->
