@@ -3,6 +3,7 @@
 namespace Colt\Model;
 
 use Colt\Stdlib\HydratableInterface;
+use Colt\Stdlib\CloneableInterface;
 
 /**
  * Colt Base Component
@@ -18,7 +19,8 @@ use Colt\Stdlib\HydratableInterface;
  */
 abstract class AbstractComponent implements
      ComponentInterface,
-     HydratableInterface
+     HydratableInterface,
+     CloneableInterface
 {
     /**
      * Component constructor
@@ -33,6 +35,20 @@ abstract class AbstractComponent implements
         $this->onInstantiate();
         if ($values) {
             $this->exchangeArray($values);
+        }
+    }
+
+    /**
+     * Perform deep object copy
+     *
+     * @return Colt\Model\AbstractComponent
+     */
+    public function __clone()
+    {
+        foreach ($this as $k => $v) {
+            if (is_object($v)) {
+                $this->$k = clone $v;
+            }
         }
     }
 

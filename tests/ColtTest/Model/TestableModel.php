@@ -3,6 +3,7 @@
 namespace ColtTest\Model;
 
 use \Colt\Model\AbstractModel;
+use \Colt\Model\ModelInterface;
 
 /**
  * Colt Test Model
@@ -21,4 +22,5 @@ class TestableModel extends AbstractModel
     public $id = 0;
     public $name = '';
     public $categories = array ();
+    public $child;
 }

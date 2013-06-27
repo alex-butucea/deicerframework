@@ -166,4 +166,26 @@ class AbstractModelTest extends \PHPUnit_Framework_TestCase
         $model = new TestableModelWithInvalidOnExchangeArray();
         $model->exchangeArray($this->validExchangeArrayArg);
     }
+
+    public function testCloneReturnsDeepObjectCopy()
+    {
+        $original = new TestableModel(
+            array (
+                'name'  => 'original',
+                'child' => new TestableModel(
+                    array (
+                        'name' => 'original child'
+                    )
+                )
+            )
+        );
+        $clone = clone $original;
+
+        $this->assertSame($original->name, $clone->name);
+        $this->assertSame($original->child->name, $clone->child->name);
+        
+        // Child object is no longer a reference to original
+        $original->child->name = 'new child';
+        $this->assertNotSame($original->child->name, $clone->child->name);
+    }
 }
