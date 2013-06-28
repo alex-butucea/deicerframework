@@ -311,4 +311,10 @@ class AbstractModelCompositeTest extends \PHPUnit_Framework_TestCase
         $fixture->offsetUnset(1);
         $this->assertFalse($fixture->offsetExists(1));
     }
+
+    public function testSpawnReturnsNewInstance()
+    {
+        $fixture = new TestableModelComposite();
+        $this->assertInstanceOf('ColtTest\Model\TestableModelComposite', $fixture->spawn());
+    }
 }

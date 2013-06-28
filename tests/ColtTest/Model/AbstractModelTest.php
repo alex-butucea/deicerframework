@@ -195,4 +195,10 @@ class AbstractModelTest extends \PHPUnit_Framework_TestCase
         $actual = TestableModel::getFields();
         $this->assertSame($expected, $actual);
     }
+
+    public function testSpawnReturnsNewInstance()
+    {
+        $fixture = new TestableModel();
+        $this->assertInstanceOf('ColtTest\Model\TestableModel', $fixture->spawn());
+    }
 }

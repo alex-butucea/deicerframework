@@ -4,6 +4,7 @@ namespace Colt\Model;
 
 use Colt\Stdlib\HydratableInterface;
 use Colt\Stdlib\CloneableInterface;
+use Colt\Stdlib\SpawnableInterface;
 
 /**
  * Colt Base Component
@@ -20,7 +21,8 @@ use Colt\Stdlib\CloneableInterface;
 abstract class AbstractComponent implements
      ComponentInterface,
      HydratableInterface,
-     CloneableInterface
+     CloneableInterface,
+     SpawnableInterface
 {
     /**
      * Component constructor
@@ -50,6 +52,16 @@ abstract class AbstractComponent implements
                 $this->$k = clone $v;
             }
         }
+    }
+
+    /**
+     * Spawn new instance
+     *
+     * @return Colt\Model\AbstractComponent
+     */
+    public function spawn()
+    {
+        return new static();
     }
 
     /**
