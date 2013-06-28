@@ -23,4 +23,6 @@ class TestableModel extends AbstractModel
     public $name = '';
     public $categories = array ();
     public $child;
+    protected $foo;
+    private $bar;
 }

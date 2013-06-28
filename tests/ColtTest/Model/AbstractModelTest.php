@@ -188,4 +188,11 @@ class AbstractModelTest extends \PHPUnit_Framework_TestCase
         $original->child->name = 'new child';
         $this->assertNotSame($original->child->name, $clone->child->name);
     }
+
+    public function testGetFieldsReturnsPublicPropertyNames()
+    {
+        $expected = array ('id', 'name', 'categories', 'child'); 
+        $actual = TestableModel::getFields();
+        $this->assertSame($expected, $actual);
+    }
 }

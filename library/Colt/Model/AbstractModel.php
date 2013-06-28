@@ -47,6 +47,22 @@ abstract class AbstractModel extends AbstractComponent implements ModelInterface
     {
         throw new \OutOfBoundsException();
     }
+    
+    /**
+     * Returns public property names
+     * 
+     * @return array
+     */
+    public static function getFields()
+    {
+        $calledClass = get_called_class();
+        $getFields = function ($class)
+        {
+            return get_class_vars($class);
+        };
+
+        return array_keys($getFields($calledClass));
+    }
 
     /**
      * Hydrates model instance using an array
