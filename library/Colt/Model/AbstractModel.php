@@ -85,9 +85,10 @@ abstract class AbstractModel extends AbstractComponent implements ModelInterface
             return;
         }
 
-        // Iterate through each property and internalise
+        // Iterate through each property and internalise only public properties
+        $fields = static::getFields();
         foreach ($vars as $key => $val) {
-            if (! property_exists($this, $key) && (bool) $skipInvalid) {
+            if (! in_array($key, $fields) && (bool) $skipInvalid) {
                 continue;
             }
 
