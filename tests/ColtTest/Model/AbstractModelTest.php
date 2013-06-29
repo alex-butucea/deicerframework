@@ -191,7 +191,7 @@ class AbstractModelTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFieldsReturnsPublicPropertyNames()
     {
-        $expected = array ('id', 'name', 'categories', 'child'); 
+        $expected = array ('id', 'name', 'categories', 'child');
         $actual = TestableModel::getFields();
         $this->assertSame($expected, $actual);
     }

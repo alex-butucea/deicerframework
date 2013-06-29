@@ -73,8 +73,7 @@ abstract class AbstractModel extends AbstractComponent implements
     public static function getFields()
     {
         $calledClass = get_called_class();
-        $getFields = function ($class)
-        {
+        $getFields = function ($class) {
             return get_class_vars($class);
         };
 
