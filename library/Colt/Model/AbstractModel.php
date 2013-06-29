@@ -60,12 +60,7 @@ abstract class AbstractModel extends AbstractComponent implements
      */
     public function clear()
     {
-        $calledClass = get_called_class();
-        $getFields = function ($class) {
-            return get_class_vars($class);
-        };
-        
-        foreach ($getFields($calledClass) as $key => $value) {
+        foreach (self::getPublicProperties() as $key => $value) {
             $this->$key = $value;
         }
 
@@ -83,6 +78,7 @@ abstract class AbstractModel extends AbstractComponent implements
         foreach (static::getFields() as $name) {
             $ret[$name] = $this->$name;
         }
+
         return $ret;
     }
 
@@ -93,11 +89,7 @@ abstract class AbstractModel extends AbstractComponent implements
      */
     public static function getFields()
     {
-        $calledClass = get_called_class();
-        $getFields = function ($class) {
-            return get_class_vars($class);
-        };
-        return array_keys($getFields($calledClass));
+        return array_keys(self::getPublicProperties());
     }
 
     /**
@@ -130,5 +122,19 @@ abstract class AbstractModel extends AbstractComponent implements
 
             $this->$key = $val;
         }
+    }
+
+    /**
+     * Returns an array of the class properties with default values
+     *
+     * @return array
+     */
+    protected static function getPublicProperties()
+    {
+        $getFields = function ($class) {
+            return get_class_vars($class);
+        };
+
+        return $getFields(get_called_class());
     }
 }
