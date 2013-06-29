@@ -2,6 +2,7 @@
 
 namespace Colt\Model;
 
+use Colt\Stdlib\ClearableInterface;
 use Colt\Stdlib\ExtactableInterface;
 use Colt\Exception\Type\NonIntException;
 use Colt\Exception\Type\NonArrayException;
@@ -22,6 +23,7 @@ use Colt\Exception\Type\NonInstanceException;
 abstract class AbstractModelComposite extends AbstractComponent implements
      ModelCompositeInterface,
      ExtactableInterface,
+     ClearableInterface,
      \Iterator,
      \Countable,
      \ArrayAccess
@@ -32,6 +34,17 @@ abstract class AbstractModelComposite extends AbstractComponent implements
      * @var array Colt\Model\ModelInterface
      */
     protected $models = array();
+
+    /**
+     * Discard internalised model set
+     *
+     * @return AbstractModel Fluent interface
+     */
+    public function clear()
+    {
+        $this->models = array ();
+        return $this;
+    }
 
     /**
      * Extract model set to array

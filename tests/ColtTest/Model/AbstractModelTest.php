@@ -208,4 +208,19 @@ class AbstractModelTest extends \PHPUnit_Framework_TestCase
         $expected = $this->validExchangeArrayArg + array ('child' => null);
         $this->assertSame($expected, $fixture->getArrayCopy());
     }
+
+    public function testClearResetsPublicPropertiesToClassDefaults()
+    {
+        $fixture  = new TestableModel($this->validExchangeArrayArg);
+        $fixture->clear();
+        $this->assertSame(0, $fixture->id);
+        $this->assertSame('', $fixture->name);
+        $this->assertSame(array (), $fixture->categories);
+    }
+
+    public function testClearImplementsFluentInterface()
+    {
+        $fixture = new TestableModel();
+        $this->assertSame($fixture, $fixture->clear());
+    }
 }

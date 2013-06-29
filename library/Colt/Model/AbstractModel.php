@@ -2,6 +2,7 @@
 
 namespace Colt\Model;
 
+use Colt\Stdlib\ClearableInterface;
 use Colt\Stdlib\ExtactableInterface;
 use Colt\Exception\Type\NonArrayException;
 
@@ -19,6 +20,7 @@ use Colt\Exception\Type\NonArrayException;
  */
 abstract class AbstractModel extends AbstractComponent implements
      ModelInterface,
+     ClearableInterface,
      ExtactableInterface
 {
     /**
@@ -52,6 +54,25 @@ abstract class AbstractModel extends AbstractComponent implements
     }
 
     /**
+     * Discard field values and reset to class defaults
+     *
+     * @return AbstractModel Fluent interface
+     */
+    public function clear()
+    {
+        $calledClass = get_called_class();
+        $getFields = function ($class) {
+            return get_class_vars($class);
+        };
+        
+        foreach ($getFields($calledClass) as $key => $value) {
+            $this->$key = $value;
+        }
+
+        return $this;
+    }
+
+    /**
      * Extract fields to array
      *
      * @return array
@@ -76,7 +97,6 @@ abstract class AbstractModel extends AbstractComponent implements
         $getFields = function ($class) {
             return get_class_vars($class);
         };
-
         return array_keys($getFields($calledClass));
     }
 

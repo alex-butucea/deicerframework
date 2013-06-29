@@ -323,4 +323,17 @@ class AbstractModelCompositeTest extends \PHPUnit_Framework_TestCase
         $fixture = new TestableModelComposite($this->validExchangeArrayArg);
         $this->assertSame($this->validExchangeArrayArg, $fixture->getArrayCopy());
     }
+
+    public function testClearDiscardsInternalisedModelSet()
+    {
+        $fixture = new TestableModelComposite($this->validExchangeArrayArg);
+        $fixture->clear();
+        $this->assertSame(0, $fixture->count());
+    }
+
+    public function testClearImplementsFluentInterface()
+    {
+        $fixture = new TestableModelComposite();
+        $this->assertSame($fixture, $fixture->clear());
+    }
 }
