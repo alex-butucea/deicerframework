@@ -317,4 +317,10 @@ class AbstractModelCompositeTest extends \PHPUnit_Framework_TestCase
         $fixture = new TestableModelComposite();
         $this->assertInstanceOf('ColtTest\Model\TestableModelComposite', $fixture->spawn());
     }
+
+    public function testGetArrayCopyReturnsInternalisedModelSet()
+    {
+        $fixture = new TestableModelComposite($this->validExchangeArrayArg);
+        $this->assertSame($this->validExchangeArrayArg, $fixture->getArrayCopy());
+    }
 }

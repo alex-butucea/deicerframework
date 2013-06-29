@@ -2,6 +2,7 @@
 
 namespace Colt\Model;
 
+use Colt\Stdlib\ExtactableInterface;
 use Colt\Exception\Type\NonArrayException;
 
 /**
@@ -16,7 +17,9 @@ use Colt\Exception\Type\NonArrayException;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-abstract class AbstractModel extends AbstractComponent implements ModelInterface
+abstract class AbstractModel extends AbstractComponent implements
+     ModelInterface,
+     ExtactableInterface
 {
     /**
      * Prevents additional properties to be injected into instance at runtime
@@ -47,7 +50,21 @@ abstract class AbstractModel extends AbstractComponent implements ModelInterface
     {
         throw new \OutOfBoundsException();
     }
-    
+
+    /**
+     * Extract fields to array
+     *
+     * @return array
+     */
+    public function getArrayCopy()
+    {
+        $ret = array ();
+        foreach (static::getFields() as $name) {
+            $ret[$name] = $this->$name;
+        }
+        return $ret;
+    }
+
     /**
      * Returns public property names
      * 

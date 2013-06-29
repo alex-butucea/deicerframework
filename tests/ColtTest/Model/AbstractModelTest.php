@@ -201,4 +201,11 @@ class AbstractModelTest extends \PHPUnit_Framework_TestCase
         $fixture = new TestableModel();
         $this->assertInstanceOf('ColtTest\Model\TestableModel', $fixture->spawn());
     }
+
+    public function testGetArrayCopyReturnsPublicProperties()
+    {
+        $fixture  = new TestableModel($this->validExchangeArrayArg);
+        $expected = $this->validExchangeArrayArg + array ('child' => null);
+        $this->assertSame($expected, $fixture->getArrayCopy());
+    }
 }
