@@ -19,7 +19,7 @@ interface ExecutableInterface
     /**
      * Execute contained logic
      *
-     * @return ExecutionInterface
+     * @return mixed
      */
     public function execute();
 
