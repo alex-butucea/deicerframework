@@ -19,6 +19,7 @@
         <delete dir="./build/test-report"/>
         <delete dir="./build/coverage-report"/>
         <delete dir="./build/standards-report"/>
+        <delete dir="./build/phplint-report"/>
     </target>
 
     <!-- ============================================  -->
@@ -40,6 +41,7 @@
         <mkdir dir="./build/test-report"/>
         <mkdir dir="./build/coverage-report"/>
         <mkdir dir="./build/standards-report"/>
+        <mkdir dir="./build/phplint-report"/>
     </target>
 
     <!-- ============================================  -->
@@ -92,7 +94,7 @@
     <target
         name="generate"
         description="Execute all generation targets"
-        depends="generate-phpdoc, generate-coverage-report, generate-standards-report"
+        depends="generate-phpdoc, generate-coverage-report, generate-standards-report, generate-phplint-report"
     />
 
     <!-- ============================================  -->
@@ -141,6 +143,23 @@
                 <include name="**/*.php" />
             </fileset>
         </phpcodesniffer>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: generate-phplint-report               -->
+    <!-- ============================================  -->
+    <target name="generate-phplint-report" description="Generate PHP Lint report" depends="prepare">
+        <phplint
+            tofile="./build/phplint-report/phplint"
+            deprecatedAsError="true"
+        >
+            <fileset dir="./library">
+                <include name="**/*.php" />
+            </fileset>
+            <fileset dir="./tests">
+                <include name="**/*.php" />
+            </fileset>
+        </phplint>
     </target>
 
 </project>
