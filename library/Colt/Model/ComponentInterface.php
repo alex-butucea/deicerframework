@@ -19,14 +19,16 @@ interface ComponentInterface
     /**
      * Component constructor
      *
-     * @param array $values Array to hydrate instance
+     * @param  array $values Array to hydrate instance
+     * @return ComponentInterface
      */
     public function __construct(array $values = null);
 
     /**
      * Hydrate instance using an array, skipping invalid values to prevent exceptions
      *
-     * @param array $values Array to hydrate from
+     * @param  array $values Array to hydrate from
+     * @return ComponentInterface Fluent interface
      */
     public function tryExchangeArray(array $values);
 }

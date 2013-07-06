@@ -16,6 +16,8 @@ interface ClearableInterface
 {
     /**
      * Discard property values
+     *
+     * @return void
      */
     public function clear();
 }

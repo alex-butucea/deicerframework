@@ -16,6 +16,8 @@ interface SpawnableInterface
 {
     /**
      * Spawn new instance
+     *
+     * @return SpawnableInterface
      */
     public function spawn();
 }

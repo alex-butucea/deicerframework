@@ -16,6 +16,8 @@ interface ExtactableInterface
 {
     /**
      * Extract properties to array
+     *
+     * @return array
      */
     public function getArrayCopy();
 }

@@ -16,6 +16,8 @@ interface StringSerializableInterface
 {
     /**
      * Serialize to arbitrary string
+     *
+     * @return string
      */
     public function __toString();
 }

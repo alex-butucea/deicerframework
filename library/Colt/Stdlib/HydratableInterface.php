@@ -17,7 +17,8 @@ interface HydratableInterface
     /**
      * Hydrate instance using an array
      *
-     * @param array $values Array to hydrate from
+     * @param  array $values Array to hydrate from
+     * @return void
      */
     public function exchangeArray(array $values);
 }

@@ -20,6 +20,7 @@ interface ModelInterface extends ComponentInterface
      * Prevents additional properties to be injected into instance at runtime
      *
      * @throws OutOfBoundsException
+     * @return void
      */
     public function __set($key, $value);
 
@@ -27,6 +28,7 @@ interface ModelInterface extends ComponentInterface
      * Throws exception when nonexistent property is unset at runtime
      *
      * @throws OutOfBoundsException
+     * @return void
      */
     public function __unset($key);
 
@@ -34,6 +36,7 @@ interface ModelInterface extends ComponentInterface
      * Throws exception when nonexistent property is accessed at runtime
      *
      * @throws OutOfBoundsException
+     * @return void
      */
     public function __get($key);
 }

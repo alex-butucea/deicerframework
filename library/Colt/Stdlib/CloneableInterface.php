@@ -16,6 +16,8 @@ interface CloneableInterface
 {
     /**
      * Perform deep object copy
+     *
+     * @return CloneableInterface
      */
     public function __clone();
 }
