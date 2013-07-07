@@ -25,14 +25,14 @@ interface EventInterface
     /**
      * Get the content payload
      *
-     * @return string
+     * @return mixed
      */
     public function getContent();
 
     /**
      * Get the event publisher
      *
-     * @return string
+     * @return PublisherInterface
      */
     public function getPublisher();
 }
