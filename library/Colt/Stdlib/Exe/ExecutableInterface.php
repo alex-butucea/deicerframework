@@ -1,6 +1,6 @@
 <?php
 
-namespace Colt\Stdlib;
+namespace Colt\Stdlib\Exe;
 
 /**
  * Interface for objects that can be executed to perform a focused task
@@ -9,6 +9,7 @@ namespace Colt\Stdlib;
  *
  * @category   Colt
  * @package    Stdlib
+ * @subpackage Exe
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com>

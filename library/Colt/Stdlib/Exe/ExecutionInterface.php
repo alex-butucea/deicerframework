@@ -1,12 +1,13 @@
 <?php
 
-namespace Colt\Stdlib;
+namespace Colt\Stdlib\Exe;
 
 /**
  * Interface for objects yielded from a call to an Executable object
  *
  * @category   Colt
  * @package    Stdlib
+ * @subpackage Exe
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com>
