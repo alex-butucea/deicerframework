@@ -11,7 +11,7 @@ Framework Components
 The framework is comprised of the following components:
 
 - Colt\Exception - Semantic exception hierarchy
-- Colt\Model - DTO and Model abstracts
+- Colt\Model - DTO and model abstracts
 - Colt\Stdlib - Generic interfaces and implementations
 
 See the README.md contained within the root of each component for more info
