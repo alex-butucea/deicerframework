@@ -3,7 +3,7 @@
 namespace Colt\Stdlib\Pubsub;
 
 /**
- * Representation of an event raised by a publisher object
+ * Interface for events raised by a publisher object
  *
  * @category   Colt
  * @package    Stdlib
