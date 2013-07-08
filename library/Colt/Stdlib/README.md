@@ -4,4 +4,3 @@ A library of generic interfaces that provide a polymorphic, consistent API for y
 
 ---------------------------------------------------
 Copyright (c) 2013 Alex Butucea <alex826@gmail.com>
-

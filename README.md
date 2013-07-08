@@ -11,7 +11,7 @@ Framework Components
 The framework is comprised of the following components:
 
 - Colt\Exception - Semantic exception hierarchy
-- Colt\Model - Domain business object templates
+- Colt\Model - DTO and Model abstracts
 - Colt\Stdlib - Generic interfaces and implementations
 
 See the README.md contained within the root of each component for more info
@@ -22,4 +22,3 @@ Colt Framework requires PHP 5.3.3 or later.
 
 ---------------------------------------------------
 Copyright (c) 2013 Alex Butucea <alex826@gmail.com>
-

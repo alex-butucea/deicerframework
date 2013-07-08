@@ -9,4 +9,3 @@ This subcomponent provides a set of exceptions related to variable type, allowin
 
 ---------------------------------------------------
 Copyright (c) 2013 Alex Butucea <alex826@gmail.com>
-
