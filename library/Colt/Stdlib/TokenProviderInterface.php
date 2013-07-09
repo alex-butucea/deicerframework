@@ -17,7 +17,7 @@ interface TokenProviderInterface
     /**
      * Get unique token
      *
-     * @return mixed
+     * @return string
      */
     public function getToken();
 }
