@@ -23,11 +23,12 @@ class InvariableExecutionEvent extends AbstractExecutionEvent implements
 {
     /**
      * {@inheritdoc}
-     *
-     * @throws NonStringException If $topic is not a string
      */
-    public function __construct($topic, $content, InvariableQueryInterface $publisher)
-    {
+    public function __construct(
+        $topic,
+        $content,
+        InvariableQueryInterface $publisher
+    ) {
         if (! is_string($topic)) {
             throw new NonStringException();
         }

@@ -21,10 +21,14 @@ interface InvariableExecutionEventInterface
      * Invariable query constructor
      *
      * @throws NonStringException If $topic is not a string
-     * @param  string $topic Event catgory, see constants in ExecutionEventInterface
+     * @param  string $topic See constants in ExecutionEventInterface
      * @param  mixed $content Content returned from the query's inner execution
      * @param  InvariableQueryInterface $publisher 
      * @return InvariableExecutionEventInterface
      */
-    public function __construct($topic, $content, InvariableQueryInterface $publisher);
+    public function __construct(
+        $topic,
+        $content,
+        InvariableQueryInterface $publisher
+    );
 }
