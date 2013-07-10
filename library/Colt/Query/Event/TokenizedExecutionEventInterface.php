@@ -24,8 +24,8 @@ interface TokenizedExecutionEventInterface
      * @throws NonStringException If $token is not a string
      * @param  string $topic See constants in ExecutionEventInterface
      * @param  mixed $content Content returned from the query's inner execution
-     * @param  TokenizedQueryInterface $publisher 
-     * @param  mixed Unique token to search by
+     * @param  TokenizedQueryInterface $publisher Event originator
+     * @param  string Unique token to search by
      * @return TokenizedExecutionEventInterface
      */
     public function __construct(

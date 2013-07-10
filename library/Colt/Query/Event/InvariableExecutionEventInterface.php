@@ -23,7 +23,7 @@ interface InvariableExecutionEventInterface
      * @throws NonStringException If $topic is not a string
      * @param  string $topic See constants in ExecutionEventInterface
      * @param  mixed $content Content returned from the query's inner execution
-     * @param  InvariableQueryInterface $publisher 
+     * @param  TokenizedQueryInterface $publisher Event originator
      * @return InvariableExecutionEventInterface
      */
     public function __construct(
