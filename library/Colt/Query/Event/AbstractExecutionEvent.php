@@ -8,7 +8,7 @@ use Colt\Stdlib\Exe\ExecutionInterface;
 use Colt\Exception\Type\NonIntException;
 
 /**
- * An abstract representation of a query exection event
+ * An abstract representation of a query execution event
  *
  * @category   Colt
  * @package    Query

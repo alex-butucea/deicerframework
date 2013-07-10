@@ -3,7 +3,7 @@
 namespace Colt\Query\Event;
 
 /**
- * Marker interface for query exection events
+ * Marker interface for query execution events
  *
  * @category   Colt
  * @package    Query
