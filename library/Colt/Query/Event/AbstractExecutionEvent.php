@@ -24,19 +24,21 @@ abstract class AbstractExecutionEvent implements
      ExecutionInterface
 {
     /**
-     * {@inheritdoc}
+     * The event topic
+     *
+     * @param string
      */
     protected $topic = '';
 
     /**
-     * {@inheritdoc}
+     * The content payload
      *
      * @var mixed
      */
     protected $content;
 
     /**
-     * {@inheritdoc}
+     * Event publisher
      *
      * @var QueryInterface
      */
@@ -77,8 +79,6 @@ abstract class AbstractExecutionEvent implements
 
     /**
      * {@inheritdoc}
-     *
-     * @return int
      */
     public function getElapsedTime()
     {
@@ -86,11 +86,10 @@ abstract class AbstractExecutionEvent implements
     }
 
     /**
-     * Add to the total time taken to execute
+     * {@inheritdoc}
      *
      * @throws NonIntException If $interval is not an integer
      * @throws RangeException If $interval is negative
-     * @param  int $interval The time to add to the total elapsed time
      * @return AbstractExecutionEvent Fluent inteface
      */
     public function addElapsedTime($interval)

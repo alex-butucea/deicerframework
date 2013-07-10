@@ -18,14 +18,14 @@ interface ExecutionInterface
     /**
      * Get the amount of time taken to execute
      *
-     * @return mixed
+     * @return int
      */
     public function getElapsedTime();
 
     /**
      * Add to the total time taken to execute
      *
-     * @param  mixed $interval The time to add to the total elapsed time
+     * @param  int $interval The time to add to the total elapsed time
      * @return void
      */
     public function addElapsedTime($interval);
