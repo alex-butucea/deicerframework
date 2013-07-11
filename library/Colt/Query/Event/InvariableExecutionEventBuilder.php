@@ -6,7 +6,6 @@ use Colt\Query\Event\InvariableExecutionEvent;
 use Colt\Query\Event\InvariableExecutionEventBuilderInterface;
 use Colt\Stdlib\Pubsub\AbstractEventBuilder;
 use Colt\Stdlib\Pubsub\EventBuilderInterface;
-use Colt\Exception\Type\NonStringException;
 
 /**
  * Assembles instances of Invariable Query Execution Events
@@ -26,7 +25,7 @@ class InvariableExecutionEventBuilder extends AbstractEventBuilder implements
     /**
      * {@inheritdoc}
      *
-     * @throws LogicException If topic has not been set
+     * @throws LogicException If topic is empty
      * @throws LogicException If content has not been set
      * @throws LogicException If publisher has not been set
      */
@@ -36,7 +35,7 @@ class InvariableExecutionEventBuilder extends AbstractEventBuilder implements
             throw new \LogicException('Topic required for build in: ' . __METHOD__);
         } if (! isset($this->content)) {
             throw new \LogicException('Content required for build in: ' . __METHOD__);
-        } if (empty($this->publisher)) {
+        } if (! isset($this->publisher)) {
             throw new \LogicException('Publisher required for build in: ' . __METHOD__);
         }
 
