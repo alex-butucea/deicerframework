@@ -31,6 +31,6 @@ interface ParametizedExecutionEventInterface
         $topic,
         $content,
         ParametizedQueryInterface $publisher,
-        array $params = array ()
+        array $params
     );
 }

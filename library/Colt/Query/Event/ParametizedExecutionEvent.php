@@ -37,7 +37,7 @@ class ParametizedExecutionEvent extends AbstractExecutionEvent implements
         $topic,
         $content,
         ParametizedQueryInterface $publisher,
-        array $params = array ()
+        array $params
     ) {
         if (! is_string($topic)) {
             throw new NonStringException();

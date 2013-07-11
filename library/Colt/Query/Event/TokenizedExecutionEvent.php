@@ -28,7 +28,7 @@ class TokenizedExecutionEvent extends AbstractExecutionEvent implements
      * 
      * @var mixed
      */
-    protected $token = '';
+    protected $token;
 
     /**
      * {@inheritdoc}
@@ -37,7 +37,7 @@ class TokenizedExecutionEvent extends AbstractExecutionEvent implements
         $topic,
         $content,
         TokenizedQueryInterface $publisher,
-        $token = ''
+        $token
     ) {
         if (! is_string($topic)) {
             throw new NonStringException();
