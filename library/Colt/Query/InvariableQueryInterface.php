@@ -2,6 +2,8 @@
 
 namespace Colt\Query;
 
+use Colt\Stdlib\Pubsub\PublisherInterface;
+
 /**
  * Marker interface for invariable queries
  *
@@ -12,6 +14,6 @@ namespace Colt\Query;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface InvariableQueryInterface
+interface InvariableQueryInterface extends PublisherInterface
 {
 }
