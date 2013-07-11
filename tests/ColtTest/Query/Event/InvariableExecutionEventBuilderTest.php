@@ -53,46 +53,67 @@ class InvariableExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
     public function testBuildThrowsExceptionIfTopicIsEmpty()
     {
         $this->setExpectedException('LogicException');
-        $this->fixture->withContent('foo')->withPublisher($this->mockPublisher)->build();
+        $this->fixture
+            ->withContent('foo')
+            ->withPublisher($this->mockPublisher)
+            ->build();
     }
 
     public function testBuildThrowsExceptionIfContentIsUnset()
     {
         $this->setExpectedException('LogicException');
-        $this->fixture->withTopic('foo')->withPublisher($this->mockPublisher)->build();
+        $this->fixture
+            ->withTopic('foo')
+            ->withPublisher($this->mockPublisher)
+            ->build();
     }
 
     public function testBuildThrowsExceptionIfPublisherIsUnset()
     {
         $this->setExpectedException('LogicException');
-        $this->fixture->withTopic('foo')->withContent('bar')->build();
+        $this->fixture
+            ->withTopic('foo')
+            ->withContent('bar')
+            ->build();
     }
 
     public function testBuildReturnsInstanceOfInvariableExecutionEvent()
     {
-        $pub   = $this->mockPublisher;
-        $built = $this->fixture->withTopic('foo')->withContent('bar')->withPublisher($pub)->build();
+        $built = $this->fixture
+            ->withTopic('foo')
+            ->withContent('bar')
+            ->withPublisher($this->mockPublisher)
+            ->build();
         $this->assertInstanceOf('Colt\Query\Event\InvariableExecutionEvent', $built);
     }
 
     public function testBuildUsesSetTopic()
     {
-        $pub   = $this->mockPublisher;
-        $built = $this->fixture->withTopic('foo')->withContent('bar')->withPublisher($pub)->build();
+        $built = $this->fixture
+            ->withTopic('foo')
+            ->withContent('bar')
+            ->withPublisher($this->mockPublisher)
+            ->build();
         $this->assertSame('foo', $built->getTopic());
     }
 
     public function testBuildUsesSetContent()
     {
-        $pub   = $this->mockPublisher;
-        $built = $this->fixture->withTopic('foo')->withContent('bar')->withPublisher($pub)->build();
+        $built = $this->fixture
+            ->withTopic('foo')
+            ->withContent('bar')
+            ->withPublisher($this->mockPublisher)
+            ->build();
         $this->assertSame('bar', $built->getContent());
     }
 
     public function testBuildUsesSetPublisher()
     {
-        $pub   = $this->mockPublisher;
-        $built = $this->fixture->withTopic('foo')->withContent('bar')->withPublisher($pub)->build();
-        $this->assertSame($pub, $built->getPublisher());
+        $built = $this->fixture
+            ->withTopic('foo')
+            ->withContent('bar')
+            ->withPublisher($this->mockPublisher)
+            ->build();
+        $this->assertSame($this->mockPublisher, $built->getPublisher());
     }
 }
