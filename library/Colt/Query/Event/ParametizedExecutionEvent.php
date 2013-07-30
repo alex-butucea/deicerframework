@@ -3,7 +3,7 @@
 namespace Colt\Query\Event;
 
 use Colt\Query\ParametizedQueryInterface;
-use Colt\Stdlib\ParameterProviderInterface;
+use Colt\Query\Event\ParametizedExecutionEventInterface;
 use Colt\Exception\Type\NonStringException;
 
 /**
@@ -20,8 +20,7 @@ use Colt\Exception\Type\NonStringException;
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 class ParametizedExecutionEvent extends AbstractExecutionEvent implements
-    ParametizedExecutionEventInterface,
-    ParameterProviderInterface
+    ParametizedExecutionEventInterface
 {
     /**
      * Parameters used in query execution

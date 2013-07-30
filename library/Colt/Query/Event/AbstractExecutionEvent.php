@@ -2,9 +2,6 @@
 
 namespace Colt\Query\Event;
 
-use Colt\Query\Event\ExecutionEventInterface;
-use Colt\Stdlib\Pubsub\EventInterface;
-use Colt\Stdlib\Exe\ExecutionInterface;
 use Colt\Exception\Type\NonIntException;
 
 /**
@@ -18,10 +15,7 @@ use Colt\Exception\Type\NonIntException;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-abstract class AbstractExecutionEvent implements
-     ExecutionEventInterface,
-     EventInterface,
-     ExecutionInterface
+abstract class AbstractExecutionEvent
 {
     /**
      * The event topic

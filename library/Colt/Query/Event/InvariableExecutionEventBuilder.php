@@ -5,7 +5,6 @@ namespace Colt\Query\Event;
 use Colt\Query\Event\InvariableExecutionEvent;
 use Colt\Query\Event\InvariableExecutionEventBuilderInterface;
 use Colt\Stdlib\Pubsub\AbstractEventBuilder;
-use Colt\Stdlib\Pubsub\EventBuilderInterface;
 
 /**
  * Assembles instances of Invariable Query Execution Events
@@ -19,8 +18,7 @@ use Colt\Stdlib\Pubsub\EventBuilderInterface;
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 class InvariableExecutionEventBuilder extends AbstractEventBuilder implements
-    InvariableExecutionEventBuilderInterface,
-    EventBuilderInterface
+    InvariableExecutionEventBuilderInterface
 {
     /**
      * {@inheritdoc}

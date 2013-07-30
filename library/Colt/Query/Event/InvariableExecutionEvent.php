@@ -3,6 +3,7 @@
 namespace Colt\Query\Event;
 
 use Colt\Query\InvariableQueryInterface;
+use Colt\Query\Event\InvariableExecutionEventInterface;
 use Colt\Exception\Type\NonStringException;
 
 /**

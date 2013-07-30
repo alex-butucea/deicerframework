@@ -5,7 +5,6 @@ namespace Colt\Query\Event;
 use Colt\Query\Event\ParametizedExecutionEvent;
 use Colt\Query\Event\ParametizedExecutionEventBuilderInterface;
 use Colt\Stdlib\Pubsub\AbstractEventBuilder;
-use Colt\Stdlib\Pubsub\EventBuilderInterface;
 
 /**
  * Assembles instances of Parametized Query Execution Events
@@ -19,8 +18,7 @@ use Colt\Stdlib\Pubsub\EventBuilderInterface;
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 class ParametizedExecutionEventBuilder extends AbstractEventBuilder implements
-    ParametizedExecutionEventBuilderInterface,
-    EventBuilderInterface
+    ParametizedExecutionEventBuilderInterface
 {
     /**
      * Parameter set to build with

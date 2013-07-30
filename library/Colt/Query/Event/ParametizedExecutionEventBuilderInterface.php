@@ -2,6 +2,8 @@
 
 namespace Colt\Query\Event;
 
+use Colt\Stdlib\Pubsub\EventBuilderInterface;
+
 /**
  * Marker interface for concrete Parametized Query Execution Event Builder
  *
@@ -13,7 +15,8 @@ namespace Colt\Query\Event;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface ParametizedExecutionEventBuilderInterface
+interface ParametizedExecutionEventBuilderInterface extends
+ EventBuilderInterface
 {
     /**
      * Set parameter set to build with

@@ -5,7 +5,6 @@ namespace Colt\Query\Event;
 use Colt\Query\Event\TokenizedExecutionEvent;
 use Colt\Query\Event\TokenizedExecutionEventBuilderInterface;
 use Colt\Stdlib\Pubsub\AbstractEventBuilder;
-use Colt\Stdlib\Pubsub\EventBuilderInterface;
 use Colt\Exception\Type\NonStringException;
 
 /**
@@ -20,8 +19,7 @@ use Colt\Exception\Type\NonStringException;
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 class TokenizedExecutionEventBuilder extends AbstractEventBuilder implements
-    TokenizedExecutionEventBuilderInterface,
-    EventBuilderInterface
+    TokenizedExecutionEventBuilderInterface
 {
     /**
      * Unique token to build with

@@ -3,7 +3,7 @@
 namespace Colt\Query\Event;
 
 use Colt\Query\TokenizedQueryInterface;
-use Colt\Stdlib\TokenProviderInterface;
+use Colt\Query\Event\TokenizedExecutionEventInterface;
 use Colt\Exception\Type\NonStringException;
 
 /**
@@ -20,8 +20,7 @@ use Colt\Exception\Type\NonStringException;
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 class TokenizedExecutionEvent extends AbstractExecutionEvent implements
-    TokenizedExecutionEventInterface,
-    TokenProviderInterface
+    TokenizedExecutionEventInterface
 {
     /**
      * Unique token
@@ -41,7 +40,9 @@ class TokenizedExecutionEvent extends AbstractExecutionEvent implements
     ) {
         if (! is_string($topic)) {
             throw new NonStringException();
-        } if (! is_string($token)) {
+        }
+
+        if (! is_string($token)) {
             throw new NonStringException();
         }
 
