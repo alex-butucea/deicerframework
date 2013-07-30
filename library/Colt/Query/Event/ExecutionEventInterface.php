@@ -2,6 +2,9 @@
 
 namespace Colt\Query\Event;
 
+use Colt\Stdlib\Pubsub\EventInterface;
+use Colt\Stdlib\Exe\ExecutionInterface;
+
 /**
  * Marker interface for query execution events
  *
@@ -13,19 +16,66 @@ namespace Colt\Query\Event;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface ExecutionEventInterface
+interface ExecutionEventInterface extends
+ EventInterface,
+ ExecutionInterface
 {
     /**
      * Pubsub topic implying execution was a success
-     * 
+     *
      * @const string
      */
-    const EVENT_SUCCESS = 'success';
+    const TOPIC_SUCCESS = 'success';
+
+    // Query Failure Topics
 
     /**
-     * Pubsub topic implying execution was a failure
-     * 
+     * Pubsub topic implying query execution was a failure and caused by
+     * implementation of fetchData() returning array incompatible with models
+     *
      * @const string
      */
-    const EVENT_FAILURE = 'failure';
+    const TOPIC_FAILURE_MODEL_HYDRATOR = 'failure_model_hydrator';
+
+    /**
+     * Pubsub topic implying query execution was a failure and caused by
+     * implementation of fetchData() throwing an exception
+     *
+     * @const string
+     */
+    const TOPIC_FAILURE_DATA_FETCH = 'failure_data_fetch';
+
+    /**
+     * Pubsub topic implying execution was a failure and caused by
+     * implementation of fetchData() returning non-array
+     *
+     * @const string
+     */
+    const TOPIC_FAILURE_DATA_TYPE = 'failure_data_type';
+
+    // Query Fallback Topics
+
+    /**
+     * Pubsub topic implying query has fallen back to decorated instance due to
+     * implementation of fetchData() returning array incompatible with models
+     *
+     * @const string
+     */
+    const TOPIC_FALLBACK_MODEL_HYDRATOR = 'fallback_model_hydrator';
+
+    /**
+     * Pubsub topic implying query has fallen back to decorated instance due to
+     * implementation of fetchData() throwing an exception
+     *
+     * @const string
+     */
+    const TOPIC_FALLBACK_DATA_FETCH = 'fallback_data_fetch';
+
+    /**
+     * Pubsub topic implying query has fallen back to decorated instance due to
+     * implementation of fetchData() returning non-array
+     *
+     * @const string
+     */
+    const TOPIC_FALLBACK_DATA_TYPE = 'fallback_data_type';
 }
