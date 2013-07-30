@@ -3,9 +3,10 @@
 namespace Colt\Query\Exception;
 
 use Colt\Query\Exception\ExceptionInterface;
+use Colt\Exception\ExceptionInterface as ColtExceptionInterface;
 
 /**
- * Colt Query Data Provider Exception
+ * Colt Query Data Type Exception
  *
  * Represents the failure of a Query implementation to provide valid data
  *
@@ -17,6 +18,8 @@ use Colt\Query\Exception\ExceptionInterface;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class DataProviderException implements ExceptionInterface
+class DataTypeException extends \Exception implements
+    ExceptionInterface,
+    ColtExceptionInterface
 {
 }

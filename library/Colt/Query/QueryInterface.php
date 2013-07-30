@@ -3,7 +3,11 @@
 namespace Colt\Query;
 
 /**
- * Marker interface for queries
+ * Colt Query Interface
+ *
+ * Read-only DAO for fetching Models from API, DB, cache or other storage.
+ * Implements a decorator pattern for auto-failover functionality.
+ * Publishes topic-filtered events to subcribers on execution.
  *
  * @category   Colt
  * @package    Query
@@ -14,4 +18,10 @@ namespace Colt\Query;
  */
 interface QueryInterface
 {
+    /**
+     * Returns the last model composite yeilded from query execution
+     * 
+     * @return ModelCompositeInterface
+     */
+    public function getLastResponse();
 }
