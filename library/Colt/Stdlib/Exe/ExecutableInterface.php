@@ -23,12 +23,4 @@ interface ExecutableInterface
      * @return mixed
      */
     public function execute();
-
-    /**
-     * Decorate an existing executable
-     *
-     * @param  ExecutableInterface $decoratable The executable to decorate
-     * @retrun void
-     */
-    public function decorate(ExecutableInterface $decoratable);
 }
