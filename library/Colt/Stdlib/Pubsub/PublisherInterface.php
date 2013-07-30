@@ -20,20 +20,22 @@ interface PublisherInterface
     /**
      * Subscribe an object to recieve events of a given topic
      *
+     * @throws NonStringException If $topic is a non string value
      * @param  SubscriberInterface $subscriber The object to subscribe
-     * @param  string|array $topic (optional) The topic(s) to subscribe object to
+     * @param  string $topic The topic to subscribe object to
      * @return void
      */
-    public function subscribe(SubscriberInterface $subscriber, $topic = null);
+    public function subscribe(SubscriberInterface $subscriber, $topic);
 
     /**
      * Unsubscribe an object from a given topic
      *
+     * @throws NonStringException If $topic is a non string value
      * @param  SubscriberInterface $subscriber The object to unsubscribe
-     * @param  string|array $topic (optional) The topic(s) to unsubscribe object from
+     * @param  string $topic The topic to unsubscribe object from
      * @return void
      */
-    public function unsubscribe(SubscriberInterface $subscriber, $topic = null);
+    public function unsubscribe(SubscriberInterface $subscriber, $topic);
 
     /**
      * Publish an event to subscribers
