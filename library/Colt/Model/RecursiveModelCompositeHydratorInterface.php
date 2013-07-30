@@ -4,6 +4,7 @@ namespace Colt\Model;
 
 use Colt\Model\ModelInterface;
 use Colt\Model\ModelCompositeInterface;
+use Colt\Stdlib\HydratorInterface;
 
 /**
  * Interface for Recursive Colt Model Composite Hydrator
@@ -17,7 +18,7 @@ use Colt\Model\ModelCompositeInterface;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface RecursiveModelCompositeHydratorInterface
+interface RecursiveModelCompositeHydratorInterface extends HydratorInterface
 {
     /**
      * Hydrator constructor

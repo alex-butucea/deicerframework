@@ -2,6 +2,9 @@
 
 namespace Colt\Model;
 
+use Colt\Stdlib\ClearableInterface;
+use Colt\Stdlib\ExtactableInterface;
+
 /**
  * Colt Model Interface
  *
@@ -14,7 +17,10 @@ namespace Colt\Model;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface ModelInterface extends ComponentInterface
+interface ModelInterface extends
+ ComponentInterface,
+ ClearableInterface,
+ ExtactableInterface
 {
     /**
      * Prevents additional properties to be injected into instance at runtime

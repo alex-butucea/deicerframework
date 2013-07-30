@@ -5,7 +5,6 @@ namespace Colt\Model;
 use Colt\Model\ModelInterface;
 use Colt\Model\ModelCompositeInterface;
 use Colt\Model\RecursiveModelCompositeHydratorInterface;
-use Colt\Stdlib\HydratorInterface;
 
 /**
  * Colt Model Hydrator
@@ -20,8 +19,7 @@ use Colt\Stdlib\HydratorInterface;
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 class RecursiveModelCompositeHydrator implements
-    RecursiveModelCompositeHydratorInterface,
-    HydratorInterface
+    RecursiveModelCompositeHydratorInterface
 {
     /**
      * Model prototype used to populate composite

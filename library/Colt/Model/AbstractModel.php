@@ -2,8 +2,6 @@
 
 namespace Colt\Model;
 
-use Colt\Stdlib\ClearableInterface;
-use Colt\Stdlib\ExtactableInterface;
 use Colt\Exception\Type\NonArrayException;
 
 /**
@@ -18,10 +16,7 @@ use Colt\Exception\Type\NonArrayException;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-abstract class AbstractModel extends AbstractComponent implements
-     ModelInterface,
-     ClearableInterface,
-     ExtactableInterface
+abstract class AbstractModel extends AbstractComponent implements ModelInterface
 {
     /**
      * Prevents additional properties to be injected into instance at runtime

@@ -2,8 +2,6 @@
 
 namespace Colt\Model;
 
-use Colt\Stdlib\ClearableInterface;
-use Colt\Stdlib\ExtactableInterface;
 use Colt\Exception\Type\NonIntException;
 use Colt\Exception\Type\NonArrayException;
 use Colt\Exception\Type\NonInstanceException;
@@ -21,12 +19,7 @@ use Colt\Exception\Type\NonInstanceException;
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 abstract class AbstractModelComposite extends AbstractComponent implements
-     ModelCompositeInterface,
-     ExtactableInterface,
-     ClearableInterface,
-     \Iterator,
-     \Countable,
-     \ArrayAccess
+     ModelCompositeInterface
 {
     /**
      * The internalised set of models

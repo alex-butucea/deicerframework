@@ -2,6 +2,9 @@
 
 namespace Colt\Model;
 
+use Colt\Stdlib\ClearableInterface;
+use Colt\Stdlib\ExtactableInterface;
+
 /**
  * Colt Abstract Model Composite
  *
@@ -14,6 +17,12 @@ namespace Colt\Model;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface ModelCompositeInterface extends ComponentInterface
+interface ModelCompositeInterface extends
+ ComponentInterface,
+ ExtactableInterface,
+ ClearableInterface,
+ \Iterator,
+ \Countable,
+ \ArrayAccess
 {
 }
