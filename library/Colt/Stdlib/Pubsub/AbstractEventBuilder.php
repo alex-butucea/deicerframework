@@ -59,7 +59,7 @@ abstract class AbstractEventBuilder implements EventBuilderInterface
      */
     public function withContent($content)
     {
-        $this->content =  $content;
+        $this->content = $content;
         return $this;
     }
 
