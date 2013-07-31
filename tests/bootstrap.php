@@ -1,6 +1,6 @@
 <?php
 /**
- * Colt Test Bootstrap
+ * Deicer Test Bootstrap
  *
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
@@ -8,7 +8,7 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-// Set error reporting to the level to which Colt Framework code must comply
+// Set error reporting to the level to which Deicer Framework code must comply
 error_reporting(E_ALL | E_STRICT);
 
 // Setup include path

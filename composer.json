@@ -1,11 +1,11 @@
 {
-    "name": "alex-butucea/coltframework",
-    "description": "Colt Framework",
+    "name": "alex-butucea/deicerframework",
+    "description": "Deicer Framework",
     "type": "library",
     "license": "MIT",
-    "homepage": "https://github.com/alex-butucea/coltframework",
+    "homepage": "https://github.com/alex-butucea/deicerframework",
     "keywords": [
-        "colt",
+        "deicer",
         "framework"
     ],
     "authors": [
@@ -21,8 +21,8 @@
     },
     "autoload": {
         "psr-0": {
-            "Colt\\": "library/",
-            "ColtTest\\": "tests/"
+            "Deicer\\": "library/",
+            "DeicerTest\\": "tests/"
         }
     }
 }

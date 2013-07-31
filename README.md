@@ -1,4 +1,4 @@
-Colt Framework
+Deicer Framework
 ==============
 A collection of solutions to common challenges encountered while developing PHP applications.
 Framework components have been implemented using recognised design patterns that promote loosely coupled, easily testable code.
@@ -10,15 +10,15 @@ Framework Components
 --------------------
 The framework is comprised of the following components:
 
-- Colt\Exception - Semantic exception hierarchy
-- Colt\Model - DTO and model abstracts
-- Colt\Stdlib - Generic interfaces and implementations
+- Deicer\Exception - Semantic exception hierarchy
+- Deicer\Model - DTO and model abstracts
+- Deicer\Stdlib - Generic interfaces and implementations
 
 See the README.md contained within the root of each component for more info
 
 System Requirements
 -------------------
-Colt Framework requires PHP 5.3.3 or later.
+Deicer Framework requires PHP 5.3.3 or later.
 
 ---------------------------------------------------
 Copyright (c) 2013 Alex Butucea <alex826@gmail.com>

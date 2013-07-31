@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="coltframework" default="build">
+<project name="deicerframework" default="build">
 
     <!-- ============================================  -->
     <!-- (DEFAULT) Target: build                       -->
