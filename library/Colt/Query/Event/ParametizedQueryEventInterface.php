@@ -3,7 +3,7 @@
 namespace Colt\Query\Event;
 
 use Colt\Query\ParametizedQueryInterface;
-use Colt\Query\Event\ExecutionEventInterface;
+use Colt\Query\Event\QueryEventInterface;
 use Colt\Stdlib\Pubsub\EventInterface;
 use Colt\Stdlib\ParameterProviderInterface;
 
@@ -18,19 +18,19 @@ use Colt\Stdlib\ParameterProviderInterface;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface ParametizedExecutionEventInterface extends
+interface ParametizedQueryEventInterface extends
  ParameterProviderInterface,
- ExecutionEventInterface
+ QueryEventInterface
 {
     /**
      * Parametized query constructor
      *
      * @throws NonStringException If $topic is not a string
-     * @param  string $topic See constants in ExecutionEventInterface
+     * @param  string $topic See constants in QueryEventInterface
      * @param  mixed $content Content returned from the query's inner execution
      * @param  ParametizedQueryInterface $publisher Event originator
-     * @param  array $params Parameters used in query execution
-     * @return ParametizedExecutionEventInterface
+     * @param  array $params Parameters used in query
+     * @return ParametizedQueryEventInterface
      */
     public function __construct(
         $topic,

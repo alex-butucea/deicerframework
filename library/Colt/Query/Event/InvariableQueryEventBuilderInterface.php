@@ -5,7 +5,7 @@ namespace Colt\Query\Event;
 use Colt\Stdlib\Pubsub\EventBuilderInterface;
 
 /**
- * Marker interface for concrete Invariable Query Execution Event Builder
+ * Marker interface for concrete Invariable Query Event Builder
  *
  * @category   Colt
  * @package    Query
@@ -15,7 +15,7 @@ use Colt\Stdlib\Pubsub\EventBuilderInterface;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface InvariableExecutionEventBuilderInterface extends
+interface InvariableQueryEventBuilderInterface extends
  EventBuilderInterface
 {
 }

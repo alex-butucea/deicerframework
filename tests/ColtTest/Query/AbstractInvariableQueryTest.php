@@ -30,7 +30,7 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->eventBuilder = $this->getMock(
-            'Colt\Query\Event\InvariableExecutionEventBuilderInterface'
+            'Colt\Query\Event\InvariableQueryEventBuilderInterface'
         );
         $this->composite = $this->getMock(
             'Colt\Model\ModelCompositeInterface'
@@ -39,7 +39,7 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
             'Colt\Model\RecursiveModelCompositeHydratorInterface'
         );
         $this->event = $this->getMock(
-            'Colt\Query\Event\InvariableExecutionEventInterface'
+            'Colt\Query\Event\InvariableQueryEventInterface'
         );
         $this->subscriber = $this->getMock(
             'Colt\Stdlib\Pubsub\SubscriberInterface'

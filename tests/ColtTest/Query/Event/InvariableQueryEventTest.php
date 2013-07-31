@@ -2,10 +2,10 @@
 
 namespace ColtTest\Query\Event;
 
-use Colt\Query\Event\TokenizedExecutionEvent;
+use Colt\Query\Event\InvariableQueryEvent;
 
 /**
- * Colt Tokenized Query Execution Event unit test suite
+ * Colt Invariable Query Event unit test suite
  * 
  * @category   ColtTest
  * @package    Query
@@ -15,66 +15,51 @@ use Colt\Query\Event\TokenizedExecutionEvent;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TokenizedExecutionEventTest extends \PHPUnit_Framework_TestCase
+class InvariableQueryEventTest extends \PHPUnit_Framework_TestCase
 {
     public $mockQuery;
 
     public function setUp()
     {
-        $this->mockQuery = $this->getMock('Colt\Query\TokenizedQueryInterface');
+        $this->mockQuery = $this->getMock('Colt\Query\InvariableQueryInterface');
     }
 
     public function testConstructorInternalisesTopic()
     {
-        $fixture = new TokenizedExecutionEvent('foo', null, $this->mockQuery, '');
+        $fixture = new InvariableQueryEvent('foo', null, $this->mockQuery);
         $this->assertSame('foo', $fixture->getTopic());
     }
 
     public function testConstructorInternalisesContent()
     {
-        $fixture = new TokenizedExecutionEvent('', 'bar', $this->mockQuery, '');
+        $fixture = new InvariableQueryEvent('', 'bar', $this->mockQuery);
         $this->assertSame('bar', $fixture->getContent());
     }
 
     public function testConstructorInternalisesPublisher()
     {
-        $fixture = new TokenizedExecutionEvent('', 'bar', $this->mockQuery, '');
+        $fixture = new InvariableQueryEvent('', 'bar', $this->mockQuery);
         $this->assertSame($this->mockQuery, $fixture->getPublisher());
-    }
-
-    public function testConstructorInternalisesToken()
-    {
-        $fixture = new TokenizedExecutionEvent('foo', null, $this->mockQuery, 'bar');
-        $this->assertSame('bar', $fixture->getToken());
     }
 
     public function testConstructorTopicTypeStrength()
     {
         $this->setExpectedException('Colt\Exception\Type\NonStringException');
-        new TokenizedExecutionEvent(null, null, $this->mockQuery, '');
-        new TokenizedExecutionEvent(1234, null, $this->mockQuery, '');
-        new TokenizedExecutionEvent(array (), null, $this->mockQuery, '');
-        new TokenizedExecutionEvent(new \stdClass(), null, $this->mockQuery, '');
-    }
-
-    public function testConstructorTokenTypeStrength()
-    {
-        $this->setExpectedException('Colt\Exception\Type\NonStringException');
-        new TokenizedExecutionEvent('', null, $this->mockQuery, null);
-        new TokenizedExecutionEvent('', null, $this->mockQuery, 1234);
-        new TokenizedExecutionEvent('', null, $this->mockQuery, array ());
-        new TokenizedExecutionEvent('', null, $this->mockQuery, new \stdClass());
+        new InvariableQueryEvent(null, null, $this->mockQuery);
+        new InvariableQueryEvent(1234, null, $this->mockQuery);
+        new InvariableQueryEvent(array (), null, $this->mockQuery);
+        new InvariableQueryEvent(new \stdClass(), null, $this->mockQuery);
     }
 
     public function testGetElapsedTimeDefaultsToZero()
     {
-        $fixture = new TokenizedExecutionEvent('', '', $this->mockQuery, '');
+        $fixture = new InvariableQueryEvent('', '', $this->mockQuery);
         $this->assertSame(0, $fixture->getElapsedTime());
     }
 
     public function testAddElapsedTimeIncrementsCorrectly()
     {
-        $fixture = new TokenizedExecutionEvent('', '', $this->mockQuery, '');
+        $fixture = new InvariableQueryEvent('', '', $this->mockQuery);
         $fixture->addElapsedTime(0);
         $this->assertSame(0, $fixture->getElapsedTime());
         $fixture->addElapsedTime(123);
@@ -86,7 +71,7 @@ class TokenizedExecutionEventTest extends \PHPUnit_Framework_TestCase
     public function testAddElapsedTimeTypeStrength()
     {
         $this->setExpectedException('Colt\Exception\Type\NonIntException');
-        $fixture = new TokenizedExecutionEvent('', '', $this->mockQuery, '');
+        $fixture = new InvariableQueryEvent('', '', $this->mockQuery);
         $fixture->addElapsedTime(null);
         $fixture->addElapsedTime('foo');
         $fixture->addElapsedTime(array ());
@@ -96,7 +81,7 @@ class TokenizedExecutionEventTest extends \PHPUnit_Framework_TestCase
     public function testAddElapsedTimeRejectsNegativeIntervals()
     {
         $this->setExpectedException('\RangeException');
-        $fixture = new TokenizedExecutionEvent('', '', $this->mockQuery, '');
+        $fixture = new InvariableQueryEvent('', '', $this->mockQuery);
         $fixture->addElapsedTime(-1);
     }
 }

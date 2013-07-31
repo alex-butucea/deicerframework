@@ -2,10 +2,10 @@
 
 namespace ColtTest\Query\Event;
 
-use Colt\Query\Event\TokenizedExecutionEventBuilder;
+use Colt\Query\Event\InvariableQueryEventBuilder;
 
 /**
- * Colt Tokenized Query Execution Event Builder unit test suite
+ * Colt Invariable Query Event Builder unit test suite
  * 
  * @category   ColtTest
  * @package    Query
@@ -15,15 +15,15 @@ use Colt\Query\Event\TokenizedExecutionEventBuilder;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TokenizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
+class InvariableQueryEventBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public $fixture;
     public $mockPublisher;
 
     public function setUp()
     {
-        $this->fixture = new TokenizedExecutionEventBuilder();
-        $this->mockPublisher = $this->getMock('Colt\Query\TokenizedQueryInterface');
+        $this->fixture = new InvariableQueryEventBuilder();
+        $this->mockPublisher = $this->getMock('Colt\Query\InvariableQueryInterface');
     }
 
     public function testWithTopicImplementsFluentInterface()
@@ -41,11 +41,6 @@ class TokenizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->fixture, $this->fixture->withPublisher($this->mockPublisher));
     }
 
-    public function testWithTokenImplementsFluentInterface()
-    {
-        $this->assertSame($this->fixture, $this->fixture->withToken('baz'));
-    }
-
     public function testWithTopicTypeStrength()
     {
         $this->setExpectedException('Colt\Exception\Type\NonStringException');
@@ -55,22 +50,12 @@ class TokenizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
         $this->fixture->withTopic(new \stdClass());
     }
 
-    public function testWithTokenTypeStrength()
-    {
-        $this->setExpectedException('Colt\Exception\Type\NonStringException');
-        $this->fixture->withToken(null);
-        $this->fixture->withToken(1234);
-        $this->fixture->withToken(array ());
-        $this->fixture->withToken(new \stdClass());
-    }
-
     public function testBuildThrowsExceptionIfTopicIsEmpty()
     {
         $this->setExpectedException('LogicException');
         $this->fixture
             ->withContent('foo')
             ->withPublisher($this->mockPublisher)
-            ->withToken('bar')
             ->build();
     }
 
@@ -80,7 +65,6 @@ class TokenizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
         $this->fixture
             ->withTopic('foo')
             ->withPublisher($this->mockPublisher)
-            ->withToken('bar')
             ->build();
     }
 
@@ -90,29 +74,17 @@ class TokenizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
         $this->fixture
             ->withTopic('foo')
             ->withContent('bar')
-            ->withToken('baz')
             ->build();
     }
 
-    public function testBuildThrowsExceptionIfTokenIsUnset()
-    {
-        $this->setExpectedException('LogicException');
-        $this->fixture
-            ->withTopic('foo')
-            ->withPublisher($this->mockPublisher)
-            ->withContent('bar')
-            ->build();
-    }
-
-    public function testBuildReturnsInstanceOfTokenizedExecutionEvent()
+    public function testBuildReturnsInstanceOfInvariableQueryEvent()
     {
         $built = $this->fixture
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
-            ->withToken('baz')
             ->build();
-        $this->assertInstanceOf('Colt\Query\Event\TokenizedExecutionEvent', $built);
+        $this->assertInstanceOf('Colt\Query\Event\InvariableQueryEvent', $built);
     }
 
     public function testBuildUsesSetTopic()
@@ -121,7 +93,6 @@ class TokenizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
-            ->withToken('baz')
             ->build();
         $this->assertSame('foo', $built->getTopic());
     }
@@ -132,7 +103,6 @@ class TokenizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
-            ->withToken('baz')
             ->build();
         $this->assertSame('bar', $built->getContent());
     }
@@ -143,19 +113,7 @@ class TokenizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
-            ->withToken('baz')
             ->build();
         $this->assertSame($this->mockPublisher, $built->getPublisher());
-    }
-
-    public function testBuildUsesSetToken()
-    {
-        $built = $this->fixture
-            ->withTopic('foo')
-            ->withContent('bar')
-            ->withPublisher($this->mockPublisher)
-            ->withToken('baz')
-            ->build();
-        $this->assertSame('baz', $built->getToken());
     }
 }

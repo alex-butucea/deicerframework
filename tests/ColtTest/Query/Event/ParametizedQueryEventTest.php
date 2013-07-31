@@ -2,10 +2,10 @@
 
 namespace ColtTest\Query\Event;
 
-use Colt\Query\Event\ParametizedExecutionEvent;
+use Colt\Query\Event\ParametizedQueryEvent;
 
 /**
- * Colt Parametized Query Execution Event unit test suite
+ * Colt Parametized Query Event unit test suite
  * 
  * @category   ColtTest
  * @package    Query
@@ -15,7 +15,7 @@ use Colt\Query\Event\ParametizedExecutionEvent;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class ParametizedExecutionEventTest extends \PHPUnit_Framework_TestCase
+class ParametizedQueryEventTest extends \PHPUnit_Framework_TestCase
 {
     public $mockQuery;
 
@@ -31,40 +31,40 @@ class ParametizedExecutionEventTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorInternalisesTopic()
     {
-        $fixture = new ParametizedExecutionEvent('foo', null, $this->mockQuery, array ());
+        $fixture = new ParametizedQueryEvent('foo', null, $this->mockQuery, array ());
         $this->assertSame('foo', $fixture->getTopic());
     }
 
     public function testConstructorInternalisesContent()
     {
-        $fixture = new ParametizedExecutionEvent('', 'bar', $this->mockQuery, array ());
+        $fixture = new ParametizedQueryEvent('', 'bar', $this->mockQuery, array ());
         $this->assertSame('bar', $fixture->getContent());
     }
 
     public function testConstructorInternalisesPublisher()
     {
-        $fixture = new ParametizedExecutionEvent('', 'bar', $this->mockQuery, array ());
+        $fixture = new ParametizedQueryEvent('', 'bar', $this->mockQuery, array ());
         $this->assertSame($this->mockQuery, $fixture->getPublisher());
     }
 
     public function testConstructorInternalisesParams()
     {
-        $fixture = new ParametizedExecutionEvent('foo', null, $this->mockQuery, $this->params);
+        $fixture = new ParametizedQueryEvent('foo', null, $this->mockQuery, $this->params);
         $this->assertSame($this->params, $fixture->getParams());
     }
 
     public function testConstructorTopicTypeStrength()
     {
         $this->setExpectedException('Colt\Exception\Type\NonStringException');
-        new ParametizedExecutionEvent(null, null, $this->mockQuery, array ());
-        new ParametizedExecutionEvent(1234, null, $this->mockQuery, array ());
-        new ParametizedExecutionEvent(array (), null, $this->mockQuery, array ());
-        new ParametizedExecutionEvent(new \stdClass(), null, $this->mockQuery, array ());
+        new ParametizedQueryEvent(null, null, $this->mockQuery, array ());
+        new ParametizedQueryEvent(1234, null, $this->mockQuery, array ());
+        new ParametizedQueryEvent(array (), null, $this->mockQuery, array ());
+        new ParametizedQueryEvent(new \stdClass(), null, $this->mockQuery, array ());
     }
 
     public function testGetParamWithValidNameReturnsCorrectParam()
     {
-        $fixture = new ParametizedExecutionEvent('foo', null, $this->mockQuery, $this->params);
+        $fixture = new ParametizedQueryEvent('foo', null, $this->mockQuery, $this->params);
         $this->assertSame('bar', $fixture->getParam('foo'));
         $this->assertSame('qux', $fixture->getParam('baz'));
     }
@@ -72,19 +72,19 @@ class ParametizedExecutionEventTest extends \PHPUnit_Framework_TestCase
     public function testGetParamWithInvalidNameThrowsException()
     {
         $this->setExpectedException('\OutOfBoundsException');
-        $fixture = new ParametizedExecutionEvent('foo', null, $this->mockQuery, $this->params);
+        $fixture = new ParametizedQueryEvent('foo', null, $this->mockQuery, $this->params);
         $fixture->getParam('foobar');
     }
 
     public function testGetElapsedTimeDefaultsToZero()
     {
-        $fixture = new ParametizedExecutionEvent('', '', $this->mockQuery, array ());
+        $fixture = new ParametizedQueryEvent('', '', $this->mockQuery, array ());
         $this->assertSame(0, $fixture->getElapsedTime());
     }
 
     public function testAddElapsedTimeIncrementsCorrectly()
     {
-        $fixture = new ParametizedExecutionEvent('', '', $this->mockQuery, array ());
+        $fixture = new ParametizedQueryEvent('', '', $this->mockQuery, array ());
         $fixture->addElapsedTime(0);
         $this->assertSame(0, $fixture->getElapsedTime());
         $fixture->addElapsedTime(123);
@@ -96,7 +96,7 @@ class ParametizedExecutionEventTest extends \PHPUnit_Framework_TestCase
     public function testAddElapsedTimeTypeStrength()
     {
         $this->setExpectedException('Colt\Exception\Type\NonIntException');
-        $fixture = new ParametizedExecutionEvent('', '', $this->mockQuery, array ());
+        $fixture = new ParametizedQueryEvent('', '', $this->mockQuery, array ());
         $fixture->addElapsedTime(null);
         $fixture->addElapsedTime('foo');
         $fixture->addElapsedTime(array ());
@@ -106,7 +106,7 @@ class ParametizedExecutionEventTest extends \PHPUnit_Framework_TestCase
     public function testAddElapsedTimeRejectsNegativeIntervals()
     {
         $this->setExpectedException('\RangeException');
-        $fixture = new ParametizedExecutionEvent('', '', $this->mockQuery, array ());
+        $fixture = new ParametizedQueryEvent('', '', $this->mockQuery, array ());
         $fixture->addElapsedTime(-1);
     }
 }

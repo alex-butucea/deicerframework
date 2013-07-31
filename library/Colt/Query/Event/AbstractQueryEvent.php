@@ -5,7 +5,7 @@ namespace Colt\Query\Event;
 use Colt\Exception\Type\NonIntException;
 
 /**
- * An abstract representation of a query execution event
+ * An abstract representation of a query event
  *
  * @category   Colt
  * @package    Query
@@ -15,7 +15,7 @@ use Colt\Exception\Type\NonIntException;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-abstract class AbstractExecutionEvent
+abstract class AbstractQueryEvent
 {
     /**
      * The event topic
@@ -84,7 +84,7 @@ abstract class AbstractExecutionEvent
      *
      * @throws NonIntException If $interval is not an integer
      * @throws RangeException If $interval is negative
-     * @return AbstractExecutionEvent Fluent inteface
+     * @return AbstractQueryEvent Fluent inteface
      */
     public function addElapsedTime($interval)
     {

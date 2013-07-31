@@ -3,7 +3,7 @@
 namespace Colt\Query;
 
 use Colt\Query\QueryInterface;
-use Colt\Query\Event\InvariableExecutionEventInterface;
+use Colt\Query\Event\InvariableQueryEventInterface;
 use Colt\Query\Exception\DataTypeException;
 use Colt\Query\Exception\DataFetchException;
 use Colt\Query\Exception\ModelHydratorException;
@@ -34,7 +34,7 @@ abstract class AbstractQuery
     /**
      * Assembles pubsub events 
      * 
-     * @var InvariableExecutionEventBuilderInterface
+     * @var InvariableQueryEventBuilderInterface
      */
     protected $eventBuilder;
 
@@ -111,8 +111,8 @@ abstract class AbstractQuery
 
             // Build event based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
-                InvariableExecutionEventInterface::TOPIC_FALLBACK_DATA_FETCH :
-                InvariableExecutionEventInterface::TOPIC_FAILURE_DATA_FETCH;
+                InvariableQueryEventInterface::TOPIC_FALLBACK_DATA_FETCH :
+                InvariableQueryEventInterface::TOPIC_FAILURE_DATA_FETCH;
             $event = $this->eventBuilder
                 ->withTopic($topic)
                 ->withContent(array ())
@@ -139,8 +139,8 @@ abstract class AbstractQuery
         // Enforce returned data type strength if no decorated query exists
         if (! is_array($data)) {
             $topic = ($this->decorated) ?
-                InvariableExecutionEventInterface::TOPIC_FALLBACK_DATA_TYPE :
-                InvariableExecutionEventInterface::TOPIC_FAILURE_DATA_TYPE;
+                InvariableQueryEventInterface::TOPIC_FALLBACK_DATA_TYPE :
+                InvariableQueryEventInterface::TOPIC_FAILURE_DATA_TYPE;
             $event = $this->eventBuilder
                 ->withTopic($topic)
                 ->withContent(array ())
@@ -169,8 +169,8 @@ abstract class AbstractQuery
 
             // Build event based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
-                InvariableExecutionEventInterface::TOPIC_FALLBACK_MODEL_HYDRATOR :
-                InvariableExecutionEventInterface::TOPIC_FAILURE_MODEL_HYDRATOR;
+                InvariableQueryEventInterface::TOPIC_FALLBACK_MODEL_HYDRATOR :
+                InvariableQueryEventInterface::TOPIC_FAILURE_MODEL_HYDRATOR;
             $event = $this->eventBuilder
                 ->withTopic($topic)
                 ->withContent($data)
@@ -197,7 +197,7 @@ abstract class AbstractQuery
 
         // Notify subscribers of successful query execution
         $event = $this->eventBuilder
-            ->withTopic(InvariableExecutionEventInterface::TOPIC_SUCCESS)
+            ->withTopic(InvariableQueryEventInterface::TOPIC_SUCCESS)
             ->withContent($data)
             ->build()
             ->addElapsedTime((int) (round(microtime() * 1000) - $time));

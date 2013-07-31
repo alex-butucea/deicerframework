@@ -2,12 +2,12 @@
 
 namespace Colt\Query\Event;
 
-use Colt\Query\Event\ParametizedExecutionEvent;
-use Colt\Query\Event\ParametizedExecutionEventBuilderInterface;
+use Colt\Query\Event\InvariableQueryEvent;
+use Colt\Query\Event\InvariableQueryEventBuilderInterface;
 use Colt\Stdlib\Pubsub\AbstractEventBuilder;
 
 /**
- * Assembles instances of Parametized Query Execution Events
+ * Assembles instances of Invariable Query Events
  *
  * @category   Colt
  * @package    Query
@@ -17,32 +17,15 @@ use Colt\Stdlib\Pubsub\AbstractEventBuilder;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class ParametizedExecutionEventBuilder extends AbstractEventBuilder implements
-    ParametizedExecutionEventBuilderInterface
+class InvariableQueryEventBuilder extends AbstractEventBuilder implements
+    InvariableQueryEventBuilderInterface
 {
-    /**
-     * Parameter set to build with
-     * 
-     * @var array
-     */
-    protected $params;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withParams(array $params)
-    {
-        $this->params = $params;
-        return $this;
-    }
-
     /**
      * {@inheritdoc}
      *
      * @throws LogicException If topic is empty
      * @throws LogicException If content has not been set
      * @throws LogicException If publisher has not been set
-     * @throws LogicException If params has not been set
      */
     public function build()
     {
@@ -52,15 +35,12 @@ class ParametizedExecutionEventBuilder extends AbstractEventBuilder implements
             throw new \LogicException('Content required for build in: ' . __METHOD__);
         } if (! isset($this->publisher)) {
             throw new \LogicException('Publisher required for build in: ' . __METHOD__);
-        } if (! isset($this->params)) {
-            throw new \LogicException('Params required for build in: ' . __METHOD__);
         }
 
-        return new ParametizedExecutionEvent(
+        return new InvariableQueryEvent(
             $this->topic,
             $this->content,
-            $this->publisher,
-            $this->params
+            $this->publisher
         );
     }
 }

@@ -2,13 +2,12 @@
 
 namespace Colt\Query\Event;
 
-use Colt\Query\Event\TokenizedExecutionEvent;
-use Colt\Query\Event\TokenizedExecutionEventBuilderInterface;
+use Colt\Query\Event\ParametizedQueryEvent;
+use Colt\Query\Event\ParametizedQueryEventBuilderInterface;
 use Colt\Stdlib\Pubsub\AbstractEventBuilder;
-use Colt\Exception\Type\NonStringException;
 
 /**
- * Assembles instances of Tokenized Query Execution Events
+ * Assembles instances of Parametized Query Events
  *
  * @category   Colt
  * @package    Query
@@ -18,26 +17,22 @@ use Colt\Exception\Type\NonStringException;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TokenizedExecutionEventBuilder extends AbstractEventBuilder implements
-    TokenizedExecutionEventBuilderInterface
+class ParametizedQueryEventBuilder extends AbstractEventBuilder implements
+    ParametizedQueryEventBuilderInterface
 {
     /**
-     * Unique token to build with
+     * Parameter set to build with
      * 
-     * @var string
+     * @var array
      */
-    protected $token;
+    protected $params;
 
     /**
      * {@inheritdoc}
      */
-    public function withToken($token)
+    public function withParams(array $params)
     {
-        if (! is_string($token)) {
-            throw new NonStringException();
-        }
-
-        $this->token = $token;
+        $this->params = $params;
         return $this;
     }
 
@@ -47,7 +42,7 @@ class TokenizedExecutionEventBuilder extends AbstractEventBuilder implements
      * @throws LogicException If topic is empty
      * @throws LogicException If content has not been set
      * @throws LogicException If publisher has not been set
-     * @throws LogicException If token has not been set
+     * @throws LogicException If params has not been set
      */
     public function build()
     {
@@ -57,15 +52,15 @@ class TokenizedExecutionEventBuilder extends AbstractEventBuilder implements
             throw new \LogicException('Content required for build in: ' . __METHOD__);
         } if (! isset($this->publisher)) {
             throw new \LogicException('Publisher required for build in: ' . __METHOD__);
-        } if (! isset($this->token)) {
-            throw new \LogicException('Token required for build in: ' . __METHOD__);
+        } if (! isset($this->params)) {
+            throw new \LogicException('Params required for build in: ' . __METHOD__);
         }
 
-        return new TokenizedExecutionEvent(
+        return new ParametizedQueryEvent(
             $this->topic,
             $this->content,
             $this->publisher,
-            $this->token
+            $this->params
         );
     }
 }

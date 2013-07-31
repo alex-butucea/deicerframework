@@ -3,7 +3,7 @@
 namespace Colt\Query;
 
 use Colt\Query\QueryInterface;
-use Colt\Query\Event\InvariableExecutionEventBuilderInterface;
+use Colt\Query\Event\InvariableQueryEventBuilderInterface;
 use Colt\Model\RecursiveModelCompositeHydratorInterface;
 use Colt\Stdlib\Exe\ExecutableInterface;
 use Colt\Stdlib\Pubsub\PublisherInterface;
@@ -31,13 +31,13 @@ interface InvariableQueryInterface extends
      * Invariable Query Constructor
      *
      * @param  mixed $dataProvider Query data provider - DB connection, CURl client, etc.
-     * @param  InvariableExecutionEventBuilderInterface $eventBuilder Assembles pubsub events
+     * @param  InvariableQueryEventBuilderInterface $eventBuilder Assembles pubsub events
      * @param  RecursiveModelCompositeHydratorInterface $modelHydrator Hydrates query responses
      * @return InvariableQueryInterface
      */
     public function __construct(
         $dataProvider,
-        InvariableExecutionEventBuilderInterface $eventBuilder,
+        InvariableQueryEventBuilderInterface $eventBuilder,
         RecursiveModelCompositeHydratorInterface $modelHydrator
     );
 

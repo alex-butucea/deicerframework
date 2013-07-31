@@ -5,7 +5,7 @@ namespace Colt\Query\Event;
 use Colt\Stdlib\Pubsub\EventBuilderInterface;
 
 /**
- * Marker interface for concrete Parametized Query Execution Event Builder
+ * Marker interface for concrete Tokenized Query Event Builder
  *
  * @category   Colt
  * @package    Query
@@ -15,14 +15,15 @@ use Colt\Stdlib\Pubsub\EventBuilderInterface;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface ParametizedExecutionEventBuilderInterface extends
+interface TokenizedQueryEventBuilderInterface extends
  EventBuilderInterface
 {
     /**
-     * Set parameter set to build with
+     * Set unique token to build with
      * 
-     * @param  array $params Parameters to build with
-     * @return ParametizedExecutionEventBuilderInterface Fluent interface
+     * @throws NonStringException If $token is not a string
+     * @param  string $token Token to build with
+     * @return TokenizedQueryEventBuilderInterface Fluent interface
      */
-    public function withParams(array $params);
+    public function withToken($token);
 }

@@ -4,7 +4,7 @@ namespace Colt\Query;
 
 use Colt\Query\AbstractQuery;
 use Colt\Query\InvariableQueryInterface;
-use Colt\Query\Event\InvariableExecutionEventBuilderInterface;
+use Colt\Query\Event\InvariableQueryEventBuilderInterface;
 use Colt\Model\RecursiveModelCompositeHydratorInterface;
 
 /**
@@ -25,7 +25,7 @@ abstract class AbstractInvariableQuery extends AbstractQuery implements
      */
     public function __construct(
         $dataProvider,
-        InvariableExecutionEventBuilderInterface $eventBuilder,
+        InvariableQueryEventBuilderInterface $eventBuilder,
         RecursiveModelCompositeHydratorInterface $modelHydrator
     ) {
         $this->dataProvider  = $dataProvider;

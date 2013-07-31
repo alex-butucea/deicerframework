@@ -2,10 +2,10 @@
 
 namespace ColtTest\Query\Event;
 
-use Colt\Query\Event\ParametizedExecutionEventBuilder;
+use Colt\Query\Event\TokenizedQueryEventBuilder;
 
 /**
- * Colt Parametized Query Execution Event Builder unit test suite
+ * Colt Tokenized Query Event Builder unit test suite
  * 
  * @category   ColtTest
  * @package    Query
@@ -15,15 +15,15 @@ use Colt\Query\Event\ParametizedExecutionEventBuilder;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class ParametizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
+class TokenizedQueryEventBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public $fixture;
     public $mockPublisher;
 
     public function setUp()
     {
-        $this->fixture = new ParametizedExecutionEventBuilder();
-        $this->mockPublisher = $this->getMock('Colt\Query\ParametizedQueryInterface');
+        $this->fixture = new TokenizedQueryEventBuilder();
+        $this->mockPublisher = $this->getMock('Colt\Query\TokenizedQueryInterface');
     }
 
     public function testWithTopicImplementsFluentInterface()
@@ -41,9 +41,9 @@ class ParametizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->fixture, $this->fixture->withPublisher($this->mockPublisher));
     }
 
-    public function testWithParamsImplementsFluentInterface()
+    public function testWithTokenImplementsFluentInterface()
     {
-        $this->assertSame($this->fixture, $this->fixture->withParams(array ('foo' => 'bar')));
+        $this->assertSame($this->fixture, $this->fixture->withToken('baz'));
     }
 
     public function testWithTopicTypeStrength()
@@ -55,13 +55,22 @@ class ParametizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
         $this->fixture->withTopic(new \stdClass());
     }
 
+    public function testWithTokenTypeStrength()
+    {
+        $this->setExpectedException('Colt\Exception\Type\NonStringException');
+        $this->fixture->withToken(null);
+        $this->fixture->withToken(1234);
+        $this->fixture->withToken(array ());
+        $this->fixture->withToken(new \stdClass());
+    }
+
     public function testBuildThrowsExceptionIfTopicIsEmpty()
     {
         $this->setExpectedException('LogicException');
         $this->fixture
             ->withContent('foo')
             ->withPublisher($this->mockPublisher)
-            ->withParams(array ('foo' => 'bar'))
+            ->withToken('bar')
             ->build();
     }
 
@@ -71,7 +80,7 @@ class ParametizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
         $this->fixture
             ->withTopic('foo')
             ->withPublisher($this->mockPublisher)
-            ->withParams(array ('foo' => 'bar'))
+            ->withToken('bar')
             ->build();
     }
 
@@ -81,11 +90,11 @@ class ParametizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
         $this->fixture
             ->withTopic('foo')
             ->withContent('bar')
-            ->withParams(array ('foo' => 'bar'))
+            ->withToken('baz')
             ->build();
     }
 
-    public function testBuildThrowsExceptionIfParamsIsUnset()
+    public function testBuildThrowsExceptionIfTokenIsUnset()
     {
         $this->setExpectedException('LogicException');
         $this->fixture
@@ -95,15 +104,15 @@ class ParametizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
             ->build();
     }
 
-    public function testBuildReturnsInstanceOfParametizedExecutionEvent()
+    public function testBuildReturnsInstanceOfTokenizedQueryEvent()
     {
         $built = $this->fixture
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
-            ->withParams(array ('foo' => 'bar'))
+            ->withToken('baz')
             ->build();
-        $this->assertInstanceOf('Colt\Query\Event\ParametizedExecutionEvent', $built);
+        $this->assertInstanceOf('Colt\Query\Event\TokenizedQueryEvent', $built);
     }
 
     public function testBuildUsesSetTopic()
@@ -112,7 +121,7 @@ class ParametizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
-            ->withParams(array ('foo' => 'bar'))
+            ->withToken('baz')
             ->build();
         $this->assertSame('foo', $built->getTopic());
     }
@@ -123,7 +132,7 @@ class ParametizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
-            ->withParams(array ('foo' => 'bar'))
+            ->withToken('baz')
             ->build();
         $this->assertSame('bar', $built->getContent());
     }
@@ -134,19 +143,19 @@ class ParametizedExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
-            ->withParams(array ('foo' => 'bar'))
+            ->withToken('baz')
             ->build();
         $this->assertSame($this->mockPublisher, $built->getPublisher());
     }
 
-    public function testBuildUsesSetParams()
+    public function testBuildUsesSetToken()
     {
         $built = $this->fixture
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
-            ->withParams(array ('foo' => 'bar'))
+            ->withToken('baz')
             ->build();
-        $this->assertSame(array ('foo' => 'bar'), $built->getParams());
+        $this->assertSame('baz', $built->getToken());
     }
 }

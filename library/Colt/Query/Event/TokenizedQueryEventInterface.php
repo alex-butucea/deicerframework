@@ -3,7 +3,7 @@
 namespace Colt\Query\Event;
 
 use Colt\Query\TokenizedQueryInterface;
-use Colt\Query\Event\ExecutionEventInterface;
+use Colt\Query\Event\QueryEventInterface;
 use Colt\Stdlib\TokenProviderInterface;
 
 /**
@@ -17,20 +17,20 @@ use Colt\Stdlib\TokenProviderInterface;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface TokenizedExecutionEventInterface extends
+interface TokenizedQueryEventInterface extends
  TokenProviderInterface,
- ExecutionEventInterface
+ QueryEventInterface
 {
     /**
      * Tokenized query constructor
      *
      * @throws NonStringException If $topic is not a string
      * @throws NonStringException If $token is not a string
-     * @param  string $topic See constants in ExecutionEventInterface
+     * @param  string $topic See constants in QueryEventInterface
      * @param  mixed $content Content returned from the query's inner execution
      * @param  TokenizedQueryInterface $publisher Event originator
      * @param  string Unique token to search by
-     * @return TokenizedExecutionEventInterface
+     * @return TokenizedQueryEventInterface
      */
     public function __construct(
         $topic,

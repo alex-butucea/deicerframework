@@ -2,10 +2,10 @@
 
 namespace ColtTest\Query\Event;
 
-use Colt\Query\Event\InvariableExecutionEventBuilder;
+use Colt\Query\Event\ParametizedQueryEventBuilder;
 
 /**
- * Colt Invariable Query Execution Event Builder unit test suite
+ * Colt Parametized Query Event Builder unit test suite
  * 
  * @category   ColtTest
  * @package    Query
@@ -15,15 +15,15 @@ use Colt\Query\Event\InvariableExecutionEventBuilder;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class InvariableExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
+class ParametizedQueryEventBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public $fixture;
     public $mockPublisher;
 
     public function setUp()
     {
-        $this->fixture = new InvariableExecutionEventBuilder();
-        $this->mockPublisher = $this->getMock('Colt\Query\InvariableQueryInterface');
+        $this->fixture = new ParametizedQueryEventBuilder();
+        $this->mockPublisher = $this->getMock('Colt\Query\ParametizedQueryInterface');
     }
 
     public function testWithTopicImplementsFluentInterface()
@@ -41,6 +41,11 @@ class InvariableExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->fixture, $this->fixture->withPublisher($this->mockPublisher));
     }
 
+    public function testWithParamsImplementsFluentInterface()
+    {
+        $this->assertSame($this->fixture, $this->fixture->withParams(array ('foo' => 'bar')));
+    }
+
     public function testWithTopicTypeStrength()
     {
         $this->setExpectedException('Colt\Exception\Type\NonStringException');
@@ -56,6 +61,7 @@ class InvariableExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
         $this->fixture
             ->withContent('foo')
             ->withPublisher($this->mockPublisher)
+            ->withParams(array ('foo' => 'bar'))
             ->build();
     }
 
@@ -65,6 +71,7 @@ class InvariableExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
         $this->fixture
             ->withTopic('foo')
             ->withPublisher($this->mockPublisher)
+            ->withParams(array ('foo' => 'bar'))
             ->build();
     }
 
@@ -74,17 +81,29 @@ class InvariableExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
         $this->fixture
             ->withTopic('foo')
             ->withContent('bar')
+            ->withParams(array ('foo' => 'bar'))
             ->build();
     }
 
-    public function testBuildReturnsInstanceOfInvariableExecutionEvent()
+    public function testBuildThrowsExceptionIfParamsIsUnset()
+    {
+        $this->setExpectedException('LogicException');
+        $this->fixture
+            ->withTopic('foo')
+            ->withPublisher($this->mockPublisher)
+            ->withContent('bar')
+            ->build();
+    }
+
+    public function testBuildReturnsInstanceOfParametizedQueryEvent()
     {
         $built = $this->fixture
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
+            ->withParams(array ('foo' => 'bar'))
             ->build();
-        $this->assertInstanceOf('Colt\Query\Event\InvariableExecutionEvent', $built);
+        $this->assertInstanceOf('Colt\Query\Event\ParametizedQueryEvent', $built);
     }
 
     public function testBuildUsesSetTopic()
@@ -93,6 +112,7 @@ class InvariableExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
+            ->withParams(array ('foo' => 'bar'))
             ->build();
         $this->assertSame('foo', $built->getTopic());
     }
@@ -103,6 +123,7 @@ class InvariableExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
+            ->withParams(array ('foo' => 'bar'))
             ->build();
         $this->assertSame('bar', $built->getContent());
     }
@@ -113,7 +134,19 @@ class InvariableExecutionEventBuilderTest extends \PHPUnit_Framework_TestCase
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
+            ->withParams(array ('foo' => 'bar'))
             ->build();
         $this->assertSame($this->mockPublisher, $built->getPublisher());
+    }
+
+    public function testBuildUsesSetParams()
+    {
+        $built = $this->fixture
+            ->withTopic('foo')
+            ->withContent('bar')
+            ->withPublisher($this->mockPublisher)
+            ->withParams(array ('foo' => 'bar'))
+            ->build();
+        $this->assertSame(array ('foo' => 'bar'), $built->getParams());
     }
 }

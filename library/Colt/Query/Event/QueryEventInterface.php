@@ -6,7 +6,7 @@ use Colt\Stdlib\Pubsub\EventInterface;
 use Colt\Stdlib\Exe\ExecutionInterface;
 
 /**
- * Marker interface for query execution events
+ * Marker interface for query events
  *
  * @category   Colt
  * @package    Query
@@ -16,7 +16,7 @@ use Colt\Stdlib\Exe\ExecutionInterface;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface ExecutionEventInterface extends
+interface QueryEventInterface extends
  EventInterface,
  ExecutionInterface
 {
@@ -30,7 +30,7 @@ interface ExecutionEventInterface extends
     // Query Failure Topics
 
     /**
-     * Pubsub topic implying query execution was a failure and caused by
+     * Pubsub topic implying query was a failure and caused by
      * implementation of fetchData() returning array incompatible with models
      *
      * @const string
@@ -38,7 +38,7 @@ interface ExecutionEventInterface extends
     const TOPIC_FAILURE_MODEL_HYDRATOR = 'failure_model_hydrator';
 
     /**
-     * Pubsub topic implying query execution was a failure and caused by
+     * Pubsub topic implying query was a failure and caused by
      * implementation of fetchData() throwing an exception
      *
      * @const string
