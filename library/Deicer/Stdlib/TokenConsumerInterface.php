@@ -17,8 +17,9 @@ interface TokenConsumerInterface
     /**
      * Set unique token
      *
+     * @throws NonStringException If $token is a non-string
      * @param  mixed $token The token to set
-     * @return void
+     * @return TokenConsumerInterface Fluen interface
      */
     public function setToken($token);
 }
