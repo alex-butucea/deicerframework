@@ -7,7 +7,7 @@ use Deicer\Query\AbstractInvariableQuery;
 /**
  * Deicer Test Invariable Query
  *
- * Represents a concrete implementation of a Deicer Invairable Query with
+ * Represents a concrete implementation of a Deicer Invariable Query with
  * an implementation of fetchData() incompatible with model properties
  *
  * @category   DeicerTest
