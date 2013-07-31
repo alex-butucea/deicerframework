@@ -99,10 +99,7 @@ abstract class AbstractQuery
         $time = round(microtime() * 1000);
 
         // Sync selection criteria to reflect instance
-        $this->syncEventBuilder();
-        if ($this->decorated) {
-            $this->syncDecorated();
-        }
+        $this->syncEventBuilder()->syncDecorated();
 
         // Attempt to fetchData, rethrow exception if no decorated query exists
         try {
@@ -307,14 +304,14 @@ abstract class AbstractQuery
     /**
      * Sync event builder selection criteria with instance
      * 
-     * @return void
+     * @return AbstractQuery Fluent interface
      */
     abstract protected function syncEventBuilder();
 
     /**
      * Sync decorated query selection criteria with instance
      * 
-     * @return void
+     * @return AbstractQuery Fluent interface
      */
     abstract protected function syncDecorated();
 

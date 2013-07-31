@@ -32,6 +32,8 @@ abstract class AbstractInvariableQuery extends AbstractQuery implements
         $this->eventBuilder  = $eventBuilder;
         $this->modelHydrator = $modelHydrator;
         $this->lastResponse  = $modelHydrator->exchangeArray(array ());
+
+        $this->syncEventBuilder();
     }
 
     /**
@@ -40,7 +42,6 @@ abstract class AbstractInvariableQuery extends AbstractQuery implements
     public function decorate(InvariableQueryInterface $decoratable)
     {
         $this->decorated = $decoratable;
-        $this->syncEventBuilder();
         $this->syncDecorated();
 
         return $this;
@@ -53,7 +54,7 @@ abstract class AbstractInvariableQuery extends AbstractQuery implements
      */
     protected function syncEventBuilder()
     {
-        return;
+        return $this;
     }
 
     /**
@@ -63,6 +64,6 @@ abstract class AbstractInvariableQuery extends AbstractQuery implements
      */
     protected function syncDecorated()
     {
-        return;
+        return $this;
     }
 }
