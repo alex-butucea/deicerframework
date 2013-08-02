@@ -89,6 +89,28 @@
     </target>
 
     <!-- ============================================  -->
+    <!-- Target: test-specific                         -->
+    <!-- $ phing test-specific -Dtest=Test/Class/Name  -->
+    <!-- ============================================  -->
+    <target name="test-specific" description="Execute specific framework test" depends="prepare">
+        <phpunit
+            printsummary="true"
+            haltonfailure="true"
+            haltonerror="true"
+            codecoverage="true"
+            bootstrap="./tests/bootstrap.php"
+        >
+            <formatter type="xml" todir="./build/test-log" outfile="tests.xml"/>
+            <batchtest>
+                <fileset dir="./tests">
+                    <include name="${test}.php" />
+                </fileset>
+            </batchtest>
+        </phpunit>
+        <echo>./tests/${test}.php</echo>
+    </target>
+
+    <!-- ============================================  -->
     <!-- Target: generate                              -->
     <!-- ============================================  -->
     <target
