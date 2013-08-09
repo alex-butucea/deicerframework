@@ -100,7 +100,6 @@ abstract class AbstractQuery
 
         // Sync selection criteria to reflect instance
         $this->syncEventBuilder()->syncDecorated();
-
         // Attempt to fetchData, rethrow exception if no decorated query exists
         try {
             $data = $this->fetchData();
