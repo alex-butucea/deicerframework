@@ -71,6 +71,14 @@ abstract class AbstractTokenizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function syncEventBuilder()
     {
         $this->eventBuilder->withToken($this->token);

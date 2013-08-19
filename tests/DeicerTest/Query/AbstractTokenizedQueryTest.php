@@ -671,4 +671,10 @@ class AbstractTokenizedQueryTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Deicer\Exception\Type\NonStringException');
         $actual = $this->fixture->setToken(array (1, 2, 3, 4));
     }
+
+    public function testSetTokenInternalisesToken()
+    {
+        $this->fixture->setToken('foo');
+        $this->assertSame('foo', $this->fixture->getToken());
+    }
 }

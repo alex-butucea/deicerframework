@@ -6,6 +6,7 @@ use Deicer\Query\QueryInterface;
 use Deicer\Query\Event\TokenizedQueryEventBuilderInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 use Deicer\Stdlib\TokenConsumerInterface;
+use Deicer\Stdlib\TokenProviderInterface;
 use Deicer\Stdlib\Exe\ExecutableInterface;
 use Deicer\Stdlib\Pubsub\PublisherInterface;
 
@@ -27,7 +28,8 @@ interface TokenizedQueryInterface extends
  QueryInterface,
  ExecutableInterface,
  PublisherInterface,
- TokenConsumerInterface
+ TokenConsumerInterface,
+ TokenProviderInterface
 {
     /**
      * Tokenized Query Constructor
