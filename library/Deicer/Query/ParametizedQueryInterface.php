@@ -8,6 +8,7 @@ use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 use Deicer\Stdlib\Exe\ExecutableInterface;
 use Deicer\Stdlib\Pubsub\PublisherInterface;
 use Deicer\Stdlib\ParameterConsumerInterface;
+use Deicer\Stdlib\ParameterProviderInterface;
 
 /**
  * {@inheritdoc}
@@ -27,7 +28,8 @@ interface ParametizedQueryInterface extends
  QueryInterface,
  ExecutableInterface,
  PublisherInterface,
- ParameterConsumerInterface
+ ParameterConsumerInterface,
+ ParameterProviderInterface
 {
     /**
      * Parametized Query Constructor

@@ -738,4 +738,37 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
         $fixture->setParams($params);
         $fixture->execute();
     }
+
+    public function testGetParamNameTypeStrength()
+    {
+        $this->setExpectedException(
+            'Deicer\Exception\Type\NonStringException'
+        );
+        $this->fixture->getParam(array (), 'bar');
+    }
+
+    public function testGetParamWithNonExistentParamThrowsException()
+    {
+        $this->setExpectedException(
+            'Deicer\Query\Exception\NonExistentParamException'
+        );
+        $this->fixture->getParam('foo');
+    }
+
+    public function testGetParamReturnsInternalisedParam()
+    {
+        $this->fixture->setParam('genre', 'action');
+        $this->assertSame('action', $this->fixture->getParam('genre'));
+    }
+
+    public function testGetParamsReturnsInternalisedParams()
+    {
+        $params  = array (
+            'genre'  => 'thriller',
+            'year'   => 2013,
+            'author' => 'Alex Butucea',
+        );
+        $this->fixture->setParams($params);
+        $this->assertSame($params, $this->fixture->getParams());
+    }
 }

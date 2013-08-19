@@ -65,7 +65,7 @@ abstract class AbstractParametizedQuery extends AbstractQuery implements
     {
         // Validate params to ensure atomic param state
         foreach ($params as $key => $value) {
-            $this->validateParam($key);
+            $this->validateParam($key, __FUNCTION__);
         }
 
         $this->params = array_merge($this->params, $params);
@@ -75,15 +75,12 @@ abstract class AbstractParametizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      *
+     * @throws NonStringException If $name is not a string
      * @throws NonExistentParamException If query doesn't contain param $name
      */
     public function setParam($name, $value)
     {
-        if (! is_string($name)) {
-            throw new NonStringException();
-        }
-
-        $this->validateParam($name);
+        $this->validateParam($name, __FUNCTION__);
         $this->params[$name] = $value;
         return $this;
     }
@@ -102,6 +99,26 @@ abstract class AbstractParametizedQuery extends AbstractQuery implements
 
         $this->params = array_merge($this->params, $set);
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParams()
+    {
+        return $this->params;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws NonStringException If $name is not a string
+     * @throws NonExistentParamException If query doesn't contain param $name
+     */
+    public function getParam($name)
+    {
+        $this->validateParam($name, __FUNCTION__);
+        return $this->params[$name];
     }
 
     /**
@@ -129,16 +146,22 @@ abstract class AbstractParametizedQuery extends AbstractQuery implements
     /**
      * Throws exception if concrete implementation doesn't contain param passed
      * 
+     * @throws NonStringException If $name is not a string
      * @throws NonExistentParamException If query doesn't contain param $param
      * @param  string $param The param to validate
+     * @param  string $method The name of the method called
      * @return void
      */
-    protected function validateParam($param)
+    protected function validateParam($param, $method)
     {
-        if (! array_key_exists($param, $this->params)) {
+        if (! is_string($param)) {
+            throw new NonStringException(
+                'Non string $param passed in: ' . $method
+            );
+        } elseif (! array_key_exists($param, $this->params)) {
             throw new NonExistentParamException(
                 'Non existent parameter "' . $param . '" passed in: ' .
-                get_called_class() . '::setParam'
+                get_called_class() . '::' . $method
             );
         }
     }
