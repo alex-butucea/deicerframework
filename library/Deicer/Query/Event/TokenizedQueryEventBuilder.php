@@ -52,13 +52,21 @@ class TokenizedQueryEventBuilder extends AbstractEventBuilder implements
     public function build()
     {
         if (empty($this->topic)) {
-            throw new \LogicException('Topic required for build in: ' . __METHOD__);
-        } if (! isset($this->content)) {
-            throw new \LogicException('Content required for build in: ' . __METHOD__);
-        } if (! isset($this->publisher)) {
-            throw new \LogicException('Publisher required for build in: ' . __METHOD__);
-        } if (! isset($this->token)) {
-            throw new \LogicException('Token required for build in: ' . __METHOD__);
+            throw new \LogicException(
+                'Topic required for build in: ' . __METHOD__
+            );
+        } elseif (! isset($this->content)) {
+            throw new \LogicException(
+                'Content required for build in: ' . __METHOD__
+            );
+        } elseif (! isset($this->publisher)) {
+            throw new \LogicException(
+                'Publisher required for build in: ' . __METHOD__
+            );
+        } elseif (! isset($this->token)) {
+            throw new \LogicException(
+                'Token required for build in: ' . __METHOD__
+            );
         }
 
         return new TokenizedQueryEvent(

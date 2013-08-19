@@ -47,13 +47,21 @@ class ParametizedQueryEventBuilder extends AbstractEventBuilder implements
     public function build()
     {
         if (empty($this->topic)) {
-            throw new \LogicException('Topic required for build in: ' . __METHOD__);
-        } if (! isset($this->content)) {
-            throw new \LogicException('Content required for build in: ' . __METHOD__);
-        } if (! isset($this->publisher)) {
-            throw new \LogicException('Publisher required for build in: ' . __METHOD__);
-        } if (! isset($this->params)) {
-            throw new \LogicException('Params required for build in: ' . __METHOD__);
+            throw new \LogicException(
+                'Topic required for build in: ' . __METHOD__
+            );
+        } elseif (! isset($this->content)) {
+            throw new \LogicException(
+                'Content required for build in: ' . __METHOD__
+            );
+        } elseif (! isset($this->publisher)) {
+            throw new \LogicException(
+                'Publisher required for build in: ' . __METHOD__
+            );
+        } elseif (! isset($this->params)) {
+            throw new \LogicException(
+                'Params required for build in: ' . __METHOD__
+            );
         }
 
         return new ParametizedQueryEvent(
