@@ -64,7 +64,7 @@ class QueryBuilder implements QueryBuilderInterface
             );
         }
 
-        $this->namespace = $namespace;
+        $this->namespace = '\\' . trim($namespace, '\\') . '\\';
     }
 
     /**
@@ -120,9 +120,10 @@ class QueryBuilder implements QueryBuilderInterface
             );
         }
 
-        // Rethrow reflection exceptions and report class as missing
+        // Build absolute classname and validate
+        $fullname = $this->namespace . $classname;
         try {
-            $class = new \ReflectionClass($classname);
+            $class = new \ReflectionClass($fullname);
         } catch (\ReflectionException $e) {
             throw new NonExistentClassException($e->getMessage(), 0, $e);
         }
@@ -142,7 +143,7 @@ class QueryBuilder implements QueryBuilderInterface
         }
 
         // Assemble and return query
-        return new $classname(
+        return new $fullname(
             $this->dataProvider,
             $eventBuilder,
             new RecursiveModelCompositeHydrator(

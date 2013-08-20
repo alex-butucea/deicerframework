@@ -135,7 +135,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)
-            ->build('DeicerTest\Query\FakeQuery');
+            ->build('FakeQuery');
     }
 
     public function testBuildConstructsInvariableQueryWithAppropriateDependencies()
@@ -143,7 +143,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $actual = $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)
-            ->build('DeicerTest\Query\TestableInvariableQueryWithValidFetchData');
+            ->build('TestableInvariableQueryWithValidFetchData');
 
         $this->assertInstanceOf(
             'DeicerTest\Query\TestableInvariableQueryWithValidFetchData',
@@ -156,7 +156,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $actual = $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)
-            ->build('DeicerTest\Query\TestableTokenizedQueryWithValidFetchData');
+            ->build('TestableTokenizedQueryWithValidFetchData');
 
         $this->assertInstanceOf(
             'DeicerTest\Query\TestableTokenizedQueryWithValidFetchData',
@@ -169,7 +169,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $actual = $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)
-            ->build('DeicerTest\Query\TestableParametizedQueryWithValidFetchData');
+            ->build('TestableParametizedQueryWithValidFetchData');
 
         $this->assertInstanceOf(
             'DeicerTest\Query\TestableParametizedQueryWithValidFetchData',
@@ -186,7 +186,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $actual = $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)
-            ->build('DeicerTest\Query\TestableInvariableQueryWithValidFetchData');
+            ->build('TestableInvariableQueryWithValidFetchData');
 
         $this->assertInstanceOf(
             'DeicerTest\Query\TestableInvariableQueryWithValidFetchData',
@@ -205,7 +205,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $actual = $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)
-            ->build('DeicerTest\Query\TestableInvariableQueryWithValidFetchData');
+            ->build('TestableInvariableQueryWithValidFetchData');
 
         $this->assertInstanceOf(
             'DeicerTest\Query\TestableInvariableQueryWithValidFetchData',
