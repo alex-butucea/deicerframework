@@ -12,6 +12,7 @@ The framework is comprised of the following components:
 
 - Deicer\Exception - Semantic exception hierarchy
 - Deicer\Model - DTO and model abstracts
+- Deicer\Query - Read only Data Access Objects
 - Deicer\Stdlib - Generic interfaces and implementations
 
 See the README.md contained within the root of each component for more info
