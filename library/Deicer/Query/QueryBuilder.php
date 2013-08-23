@@ -8,7 +8,7 @@ use Deicer\Model\ModelCompositeInterface;
 use Deicer\Model\RecursiveModelCompositeHydrator;
 use Deicer\Query\Event\InvariableQueryEventBuilder;
 use Deicer\Query\Event\TokenizedQueryEventBuilder;
-use Deicer\Query\Event\ParametizedQueryEventBuilder;
+use Deicer\Query\Event\ParameterizedQueryEventBuilder;
 use Deicer\Exception\NonExistentClassException;
 use Deicer\Exception\Type\NonStringException;
 use Deicer\Exception\Type\NonInstanceException;
@@ -134,8 +134,8 @@ class QueryBuilder implements QueryBuilderInterface
             $eventBuilder = new InvariableQueryEventBuilder();
         } elseif (isset($interfaces['Deicer\Query\TokenizedQueryInterface'])) {
             $eventBuilder = new TokenizedQueryEventBuilder();
-        } elseif (isset($interfaces['Deicer\Query\ParametizedQueryInterface'])) {
-            $eventBuilder = new ParametizedQueryEventBuilder();
+        } elseif (isset($interfaces['Deicer\Query\ParameterizedQueryInterface'])) {
+            $eventBuilder = new ParameterizedQueryEventBuilder();
         } else {
             throw new NonInstanceException(
                 'Unexpected class interface in: ' . __METHOD__

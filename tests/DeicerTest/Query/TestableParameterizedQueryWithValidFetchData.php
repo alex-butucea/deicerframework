@@ -2,13 +2,13 @@
 
 namespace DeicerTest\Query;
 
-use Deicer\Query\AbstractParametizedQuery;
+use Deicer\Query\AbstractParameterizedQuery;
 
 /**
- * Deicer Test Parametized Query
+ * Deicer Test Parameterized Query
  *
- * Represents a concrete implementation of a Deicer Parametized Query
- * with an implementation of fetchData() that throws an exception
+ * Represents a concrete implementation of a Deicer Parameterized Query
+ * with an valid implementation of fetchData()
  *
  * @category   DeicerTest
  * @package    Query
@@ -17,8 +17,7 @@ use Deicer\Query\AbstractParametizedQuery;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableParametizedQueryWithExceptionThrowingFetchData extends
- AbstractParametizedQuery
+class TestableParameterizedQueryWithValidFetchData extends AbstractParameterizedQuery
 {
     /**
      * {@inheritdoc}
@@ -34,13 +33,15 @@ class TestableParametizedQueryWithExceptionThrowingFetchData extends
      */
     protected function fetchData()
     {
-        throw new \Exception(
-            'foo',
-            123,
-            new \Exception(
-                'bar',
-                456
-            )
+        return array (
+            array (
+                'id'   => 1,
+                'name' => 'foo',
+            ),
+            array (
+                'id'   => 2,
+                'name' => 'bar',
+            ),
         );
     }
 }

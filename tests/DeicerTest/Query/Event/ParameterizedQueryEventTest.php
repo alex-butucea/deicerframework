@@ -2,10 +2,10 @@
 
 namespace DeicerTest\Query\Event;
 
-use Deicer\Query\Event\ParametizedQueryEvent;
+use Deicer\Query\Event\ParameterizedQueryEvent;
 
 /**
- * Deicer Parametized Query Event unit test suite
+ * Deicer Parameterized Query Event unit test suite
  * 
  * @category   DeicerTest
  * @package    Query
@@ -15,7 +15,7 @@ use Deicer\Query\Event\ParametizedQueryEvent;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class ParametizedQueryEventTest extends \PHPUnit_Framework_TestCase
+class ParameterizedQueryEventTest extends \PHPUnit_Framework_TestCase
 {
     public $mockQuery;
 
@@ -26,45 +26,45 @@ class ParametizedQueryEventTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->mockQuery = $this->getMock('Deicer\Query\ParametizedQueryInterface');
+        $this->mockQuery = $this->getMock('Deicer\Query\ParameterizedQueryInterface');
     }
 
     public function testConstructorInternalisesTopic()
     {
-        $fixture = new ParametizedQueryEvent('foo', null, $this->mockQuery, array ());
+        $fixture = new ParameterizedQueryEvent('foo', null, $this->mockQuery, array ());
         $this->assertSame('foo', $fixture->getTopic());
     }
 
     public function testConstructorInternalisesContent()
     {
-        $fixture = new ParametizedQueryEvent('', 'bar', $this->mockQuery, array ());
+        $fixture = new ParameterizedQueryEvent('', 'bar', $this->mockQuery, array ());
         $this->assertSame('bar', $fixture->getContent());
     }
 
     public function testConstructorInternalisesPublisher()
     {
-        $fixture = new ParametizedQueryEvent('', 'bar', $this->mockQuery, array ());
+        $fixture = new ParameterizedQueryEvent('', 'bar', $this->mockQuery, array ());
         $this->assertSame($this->mockQuery, $fixture->getPublisher());
     }
 
     public function testConstructorInternalisesParams()
     {
-        $fixture = new ParametizedQueryEvent('foo', null, $this->mockQuery, $this->params);
+        $fixture = new ParameterizedQueryEvent('foo', null, $this->mockQuery, $this->params);
         $this->assertSame($this->params, $fixture->getParams());
     }
 
     public function testConstructorTopicTypeStrength()
     {
         $this->setExpectedException('Deicer\Exception\Type\NonStringException');
-        new ParametizedQueryEvent(null, null, $this->mockQuery, array ());
-        new ParametizedQueryEvent(1234, null, $this->mockQuery, array ());
-        new ParametizedQueryEvent(array (), null, $this->mockQuery, array ());
-        new ParametizedQueryEvent(new \stdClass(), null, $this->mockQuery, array ());
+        new ParameterizedQueryEvent(null, null, $this->mockQuery, array ());
+        new ParameterizedQueryEvent(1234, null, $this->mockQuery, array ());
+        new ParameterizedQueryEvent(array (), null, $this->mockQuery, array ());
+        new ParameterizedQueryEvent(new \stdClass(), null, $this->mockQuery, array ());
     }
 
     public function testGetParamWithValidNameReturnsCorrectParam()
     {
-        $fixture = new ParametizedQueryEvent('foo', null, $this->mockQuery, $this->params);
+        $fixture = new ParameterizedQueryEvent('foo', null, $this->mockQuery, $this->params);
         $this->assertSame('bar', $fixture->getParam('foo'));
         $this->assertSame('qux', $fixture->getParam('baz'));
     }
@@ -72,19 +72,19 @@ class ParametizedQueryEventTest extends \PHPUnit_Framework_TestCase
     public function testGetParamWithInvalidNameThrowsException()
     {
         $this->setExpectedException('\OutOfBoundsException');
-        $fixture = new ParametizedQueryEvent('foo', null, $this->mockQuery, $this->params);
+        $fixture = new ParameterizedQueryEvent('foo', null, $this->mockQuery, $this->params);
         $fixture->getParam('foobar');
     }
 
     public function testGetElapsedTimeDefaultsToZero()
     {
-        $fixture = new ParametizedQueryEvent('', '', $this->mockQuery, array ());
+        $fixture = new ParameterizedQueryEvent('', '', $this->mockQuery, array ());
         $this->assertSame(0, $fixture->getElapsedTime());
     }
 
     public function testAddElapsedTimeIncrementsCorrectly()
     {
-        $fixture = new ParametizedQueryEvent('', '', $this->mockQuery, array ());
+        $fixture = new ParameterizedQueryEvent('', '', $this->mockQuery, array ());
         $fixture->addElapsedTime(0);
         $this->assertSame(0, $fixture->getElapsedTime());
         $fixture->addElapsedTime(123);
@@ -96,7 +96,7 @@ class ParametizedQueryEventTest extends \PHPUnit_Framework_TestCase
     public function testAddElapsedTimeTypeStrength()
     {
         $this->setExpectedException('Deicer\Exception\Type\NonIntException');
-        $fixture = new ParametizedQueryEvent('', '', $this->mockQuery, array ());
+        $fixture = new ParameterizedQueryEvent('', '', $this->mockQuery, array ());
         $fixture->addElapsedTime(null);
         $fixture->addElapsedTime('foo');
         $fixture->addElapsedTime(array ());
@@ -106,7 +106,7 @@ class ParametizedQueryEventTest extends \PHPUnit_Framework_TestCase
     public function testAddElapsedTimeRejectsNegativeIntervals()
     {
         $this->setExpectedException('\RangeException');
-        $fixture = new ParametizedQueryEvent('', '', $this->mockQuery, array ());
+        $fixture = new ParameterizedQueryEvent('', '', $this->mockQuery, array ());
         $fixture->addElapsedTime(-1);
     }
 }

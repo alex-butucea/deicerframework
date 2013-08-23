@@ -2,12 +2,12 @@
 
 namespace Deicer\Query\Event;
 
-use Deicer\Query\Event\ParametizedQueryEvent;
-use Deicer\Query\Event\ParametizedQueryEventBuilderInterface;
+use Deicer\Query\Event\ParameterizedQueryEvent;
+use Deicer\Query\Event\ParameterizedQueryEventBuilderInterface;
 use Deicer\Stdlib\Pubsub\AbstractEventBuilder;
 
 /**
- * Assembles instances of Parametized Query Events
+ * Assembles instances of Parameterized Query Events
  *
  * @category   Deicer
  * @package    Query
@@ -17,8 +17,8 @@ use Deicer\Stdlib\Pubsub\AbstractEventBuilder;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class ParametizedQueryEventBuilder extends AbstractEventBuilder implements
-    ParametizedQueryEventBuilderInterface
+class ParameterizedQueryEventBuilder extends AbstractEventBuilder implements
+    ParameterizedQueryEventBuilderInterface
 {
     /**
      * Parameter set to build with
@@ -64,7 +64,7 @@ class ParametizedQueryEventBuilder extends AbstractEventBuilder implements
             );
         }
 
-        return new ParametizedQueryEvent(
+        return new ParameterizedQueryEvent(
             $this->topic,
             $this->content,
             $this->publisher,

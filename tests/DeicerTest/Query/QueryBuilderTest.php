@@ -164,15 +164,15 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testBuildConstructsParametizedQueryWithAppropriateDependencies()
+    public function testBuildConstructsParameterizedQueryWithAppropriateDependencies()
     {
         $actual = $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)
-            ->build('TestableParametizedQueryWithValidFetchData');
+            ->build('TestableParameterizedQueryWithValidFetchData');
 
         $this->assertInstanceOf(
-            'DeicerTest\Query\TestableParametizedQueryWithValidFetchData',
+            'DeicerTest\Query\TestableParameterizedQueryWithValidFetchData',
             $actual
         );
     }

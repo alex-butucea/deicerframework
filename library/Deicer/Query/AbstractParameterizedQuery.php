@@ -3,8 +3,8 @@
 namespace Deicer\Query;
 
 use Deicer\Query\AbstractQuery;
-use Deicer\Query\ParametizedQueryInterface;
-use Deicer\Query\Event\ParametizedQueryEventBuilderInterface;
+use Deicer\Query\ParameterizedQueryInterface;
+use Deicer\Query\Event\ParameterizedQueryEventBuilderInterface;
 use Deicer\Query\Exception\NonExistentParamException;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 use Deicer\Exception\Type\NonStringException;
@@ -19,8 +19,8 @@ use Deicer\Exception\Type\NonStringException;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-abstract class AbstractParametizedQuery extends AbstractQuery implements
-     ParametizedQueryInterface
+abstract class AbstractParameterizedQuery extends AbstractQuery implements
+     ParameterizedQueryInterface
 {
     /**
      * Key value pairs of parameters used to seed selection algorithm
@@ -34,7 +34,7 @@ abstract class AbstractParametizedQuery extends AbstractQuery implements
      */
     public function __construct(
         $dataProvider,
-        ParametizedQueryEventBuilderInterface $eventBuilder,
+        ParameterizedQueryEventBuilderInterface $eventBuilder,
         RecursiveModelCompositeHydratorInterface $modelHydrator
     ) {
         $this->dataProvider  = $dataProvider;
@@ -48,7 +48,7 @@ abstract class AbstractParametizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      */
-    public function decorate(ParametizedQueryInterface $decoratable)
+    public function decorate(ParameterizedQueryInterface $decoratable)
     {
         $this->decorated = $decoratable;
         $this->syncDecorated();

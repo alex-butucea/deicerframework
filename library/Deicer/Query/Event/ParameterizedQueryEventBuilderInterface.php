@@ -5,7 +5,7 @@ namespace Deicer\Query\Event;
 use Deicer\Stdlib\Pubsub\EventBuilderInterface;
 
 /**
- * Marker interface for concrete Parametized Query Event Builder
+ * Marker interface for concrete Parameterized Query Event Builder
  *
  * @category   Deicer
  * @package    Query
@@ -15,14 +15,14 @@ use Deicer\Stdlib\Pubsub\EventBuilderInterface;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface ParametizedQueryEventBuilderInterface extends
+interface ParameterizedQueryEventBuilderInterface extends
  EventBuilderInterface
 {
     /**
      * Set parameter set to build with
      * 
      * @param  array $params Parameters to build with
-     * @return ParametizedQueryEventBuilderInterface Fluent interface
+     * @return ParameterizedQueryEventBuilderInterface Fluent interface
      */
     public function withParams(array $params);
 }

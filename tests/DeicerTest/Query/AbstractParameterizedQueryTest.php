@@ -5,11 +5,11 @@ namespace DeicerTest\Query;
 use Deicer\Query\Exception\DataTypeException;
 use Deicer\Query\Exception\DataFetchException;
 use Deicer\Query\Exception\ModelHydratorException;
-use DeicerTest\Query\TestableParametizedQueryWithValidFetchData;
-use DeicerTest\Query\TestableParametizedQueryWithExceptionThrowingFetchData;
+use DeicerTest\Query\TestableParameterizedQueryWithValidFetchData;
+use DeicerTest\Query\TestableParameterizedQueryWithExceptionThrowingFetchData;
 
 /**
- * Deicer Parametized Query unit test suite
+ * Deicer Parameterized Query unit test suite
  * 
  * @category   DeicerTest
  * @package    Query
@@ -18,7 +18,7 @@ use DeicerTest\Query\TestableParametizedQueryWithExceptionThrowingFetchData;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
+class AbstractParameterizedQueryTest extends \PHPUnit_Framework_TestCase
 {
     public $fixture;
     public $composite;
@@ -30,7 +30,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->eventBuilder = $this->getMock(
-            'Deicer\Query\Event\ParametizedQueryEventBuilderInterface'
+            'Deicer\Query\Event\ParameterizedQueryEventBuilderInterface'
         );
         $this->composite = $this->getMock(
             'Deicer\Model\ModelCompositeInterface'
@@ -39,7 +39,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
             'Deicer\Model\RecursiveModelCompositeHydratorInterface'
         );
         $this->event = $this->getMock(
-            'Deicer\Query\Event\ParametizedQueryEventInterface'
+            'Deicer\Query\Event\ParameterizedQueryEventInterface'
         );
         $this->subscriber = $this->getMock(
             'Deicer\Stdlib\Pubsub\SubscriberInterface'
@@ -99,7 +99,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
             ->with($this->isType('array'))
             ->will($this->returnCallback($callback));
 
-        $this->fixture = new TestableParametizedQueryWithValidFetchData(
+        $this->fixture = new TestableParameterizedQueryWithValidFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -139,7 +139,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
         $this->eventBuilder
             ->expects($this->once())
             ->method('withPublisher')
-            ->with($this->isInstanceOf('Deicer\Query\ParametizedQueryInterface'))
+            ->with($this->isInstanceOf('Deicer\Query\ParameterizedQueryInterface'))
             ->will($this->returnSelf());
         $this->eventBuilder
             ->expects($this->once())
@@ -370,7 +370,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
     public function testExecuteWithNonArrayReturningFetchDataThrowsException()
     {
         $this->setExpectedException('Deicer\Query\Exception\DataTypeException');
-        $fixture = new TestableParametizedQueryWithNonArrayReturningFetchData(
+        $fixture = new TestableParameterizedQueryWithNonArrayReturningFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -380,7 +380,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteRethrowsDataProviderException()
     {
-        $fixture = new TestableParametizedQueryWithExceptionThrowingFetchData(
+        $fixture = new TestableParameterizedQueryWithExceptionThrowingFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -411,7 +411,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
         $this->hydrator->expects($this->at(1))
             ->method('exchangeArray')
             ->will($this->throwException(new \InvalidArgumentException($msg)));
-        $fixture = new TestableParametizedQueryWithModelIncompatibleFetchData(
+        $fixture = new TestableParameterizedQueryWithModelIncompatibleFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -446,7 +446,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
     public function testDecorateImplementsFluentInterface()
     {
         $mock = $this->fixture->decorate(
-            $this->getMock('Deicer\Query\ParametizedQueryInterface')
+            $this->getMock('Deicer\Query\ParameterizedQueryInterface')
         );
         $this->assertSame($this->fixture->decorate($mock), $this->fixture);
     }
@@ -469,7 +469,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
         $this->hydrator->expects($this->at(1))
             ->method('exchangeArray')
             ->will($this->throwException(new \InvalidArgumentException($msg)));
-        $fixture = new TestableParametizedQueryWithModelIncompatibleFetchData(
+        $fixture = new TestableParameterizedQueryWithModelIncompatibleFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -484,7 +484,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteFallsBackToDecoratedExecutableOnDataFetchFailure()
     {
-        $fixture = new TestableParametizedQueryWithExceptionThrowingFetchData(
+        $fixture = new TestableParameterizedQueryWithExceptionThrowingFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -499,7 +499,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteFallsBackToDecoratedExecutableOnDataTypeFailure()
     {
-        $fixture = new TestableParametizedQueryWithNonArrayReturningFetchData(
+        $fixture = new TestableParameterizedQueryWithNonArrayReturningFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -549,7 +549,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
             'author' => 'Alex Butucea',
         );
 
-        $fixture = new TestableParametizedQueryWithValidFetchData(
+        $fixture = new TestableParameterizedQueryWithValidFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -587,7 +587,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
             ->method('exchangeArray')
             ->will($this->throwException(new \InvalidArgumentException($msg)));
 
-        $fixture = new TestableParametizedQueryWithModelIncompatibleFetchData(
+        $fixture = new TestableParameterizedQueryWithModelIncompatibleFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -613,7 +613,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
             'author' => 'Alex Butucea',
         );
 
-        $fixture = new TestableParametizedQueryWithExceptionThrowingFetchData(
+        $fixture = new TestableParameterizedQueryWithExceptionThrowingFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -639,7 +639,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
             'author' => 'Alex Butucea',
         );
 
-        $fixture = new TestableParametizedQueryWithNonArrayReturningFetchData(
+        $fixture = new TestableParameterizedQueryWithNonArrayReturningFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -675,7 +675,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
             ->method('exchangeArray')
             ->will($this->throwException(new \InvalidArgumentException($msg)));
 
-        $fixture = new TestableParametizedQueryWithModelIncompatibleFetchData(
+        $fixture = new TestableParameterizedQueryWithModelIncompatibleFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -686,7 +686,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
 
         $fixture->setParams($params);
         $fixture->subscribe($this->subscriber, $topic);
-        $fixture->decorate($this->getMock('Deicer\Query\ParametizedQueryInterface'));
+        $fixture->decorate($this->getMock('Deicer\Query\ParameterizedQueryInterface'));
         $fixture->execute();
     }
 
@@ -700,7 +700,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
             'author' => 'Alex Butucea',
         );
 
-        $fixture = new TestableParametizedQueryWithExceptionThrowingFetchData(
+        $fixture = new TestableParameterizedQueryWithExceptionThrowingFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -711,7 +711,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
 
         $fixture->setParams($params);
         $fixture->subscribe($this->subscriber, $topic);
-        $fixture->decorate($this->getMock('Deicer\Query\ParametizedQueryInterface'));
+        $fixture->decorate($this->getMock('Deicer\Query\ParameterizedQueryInterface'));
         $fixture->execute();
     }
 
@@ -724,7 +724,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
             'year'   => 2013,
             'author' => 'Alex Butucea',
         );
-        $fixture = new TestableParametizedQueryWithNonArrayReturningFetchData(
+        $fixture = new TestableParameterizedQueryWithNonArrayReturningFetchData(
             new \stdClass(),
             $this->eventBuilder,
             $this->hydrator
@@ -734,7 +734,7 @@ class AbstractParametizedQueryTest extends \PHPUnit_Framework_TestCase
         $this->setUpSubscriber($topic, $content, $params);
 
         $fixture->subscribe($this->subscriber, $topic);
-        $fixture->decorate($this->getMock('Deicer\Query\ParametizedQueryInterface'));
+        $fixture->decorate($this->getMock('Deicer\Query\ParameterizedQueryInterface'));
         $fixture->setParams($params);
         $fixture->execute();
     }

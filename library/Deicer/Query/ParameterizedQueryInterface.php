@@ -3,7 +3,7 @@
 namespace Deicer\Query;
 
 use Deicer\Query\QueryInterface;
-use Deicer\Query\Event\ParametizedQueryEventBuilderInterface;
+use Deicer\Query\Event\ParameterizedQueryEventBuilderInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 use Deicer\Stdlib\Exe\ExecutableInterface;
 use Deicer\Stdlib\Pubsub\PublisherInterface;
@@ -13,7 +13,7 @@ use Deicer\Stdlib\ParameterProviderInterface;
 /**
  * {@inheritdoc}
  *
- * Parametized query used for fetching models using a set of key-value pairs.
+ * Parameterized query used for fetching models using a set of key-value pairs.
  * Use cases would be retrieving several models from a collection using a
  * search algorithm with multiple filters.
  *
@@ -24,7 +24,7 @@ use Deicer\Stdlib\ParameterProviderInterface;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface ParametizedQueryInterface extends
+interface ParameterizedQueryInterface extends
  QueryInterface,
  ExecutableInterface,
  PublisherInterface,
@@ -32,32 +32,32 @@ interface ParametizedQueryInterface extends
  ParameterProviderInterface
 {
     /**
-     * Parametized Query Constructor
+     * Parameterized Query Constructor
      *
      * @param  mixed $dataProvider Query data provider - DB connection, CURl client, etc.
-     * @param  ParametizedQueryEventBuilderInterface $eventBuilder Assembles pubsub events
+     * @param  ParameterizedQueryEventBuilderInterface $eventBuilder Assembles pubsub events
      * @param  RecursiveModelCompositeHydratorInterface $modelHydrator Hydrates query responses
-     * @return ParametizedQueryInterface
+     * @return ParameterizedQueryInterface
      */
     public function __construct(
         $dataProvider,
-        ParametizedQueryEventBuilderInterface $eventBuilder,
+        ParameterizedQueryEventBuilderInterface $eventBuilder,
         RecursiveModelCompositeHydratorInterface $modelHydrator
     );
 
     /**
      * Decorate a query to implement a fallback on query execution failure
      *
-     * @param  ParametizedQueryInterface $decoratable The query to decorate
-     * @retrun ParametizedQueryInterface Fluent interface
+     * @param  ParameterizedQueryInterface $decoratable The query to decorate
+     * @retrun ParameterizedQueryInterface Fluent interface
      */
-    public function decorate(ParametizedQueryInterface $decoratable);
+    public function decorate(ParameterizedQueryInterface $decoratable);
 
     /**
      * Attempt to set multiple query parameters, skipping invalid params
      * 
      * @param  array $params Parameters to attempt to set
-     * @retrun ParametizedQueryInterface Fluent interface
+     * @retrun ParameterizedQueryInterface Fluent interface
      */
     public function trySetParams(array $params);
 }
