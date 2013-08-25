@@ -148,14 +148,14 @@ class Listing extends AbstractModel
     public $tags;
 }
 
-class ListingComposite extends AbstractModelComposite
+class Listings extends AbstractModelComposite
 {
 }
 
 $builder = new QueryBuilder('My\Query');
 $builder
     ->withModelPrototype(new Listing())
-    ->withModelCompositePrototype(new ListingComposite())
+    ->withModelCompositePrototype(new Listings())
 
 $cacheQuery = $builder
     ->withDataProvider(new \My\Memcache\Client())
