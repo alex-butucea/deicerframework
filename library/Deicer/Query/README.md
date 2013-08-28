@@ -217,25 +217,24 @@ class EventLogger implements SubcriberInterface
 {
     public function update(EventInterface $event)
     {
-        // Log only query failures
-        switch ($event->getTopic()) {
-            case QueryEvent::TOPIC_FAILURE_DATA_TYPE:
-            case QueryEvent::TOPIC_FAILURE_DATA_FETCH:
-            case QueryEvent::TOPIC_FAILURE_MODEL_HYDRATOR:
-                $message  = 'Query failure: ';
-                $message .= $event->getTopic() . ' ';
-                $message .= json_encode($event->getContent()); // What was returned from fetchData
+        /**
+         * Query events are string serialized as either:
+         *
+         * Invariable Query Execution: *concrete_class* | Result: "*topic*" | Elapsed Time: *time*ms | Content: *jsoned_content*
+         * Tokenized Query Execution: *concrete_class* | Result: "*topic*" | Elapsed Time: *time*ms | Token: "*token*" | Content: *jsoned_content*
+         * Parameterized Query Execution: *concrete_class* | Result: "*topic*" | Elapsed Time: *time*ms | Params: *jsoned_params* | Content: *jsoned_content*
+         */
+         $message = (string) $event;
 
-                $this->write(LOG_ERR, $message);
-                break;
-        }
+        // Only failure messages are received - log as error
+        $this->write(LOG_ERR, $message);
     }
 }
 
 $query  = new \My\Query\FetchAllActiveListingsFromEtsy(...);
 $logger = new EventLogger();
 
-// Subscribe logger to query failure events
+// Subscribe logger to only query failure events
 $query->
     subscribe($logger, QueryEvent::TOPIC_FAILURE_DATA_TYPE)
     subscribe($logger, QueryEvent::TOPIC_FAILURE_DATA_FETCH)
