@@ -22,6 +22,13 @@ interface TokenizedQueryEventInterface extends
  QueryEventInterface
 {
     /**
+     * String serialization format
+     * 
+     * @const string
+     */
+    const SERIALIZED_FORMAT = 'Tokenized Query Execution: %s | Result: "%s" | Elapsed Time: %dms | Token: "%s" | Content: %s';
+
+    /**
      * Tokenized query constructor
      *
      * @throws NonStringException If $topic is not a string

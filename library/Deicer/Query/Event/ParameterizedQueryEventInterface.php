@@ -23,6 +23,13 @@ interface ParameterizedQueryEventInterface extends
  QueryEventInterface
 {
     /**
+     * String serialization format
+     * 
+     * @const string
+     */
+    const SERIALIZED_FORMAT = 'Parameterized Query Execution: %s | Result: "%s" | Elapsed Time: %dms | Params: %s | Content: %s';
+
+    /**
      * Parameterized query constructor
      *
      * @throws NonStringException If $topic is not a string

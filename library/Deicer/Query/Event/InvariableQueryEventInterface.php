@@ -20,6 +20,13 @@ interface InvariableQueryEventInterface extends
  QueryEventInterface
 {
     /**
+     * String serialization format
+     * 
+     * @const string
+     */
+    const SERIALIZED_FORMAT = 'Invariable Query Execution: %s | Result: "%s" | Elapsed Time: %dms | Content: %s';
+
+    /**
      * Invariable query constructor
      *
      * @throws NonStringException If $topic is not a string

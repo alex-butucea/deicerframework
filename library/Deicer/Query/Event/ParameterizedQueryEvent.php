@@ -49,6 +49,23 @@ class ParameterizedQueryEvent extends AbstractQueryEvent implements
     }
 
     /**
+     * Retruns topic, execution time, json encoded params and content
+     *
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return sprintf(
+            self::SERIALIZED_FORMAT,
+            get_class($this->publisher),
+            $this->topic,
+            $this->elapsedTime,
+            json_encode($this->params),
+            json_encode($this->content)
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getParams()

@@ -2,6 +2,7 @@
 
 namespace Deicer\Query\Event;
 
+use Deicer\Stdlib\StringSerializableInterface;
 use Deicer\Stdlib\Pubsub\EventInterface;
 use Deicer\Stdlib\Exe\ExecutionInterface;
 
@@ -18,7 +19,8 @@ use Deicer\Stdlib\Exe\ExecutionInterface;
  */
 interface QueryEventInterface extends
  EventInterface,
- ExecutionInterface
+ ExecutionInterface,
+ StringSerializableInterface
 {
     /**
      * Pubsub topic implying execution was a success

@@ -99,4 +99,26 @@ class TokenizedQueryEventTest extends \PHPUnit_Framework_TestCase
         $fixture = new TokenizedQueryEvent('', '', $this->mockQuery, '');
         $fixture->addElapsedTime(-1);
     }
+
+    public function testToStringSerializesEventStateCorrectly()
+    {
+        $publisher = $this->getMock('Deicer\Query\TokenizedQueryInterface');
+        $content   = array ('foo' => array ('bar' => 'baz', 'qux' => new \stdClass()));
+
+        $regex  = '/^Tokenized Query Execution: (.)+TokenizedQueryInterface(.)+ \| ';
+        $regex .= 'Result: "failure_data_type" \| ';
+        $regex .= 'Elapsed Time: 567ms \| ';
+        $regex .= 'Token: "foobar" \| ';
+        $regex .= 'Content: ' . preg_quote(json_encode($content)) . '$/';
+
+        $fixture = new TokenizedQueryEvent(
+            'failure_data_type',
+            $content,
+            $publisher,
+            'foobar'    
+        );
+        $fixture->addElapsedTime(567);
+
+        $this->assertRegExp($regex, (string) $fixture);
+    }
 }

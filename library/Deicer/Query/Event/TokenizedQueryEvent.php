@@ -53,6 +53,23 @@ class TokenizedQueryEvent extends AbstractQueryEvent implements
     }
 
     /**
+     * Retruns topic, execution time, token and json encoded content
+     *
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return sprintf(
+            self::SERIALIZED_FORMAT,
+            get_class($this->publisher),
+            $this->topic,
+            $this->elapsedTime,
+            $this->token,
+            json_encode($this->content)
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getToken()

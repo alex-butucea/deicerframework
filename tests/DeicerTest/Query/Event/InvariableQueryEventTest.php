@@ -2,6 +2,7 @@
 
 namespace DeicerTest\Query\Event;
 
+use Deicer\Query\Event\QueryEventInterface;
 use Deicer\Query\Event\InvariableQueryEvent;
 
 /**
@@ -83,5 +84,21 @@ class InvariableQueryEventTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\RangeException');
         $fixture = new InvariableQueryEvent('', '', $this->mockQuery);
         $fixture->addElapsedTime(-1);
+    }
+
+    public function testToStringSerializesEventStateCorrectly()
+    {
+        $publisher = $this->getMock('Deicer\Query\InvariableQueryInterface');
+        $content   = array ('foo' => array ('bar' => 'baz', 'qux' => new \stdClass()));
+
+        $regex  = '/^Invariable Query Execution: (.)+InvariableQueryInterface(.)+ \| ';
+        $regex .= 'Result: "failure_model_hydrator" \| ';
+        $regex .= 'Elapsed Time: 1234ms \| ';
+        $regex .= 'Content: ' . preg_quote(json_encode($content)) . '$/';
+
+        $fixture = new InvariableQueryEvent('failure_model_hydrator', $content, $publisher);
+        $fixture->addElapsedTime(1234);
+
+        $this->assertRegExp($regex, (string) $fixture);
     }
 }

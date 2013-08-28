@@ -109,4 +109,27 @@ class ParameterizedQueryEventTest extends \PHPUnit_Framework_TestCase
         $fixture = new ParameterizedQueryEvent('', '', $this->mockQuery, array ());
         $fixture->addElapsedTime(-1);
     }
+
+    public function testToStringSerializesEventStateCorrectly()
+    {
+        $publisher = $this->getMock('Deicer\Query\ParameterizedQueryInterface');
+        $content   = array ('foo' => array ('bar' => 'baz', 'qux' => new \stdClass()));
+        $params    = array ('foobar' => 'foobaz', 'quux' => 1234);
+
+        $regex  = '/^Parameterized Query Execution: (.)+ParameterizedQueryInterface(.)+ \| ';
+        $regex .= 'Result: "failure_data_fetch" \| ';
+        $regex .= 'Elapsed Time: 890ms \| ';
+        $regex .= 'Params: ' . preg_quote(json_encode($params)) . ' \| ';
+        $regex .= 'Content: ' . preg_quote(json_encode($content)) . '$/';
+
+        $fixture = new ParameterizedQueryEvent(
+            'failure_data_fetch',
+            $content,
+            $publisher,
+            $params
+        );
+        $fixture->addElapsedTime(890);
+
+        $this->assertRegExp($regex, (string) $fixture);
+    }
 }

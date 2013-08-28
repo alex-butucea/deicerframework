@@ -38,4 +38,20 @@ class InvariableQueryEvent extends AbstractQueryEvent implements
         $this->content = $content;
         $this->publisher = $publisher;
     }
+
+    /**
+     * Retruns topic, execution time and json encoded content
+     *
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return sprintf(
+            self::SERIALIZED_FORMAT,
+            get_class($this->publisher),
+            $this->topic,
+            $this->elapsedTime,
+            json_encode($this->content)
+        );
+    }
 }
