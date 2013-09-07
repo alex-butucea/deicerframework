@@ -6,9 +6,9 @@ use Deicer\Query\QueryBuilderInterface;
 use Deicer\Model\ModelInterface;
 use Deicer\Model\ModelCompositeInterface;
 use Deicer\Model\RecursiveModelCompositeHydrator;
-use Deicer\Query\Event\InvariableQueryEventBuilder;
-use Deicer\Query\Event\TokenizedQueryEventBuilder;
-use Deicer\Query\Event\ParameterizedQueryEventBuilder;
+use Deicer\Query\Message\InvariableQueryMessageBuilder;
+use Deicer\Query\Message\TokenizedQueryMessageBuilder;
+use Deicer\Query\Message\ParameterizedQueryMessageBuilder;
 use Deicer\Exception\NonExistentClassException;
 use Deicer\Exception\Type\NonStringException;
 use Deicer\Exception\Type\NonInstanceException;
@@ -131,11 +131,11 @@ class QueryBuilder implements QueryBuilderInterface
         // Select dependencies based on query interface
         $interfaces = $class->getInterfaces();
         if (isset($interfaces['Deicer\Query\InvariableQueryInterface'])) {
-            $eventBuilder = new InvariableQueryEventBuilder();
+            $messageBuilder = new InvariableQueryMessageBuilder();
         } elseif (isset($interfaces['Deicer\Query\TokenizedQueryInterface'])) {
-            $eventBuilder = new TokenizedQueryEventBuilder();
+            $messageBuilder = new TokenizedQueryMessageBuilder();
         } elseif (isset($interfaces['Deicer\Query\ParameterizedQueryInterface'])) {
-            $eventBuilder = new ParameterizedQueryEventBuilder();
+            $messageBuilder = new ParameterizedQueryMessageBuilder();
         } else {
             throw new NonInstanceException(
                 'Unexpected class interface in: ' . __METHOD__
@@ -145,7 +145,7 @@ class QueryBuilder implements QueryBuilderInterface
         // Assemble and return query
         return new $fullname(
             $this->dataProvider,
-            $eventBuilder,
+            $messageBuilder,
             new RecursiveModelCompositeHydrator(
                 $this->modelPrototype,
                 $this->modelCompositePrototype

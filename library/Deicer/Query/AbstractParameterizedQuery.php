@@ -4,7 +4,7 @@ namespace Deicer\Query;
 
 use Deicer\Query\AbstractQuery;
 use Deicer\Query\ParameterizedQueryInterface;
-use Deicer\Query\Event\ParameterizedQueryEventBuilderInterface;
+use Deicer\Query\Message\ParameterizedQueryMessageBuilderInterface;
 use Deicer\Query\Exception\NonExistentParamException;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 use Deicer\Exception\Type\NonStringException;
@@ -34,15 +34,15 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
      */
     public function __construct(
         $dataProvider,
-        ParameterizedQueryEventBuilderInterface $eventBuilder,
+        ParameterizedQueryMessageBuilderInterface $messageBuilder,
         RecursiveModelCompositeHydratorInterface $modelHydrator
     ) {
         $this->dataProvider  = $dataProvider;
-        $this->eventBuilder  = $eventBuilder;
+        $this->messageBuilder  = $messageBuilder;
         $this->modelHydrator = $modelHydrator;
         $this->lastResponse  = $modelHydrator->exchangeArray(array ());
 
-        $this->syncEventBuilder();
+        $this->syncMessageBuilder();
     }
 
     /**
@@ -124,9 +124,9 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      */
-    protected function syncEventBuilder()
+    protected function syncMessageBuilder()
     {
-        $this->eventBuilder->withParams($this->params);
+        $this->messageBuilder->withParams($this->params);
 
         return $this;
     }

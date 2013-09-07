@@ -7,7 +7,7 @@ namespace Deicer\Query;
  *
  * Read-only DAO for fetching Models from API, DB, cache or other storage.
  * Implements a decorator pattern for auto-failover functionality.
- * Publishes topic-filtered events to subcribers on execution.
+ * Publishes topic-filtered messages to subcribers on execution.
  *
  * @category   Deicer
  * @package    Query

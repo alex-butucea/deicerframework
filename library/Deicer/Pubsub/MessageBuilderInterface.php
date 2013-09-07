@@ -3,7 +3,7 @@
 namespace Deicer\Pubsub;
 
 /**
- * Interface for builders that assemble events to be raised by publishers
+ * Interface for builders that assemble messages to be raised by publishers
  *
  * @category   Deicer
  * @package    Pubsub
@@ -12,13 +12,13 @@ namespace Deicer\Pubsub;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface EventBuilderInterface
+interface MessageBuilderInterface
 {
     /**
-     * Set the event topic
+     * Set the message topic
      *
      * @param  string $topic Topic to build with
-     * @return EventBuilderInterface Fluent interface
+     * @return MessageBuilderInterface Fluent interface
      */
     public function withTopic($topic);
 
@@ -26,22 +26,22 @@ interface EventBuilderInterface
      * Set the content payload
      *
      * @param  mixed $content Content payload to build with
-     * @return EventBuilderInterface Fluent interface
+     * @return MessageBuilderInterface Fluent interface
      */
     public function withContent($content);
 
     /**
-     * Set the event publisher
+     * Set the message publisher
      *
      * @param  PublisherInterface $publisher Publisher to build with
-     * @return EventBuilderInterface Fluent interface
+     * @return MessageBuilderInterface Fluent interface
      */
     public function withPublisher(PublisherInterface $publisher);
 
     /**
-     * Assemble event instance using internalised properties
+     * Assemble message instance using internalised properties
      * 
-     * @return EventInterface
+     * @return MessageInterface
      */
     public function build();
 }

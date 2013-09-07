@@ -1,43 +1,38 @@
 <?php
 
-namespace Deicer\Query\Event;
+namespace Deicer\Query\Message;
 
-use Deicer\Query\Event\TokenizedQueryEvent;
-use Deicer\Query\Event\TokenizedQueryEventBuilderInterface;
-use Deicer\Pubsub\AbstractEventBuilder;
-use Deicer\Exception\Type\NonStringException;
+use Deicer\Query\Message\ParameterizedQueryMessage;
+use Deicer\Query\Message\ParameterizedQueryMessageBuilderInterface;
+use Deicer\Pubsub\AbstractMessageBuilder;
 
 /**
- * Assembles instances of Tokenized Query Events
+ * Assembles instances of Parameterized Query Messages
  *
  * @category   Deicer
  * @package    Query
- * @subpackage Event
+ * @subpackage Message
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TokenizedQueryEventBuilder extends AbstractEventBuilder implements
-    TokenizedQueryEventBuilderInterface
+class ParameterizedQueryMessageBuilder extends AbstractMessageBuilder implements
+    ParameterizedQueryMessageBuilderInterface
 {
     /**
-     * Unique token to build with
+     * Parameter set to build with
      * 
-     * @var string
+     * @var array
      */
-    protected $token;
+    protected $params;
 
     /**
      * {@inheritdoc}
      */
-    public function withToken($token)
+    public function withParams(array $params)
     {
-        if (! is_string($token)) {
-            throw new NonStringException();
-        }
-
-        $this->token = $token;
+        $this->params = $params;
         return $this;
     }
 
@@ -47,7 +42,7 @@ class TokenizedQueryEventBuilder extends AbstractEventBuilder implements
      * @throws LogicException If topic is empty
      * @throws LogicException If content has not been set
      * @throws LogicException If publisher has not been set
-     * @throws LogicException If token has not been set
+     * @throws LogicException If params has not been set
      */
     public function build()
     {
@@ -63,17 +58,17 @@ class TokenizedQueryEventBuilder extends AbstractEventBuilder implements
             throw new \LogicException(
                 'Publisher required for build in: ' . __METHOD__
             );
-        } elseif (! isset($this->token)) {
+        } elseif (! isset($this->params)) {
             throw new \LogicException(
-                'Token required for build in: ' . __METHOD__
+                'Params required for build in: ' . __METHOD__
             );
         }
 
-        return new TokenizedQueryEvent(
+        return new ParameterizedQueryMessage(
             $this->topic,
             $this->content,
             $this->publisher,
-            $this->token
+            $this->params
         );
     }
 }

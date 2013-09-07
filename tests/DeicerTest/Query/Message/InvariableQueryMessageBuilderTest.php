@@ -1,28 +1,28 @@
 <?php
 
-namespace DeicerTest\Query\Event;
+namespace DeicerTest\Query\Message;
 
-use Deicer\Query\Event\InvariableQueryEventBuilder;
+use Deicer\Query\Message\InvariableQueryMessageBuilder;
 
 /**
- * Deicer Invariable Query Event Builder unit test suite
+ * Deicer Invariable Query Message Builder unit test suite
  * 
  * @category   DeicerTest
  * @package    Query
- * @subpackage Event
+ * @subpackage Message
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class InvariableQueryEventBuilderTest extends \PHPUnit_Framework_TestCase
+class InvariableQueryMessageBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public $fixture;
     public $mockPublisher;
 
     public function setUp()
     {
-        $this->fixture = new InvariableQueryEventBuilder();
+        $this->fixture = new InvariableQueryMessageBuilder();
         $this->mockPublisher = $this->getMock('Deicer\Query\InvariableQueryInterface');
     }
 
@@ -77,14 +77,14 @@ class InvariableQueryEventBuilderTest extends \PHPUnit_Framework_TestCase
             ->build();
     }
 
-    public function testBuildReturnsInstanceOfInvariableQueryEvent()
+    public function testBuildReturnsInstanceOfInvariableQueryMessage()
     {
         $built = $this->fixture
             ->withTopic('foo')
             ->withContent('bar')
             ->withPublisher($this->mockPublisher)
             ->build();
-        $this->assertInstanceOf('Deicer\Query\Event\InvariableQueryEvent', $built);
+        $this->assertInstanceOf('Deicer\Query\Message\InvariableQueryMessage', $built);
     }
 
     public function testBuildUsesSetTopic()

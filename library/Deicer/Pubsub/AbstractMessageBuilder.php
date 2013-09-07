@@ -2,11 +2,11 @@
 
 namespace Deicer\Pubsub;
 
-use Deicer\Pubsub\EventBuilderInterface;
+use Deicer\Pubsub\MessageBuilderInterface;
 use Deicer\Exception\Type\NonStringException;
 
 /**
- * Abstract class for concrete builders that assemble pubsub events
+ * Abstract class for concrete builders that assemble pubsub messages
  *
  * @category   Deicer
  * @package    Pubsub
@@ -15,10 +15,10 @@ use Deicer\Exception\Type\NonStringException;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-abstract class AbstractEventBuilder implements EventBuilderInterface
+abstract class AbstractMessageBuilder implements MessageBuilderInterface
 {
     /**
-     * The event topic to build with
+     * The message topic to build with
      *
      * @param string
      */
@@ -32,7 +32,7 @@ abstract class AbstractEventBuilder implements EventBuilderInterface
     protected $content;
 
     /**
-     * Event publisher to build with
+     * Message publisher to build with
      *
      * @var PublisherInterface
      */

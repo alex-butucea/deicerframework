@@ -3,7 +3,7 @@
 namespace Deicer\Query;
 
 use Deicer\Query\QueryInterface;
-use Deicer\Query\Event\TokenizedQueryEventBuilderInterface;
+use Deicer\Query\Message\TokenizedQueryMessageBuilderInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 use Deicer\Stdlib\TokenConsumerInterface;
 use Deicer\Stdlib\TokenProviderInterface;
@@ -35,13 +35,13 @@ interface TokenizedQueryInterface extends
      * Tokenized Query Constructor
      *
      * @param  mixed $dataProvider Query data provider - DB connection, CURl client, etc.
-     * @param  TokenizedQueryEventBuilderInterface $eventBuilder Assembles pubsub events
+     * @param  TokenizedQueryMessageBuilderInterface $messageBuilder Assembles pubsub messages
      * @param  RecursiveModelCompositeHydratorInterface $modelHydrator Hydrates query responses
      * @return TokenizedQueryInterface
      */
     public function __construct(
         $dataProvider,
-        TokenizedQueryEventBuilderInterface $eventBuilder,
+        TokenizedQueryMessageBuilderInterface $messageBuilder,
         RecursiveModelCompositeHydratorInterface $modelHydrator
     );
 

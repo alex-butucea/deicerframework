@@ -4,7 +4,7 @@ namespace Deicer\Query;
 
 use Deicer\Query\AbstractQuery;
 use Deicer\Query\InvariableQueryInterface;
-use Deicer\Query\Event\InvariableQueryEventBuilderInterface;
+use Deicer\Query\Message\InvariableQueryMessageBuilderInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 
 /**
@@ -25,15 +25,15 @@ abstract class AbstractInvariableQuery extends AbstractQuery implements
      */
     public function __construct(
         $dataProvider,
-        InvariableQueryEventBuilderInterface $eventBuilder,
+        InvariableQueryMessageBuilderInterface $messageBuilder,
         RecursiveModelCompositeHydratorInterface $modelHydrator
     ) {
         $this->dataProvider  = $dataProvider;
-        $this->eventBuilder  = $eventBuilder;
+        $this->messageBuilder  = $messageBuilder;
         $this->modelHydrator = $modelHydrator;
         $this->lastResponse  = $modelHydrator->exchangeArray(array ());
 
-        $this->syncEventBuilder();
+        $this->syncMessageBuilder();
     }
 
     /**
@@ -52,7 +52,7 @@ abstract class AbstractInvariableQuery extends AbstractQuery implements
      *
      * Invariable queries have no selection citeria
      */
-    protected function syncEventBuilder()
+    protected function syncMessageBuilder()
     {
         return $this;
     }

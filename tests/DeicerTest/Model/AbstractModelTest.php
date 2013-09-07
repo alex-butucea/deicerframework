@@ -28,7 +28,7 @@ class AbstractModelTest extends \PHPUnit_Framework_TestCase
         'id'         => 789,
         'postcode'   => 'quux',
         'categories' => array (
-            7 => 'events',
+            7 => 'messages',
         ),
     );
 
@@ -139,7 +139,7 @@ class AbstractModelTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $model->categories,
             array (
-                7 => 'events',
+                7 => 'messages',
             )
         );
     }

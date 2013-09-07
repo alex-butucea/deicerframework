@@ -1,28 +1,28 @@
 <?php
 
-namespace DeicerTest\Query\Event;
+namespace DeicerTest\Query\Message;
 
-use Deicer\Query\Event\ParameterizedQueryEventBuilder;
+use Deicer\Query\Message\ParameterizedQueryMessageBuilder;
 
 /**
- * Deicer Parameterized Query Event Builder unit test suite
+ * Deicer Parameterized Query Message Builder unit test suite
  * 
  * @category   DeicerTest
  * @package    Query
- * @subpackage Event
+ * @subpackage Message
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class ParameterizedQueryEventBuilderTest extends \PHPUnit_Framework_TestCase
+class ParameterizedQueryMessageBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public $fixture;
     public $mockPublisher;
 
     public function setUp()
     {
-        $this->fixture = new ParameterizedQueryEventBuilder();
+        $this->fixture = new ParameterizedQueryMessageBuilder();
         $this->mockPublisher = $this->getMock('Deicer\Query\ParameterizedQueryInterface');
     }
 
@@ -95,7 +95,7 @@ class ParameterizedQueryEventBuilderTest extends \PHPUnit_Framework_TestCase
             ->build();
     }
 
-    public function testBuildReturnsInstanceOfParameterizedQueryEvent()
+    public function testBuildReturnsInstanceOfParameterizedQueryMessage()
     {
         $built = $this->fixture
             ->withTopic('foo')
@@ -103,7 +103,7 @@ class ParameterizedQueryEventBuilderTest extends \PHPUnit_Framework_TestCase
             ->withPublisher($this->mockPublisher)
             ->withParams(array ('foo' => 'bar'))
             ->build();
-        $this->assertInstanceOf('Deicer\Query\Event\ParameterizedQueryEvent', $built);
+        $this->assertInstanceOf('Deicer\Query\Message\ParameterizedQueryMessage', $built);
     }
 
     public function testBuildUsesSetTopic()

@@ -3,7 +3,7 @@
 namespace Deicer\Pubsub;
 
 /**
- * Interface for events raised by a publisher object
+ * Interface for messages raised by a publisher object
  *
  * @category   Deicer
  * @package    Pubsub
@@ -12,10 +12,10 @@ namespace Deicer\Pubsub;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface EventInterface
+interface MessageInterface
 {
     /**
-     * Get the event topic
+     * Get the message topic
      *
      * @return string
      */
@@ -29,7 +29,7 @@ interface EventInterface
     public function getContent();
 
     /**
-     * Get the event publisher
+     * Get the message publisher
      *
      * @return PublisherInterface
      */

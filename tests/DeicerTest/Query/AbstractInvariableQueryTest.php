@@ -23,14 +23,14 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
     public $fixture;
     public $composite;
     public $hydrator;
-    public $event;
-    public $eventBuilder;
+    public $message;
+    public $messageBuilder;
     public $subscriber;
 
     public function setUp()
     {
-        $this->eventBuilder = $this->getMock(
-            'Deicer\Query\Event\InvariableQueryEventBuilderInterface'
+        $this->messageBuilder = $this->getMock(
+            'Deicer\Query\Message\InvariableQueryMessageBuilderInterface'
         );
         $this->composite = $this->getMock(
             'Deicer\Model\ModelCompositeInterface'
@@ -38,38 +38,38 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
         $this->hydrator = $this->getMock(
             'Deicer\Model\RecursiveModelCompositeHydratorInterface'
         );
-        $this->event = $this->getMock(
-            'Deicer\Query\Event\InvariableQueryEventInterface'
+        $this->message = $this->getMock(
+            'Deicer\Query\Message\InvariableQueryMessageInterface'
         );
         $this->subscriber = $this->getMock(
             'Deicer\Pubsub\SubscriberInterface'
         );
 
-        $this->event
+        $this->message
             ->expects($this->any())
             ->method('getPublisher')
             ->will($this->returnValue($this->fixture));
-        $this->event
+        $this->message
             ->expects($this->any())
             ->method('addElapsedTime')
             ->will($this->returnSelf());
 
-        $this->eventBuilder
+        $this->messageBuilder
             ->expects($this->any())
             ->method('withTopic')
             ->will($this->returnSelf());
-        $this->eventBuilder
+        $this->messageBuilder
             ->expects($this->any())
             ->method('withContent')
             ->will($this->returnSelf());
-        $this->eventBuilder
+        $this->messageBuilder
             ->expects($this->any())
             ->method('withPublisher')
             ->will($this->returnSelf());
-        $this->eventBuilder
+        $this->messageBuilder
             ->expects($this->any())
             ->method('build')
-            ->will($this->returnValue($this->event));
+            ->will($this->returnValue($this->message));
 
         $this->composite->expects($this->any())
             ->method('count')
@@ -97,52 +97,52 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
 
         $this->fixture = new TestableInvariableQueryWithValidFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
     }
 
-    public function setUpEventBuilder($topic, $content)
+    public function setUpMessageBuilder($topic, $content)
     {
-        $this->event
+        $this->message
             ->expects($this->atLeastOnce())
             ->method('getTopic')
             ->will($this->returnValue($topic));
-        $this->event
+        $this->message
             ->expects($this->atLeastOnce())
             ->method('getContent')
             ->will($this->returnValue($content));
 
-        $this->eventBuilder
+        $this->messageBuilder
             ->expects($this->once())
             ->method('withTopic')
             ->with($this->equalTo($topic))
             ->will($this->returnSelf());
-        $this->eventBuilder
+        $this->messageBuilder
             ->expects($this->once())
             ->method('withContent')
             ->with($this->equalTo($content))
             ->will($this->returnSelf());
-        $this->eventBuilder
+        $this->messageBuilder
             ->expects($this->once())
             ->method('withPublisher')
             ->with($this->isInstanceOf('Deicer\Query\InvariableQueryInterface'))
             ->will($this->returnSelf());
-        $this->eventBuilder
+        $this->messageBuilder
             ->expects($this->once())
             ->method('build')
-            ->will($this->returnValue($this->event));
+            ->will($this->returnValue($this->message));
     }
 
     public function setUpSubscriber($topic, $content)
     {
         // Work-around for unsupported mutliple method invocation expectations
-        $callback = function ($event) use ($topic, $content) {
-            if ($event->getTopic() != $topic) {
+        $callback = function ($message) use ($topic, $content) {
+            if ($message->getTopic() != $topic) {
                 throw new \PHPUnit_Framework_ExpectationFailedException(
                     'Failed to notify of ' . $topic . ' with correct topic'
                 );
-            } elseif ($event->getContent() != $content) {
+            } elseif ($message->getContent() != $content) {
                 throw new \PHPUnit_Framework_ExpectationFailedException(
                     'Failed to notify of ' . $topic . ' with correct content'
                 );
@@ -184,39 +184,39 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
 
     public function testSubscribeSubscribesSubscribersOnlyOnce()
     {
-        $this->event->expects($this->any())
+        $this->message->expects($this->any())
             ->method('getTopic')
             ->will($this->returnValue('foo'));
         $this->subscriber->expects($this->once())
             ->method('update')
-            ->with($this->equalTo($this->event));
+            ->with($this->equalTo($this->message));
 
         $this->fixture->subscribe($this->subscriber, 'foo');
         $this->fixture->subscribe($this->subscriber, 'foo');
-        $this->fixture->publish($this->event);
+        $this->fixture->publish($this->message);
     }
 
     public function testSubscribeSubscribesSubscriberToStatedTopic()
     {
-        $fooEvent = $this->getMock('Deicer\Pubsub\EventInterface');
-        $barEvent = $this->getMock('Deicer\Pubsub\EventInterface');
-        $bazEvent = $this->getMock('Deicer\Pubsub\EventInterface');
+        $fooMessage = $this->getMock('Deicer\Pubsub\MessageInterface');
+        $barMessage = $this->getMock('Deicer\Pubsub\MessageInterface');
+        $bazMessage = $this->getMock('Deicer\Pubsub\MessageInterface');
 
-        $fooEvent->expects($this->any())
+        $fooMessage->expects($this->any())
             ->method('getTopic')
             ->will($this->returnValue('foo'));
-        $barEvent->expects($this->any())
+        $barMessage->expects($this->any())
             ->method('getTopic')
             ->will($this->returnValue('bar'));
-        $bazEvent->expects($this->any())
+        $bazMessage->expects($this->any())
             ->method('getTopic')
             ->will($this->returnValue('baz'));
 
         // Work-around for unsupported mutliple method invocation expectations
-        $callback = function ($event) {
-            if ($event->getTopic() == 'bar') {
+        $callback = function ($message) {
+            if ($message->getTopic() == 'bar') {
                 throw new \PHPUnit_Framework_ExpectationFailedException(
-                    'Publisher failed to filter event by topic'
+                    'Publisher failed to filter message by topic'
                 );
             }
         };
@@ -228,9 +228,9 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
         // Subscribed to only foo and baz topics
         $this->fixture->subscribe($this->subscriber, 'foo');
         $this->fixture->subscribe($this->subscriber, 'baz');
-        $this->fixture->publish($fooEvent);
-        $this->fixture->publish($barEvent);
-        $this->fixture->publish($bazEvent);
+        $this->fixture->publish($fooMessage);
+        $this->fixture->publish($barMessage);
+        $this->fixture->publish($bazMessage);
     }
 
     public function testUnsubscribeImplementsFluentInterface()
@@ -272,25 +272,25 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
 
     public function testUnsubscribeUnsubscribesSubscriberFromStatedTopic()
     {
-        $fooEvent = $this->getMock('Deicer\Pubsub\EventInterface');
-        $barEvent = $this->getMock('Deicer\Pubsub\EventInterface');
-        $bazEvent = $this->getMock('Deicer\Pubsub\EventInterface');
+        $fooMessage = $this->getMock('Deicer\Pubsub\MessageInterface');
+        $barMessage = $this->getMock('Deicer\Pubsub\MessageInterface');
+        $bazMessage = $this->getMock('Deicer\Pubsub\MessageInterface');
 
-        $fooEvent->expects($this->any())
+        $fooMessage->expects($this->any())
             ->method('getTopic')
             ->will($this->returnValue('foo'));
-        $barEvent->expects($this->any())
+        $barMessage->expects($this->any())
             ->method('getTopic')
             ->will($this->returnValue('bar'));
-        $bazEvent->expects($this->any())
+        $bazMessage->expects($this->any())
             ->method('getTopic')
             ->will($this->returnValue('baz'));
 
         // Work-around for unsupported mutliple method invocation expectations
-        $callback = function ($event) {
-            if ($event->getTopic() == 'foo') {
+        $callback = function ($message) {
+            if ($message->getTopic() == 'foo') {
                 throw new \PHPUnit_Framework_ExpectationFailedException(
-                    'Publisher failed to filter event by topic'
+                    'Publisher failed to filter message by topic'
                 );
             }
         };
@@ -304,9 +304,9 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
         $this->fixture->subscribe($this->subscriber, 'bar');
         $this->fixture->subscribe($this->subscriber, 'baz');
         $this->fixture->unsubscribe($this->subscriber, 'foo');
-        $this->fixture->publish($fooEvent);
-        $this->fixture->publish($barEvent);
-        $this->fixture->publish($bazEvent);
+        $this->fixture->publish($fooMessage);
+        $this->fixture->publish($barMessage);
+        $this->fixture->publish($bazMessage);
     }
 
     public function testExecuteWithNonArrayReturningFetchDataThrowsException()
@@ -314,7 +314,7 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Deicer\Query\Exception\DataTypeException');
         $fixture = new TestableInvariableQueryWithNonArrayReturningFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
         $fixture->execute();
@@ -324,7 +324,7 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
     {
         $fixture = new TestableInvariableQueryWithExceptionThrowingFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
 
@@ -355,7 +355,7 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
             ->will($this->throwException(new \InvalidArgumentException($msg)));
         $fixture = new TestableInvariableQueryWithModelIncompatibleFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
 
@@ -402,7 +402,7 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
             ->will($this->throwException(new \InvalidArgumentException($msg)));
         $fixture = new TestableInvariableQueryWithModelIncompatibleFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
 
@@ -417,7 +417,7 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
     {
         $fixture = new TestableInvariableQueryWithExceptionThrowingFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
 
@@ -432,7 +432,7 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
     {
         $fixture = new TestableInvariableQueryWithNonArrayReturningFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
 
@@ -445,11 +445,11 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteRecordsTimeTakenToExecute()
     {
-        $this->event
+        $this->message
             ->expects($this->atLeastOnce())
             ->method('getTopic')
             ->will($this->returnValue('success'));
-        $this->event
+        $this->message
             ->expects($this->once())
             ->method('addElapsedTime')
             ->with($this->logicalAnd($this->isType('int'), $this->greaterThan(0)))
@@ -475,12 +475,12 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
             ),
         );
 
-        $this->setUpEventBuilder($topic, $content);
+        $this->setUpMessageBuilder($topic, $content);
         $this->setUpSubscriber($topic, $content);
 
         $fixture = new TestableInvariableQueryWithValidFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
 
@@ -501,7 +501,7 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
             ),
         );
 
-        $this->setUpEventBuilder($topic, $content);
+        $this->setUpMessageBuilder($topic, $content);
         $this->setUpSubscriber($topic, $content);
 
         // exchangeArray called first at instantiation to set empty last reponse
@@ -512,7 +512,7 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
 
         $fixture = new TestableInvariableQueryWithModelIncompatibleFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
 
@@ -527,12 +527,12 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
         $topic   = 'failure_data_fetch';
         $content = array ();
 
-        $this->setUpEventBuilder($topic, $content);
+        $this->setUpMessageBuilder($topic, $content);
         $this->setUpSubscriber($topic, $content);
 
         $fixture = new TestableInvariableQueryWithExceptionThrowingFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
 
@@ -547,12 +547,12 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
         $topic   = 'failure_data_type';
         $content = array ();
 
-        $this->setUpEventBuilder($topic, $content);
+        $this->setUpMessageBuilder($topic, $content);
         $this->setUpSubscriber($topic, $content);
 
         $fixture = new TestableInvariableQueryWithNonArrayReturningFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
 
@@ -571,7 +571,7 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
             ),
         );
 
-        $this->setUpEventBuilder($topic, $content);
+        $this->setUpMessageBuilder($topic, $content);
         $this->setUpSubscriber($topic, $content);
 
         // exchangeArray called first at instantiation to set empty last reponse
@@ -582,7 +582,7 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
 
         $fixture = new TestableInvariableQueryWithModelIncompatibleFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
 
@@ -596,12 +596,12 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
         $topic   = 'fallback_data_fetch';
         $content = array ();
 
-        $this->setUpEventBuilder($topic, $content);
+        $this->setUpMessageBuilder($topic, $content);
         $this->setUpSubscriber($topic, $content);
 
         $fixture = new TestableInvariableQueryWithExceptionThrowingFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
 
@@ -615,12 +615,12 @@ class AbstractInvariableQueryTest extends \PHPUnit_Framework_TestCase
         $topic   = 'fallback_data_type';
         $content = array ();
 
-        $this->setUpEventBuilder($topic, $content);
+        $this->setUpMessageBuilder($topic, $content);
         $this->setUpSubscriber($topic, $content);
 
         $fixture = new TestableInvariableQueryWithNonArrayReturningFetchData(
             new \stdClass(),
-            $this->eventBuilder,
+            $this->messageBuilder,
             $this->hydrator
         );
 

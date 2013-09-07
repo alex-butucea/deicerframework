@@ -3,11 +3,11 @@
 namespace Deicer\Query;
 
 use Deicer\Query\QueryInterface;
-use Deicer\Query\Event\InvariableQueryEventInterface;
+use Deicer\Query\Message\InvariableQueryMessageInterface;
 use Deicer\Query\Exception\DataTypeException;
 use Deicer\Query\Exception\DataFetchException;
 use Deicer\Query\Exception\ModelHydratorException;
-use Deicer\Pubsub\EventInterface;
+use Deicer\Pubsub\MessageInterface;
 use Deicer\Pubsub\SubscriberInterface;
 use Deicer\Exception\Type\NonArrayException;
 use Deicer\Exception\Type\NonStringException;
@@ -32,11 +32,11 @@ abstract class AbstractQuery
     protected $dataProvider;
 
     /**
-     * Assembles pubsub events 
+     * Assembles pubsub messages 
      * 
-     * @var InvariableQueryEventBuilderInterface
+     * @var InvariableQueryMessageBuilderInterface
      */
-    protected $eventBuilder;
+    protected $messageBuilder;
 
     /**
      * Hydrates query responses 
@@ -62,7 +62,7 @@ abstract class AbstractQuery
     protected $subscribers = array ();
 
     /**
-     * Associative array of event subscribers to topcis
+     * Associative array of message subscribers to topcis
      *
      * SubscriberObjectHash => array (TopicSubscription, TopicSubscription)
      *
@@ -94,27 +94,27 @@ abstract class AbstractQuery
      */
     public function execute()
     {
-        // Initialize event and record time in milliseconds
-        $this->eventBuilder->withPublisher($this);
+        // Initialize message and record time in milliseconds
+        $this->messageBuilder->withPublisher($this);
         $time = round(microtime() * 1000);
 
         // Sync selection criteria to reflect instance
-        $this->syncEventBuilder()->syncDecorated();
+        $this->syncMessageBuilder()->syncDecorated();
         // Attempt to fetchData, rethrow exception if no decorated query exists
         try {
             $data = $this->fetchData();
         } catch (\Exception $e) {
 
-            // Build event based on whether execution can fall back to decorated
+            // Build message based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
-                InvariableQueryEventInterface::TOPIC_FALLBACK_DATA_FETCH :
-                InvariableQueryEventInterface::TOPIC_FAILURE_DATA_FETCH;
-            $event = $this->eventBuilder
+                InvariableQueryMessageInterface::TOPIC_FALLBACK_DATA_FETCH :
+                InvariableQueryMessageInterface::TOPIC_FAILURE_DATA_FETCH;
+            $message = $this->messageBuilder
                 ->withTopic($topic)
                 ->withContent(array ())
                 ->build()
                 ->addElapsedTime((int) (round(microtime() * 1000) - $time));
-            $this->publish($event);
+            $this->publish($message);
 
             // Update last response with decorated result and terminate
             if ($this->decorated) {
@@ -135,14 +135,14 @@ abstract class AbstractQuery
         // Enforce returned data type strength if no decorated query exists
         if (! is_array($data)) {
             $topic = ($this->decorated) ?
-                InvariableQueryEventInterface::TOPIC_FALLBACK_DATA_TYPE :
-                InvariableQueryEventInterface::TOPIC_FAILURE_DATA_TYPE;
-            $event = $this->eventBuilder
+                InvariableQueryMessageInterface::TOPIC_FALLBACK_DATA_TYPE :
+                InvariableQueryMessageInterface::TOPIC_FAILURE_DATA_TYPE;
+            $message = $this->messageBuilder
                 ->withTopic($topic)
                 ->withContent(array ())
                 ->build()
                 ->addElapsedTime((int) (round(microtime() * 1000) - $time));
-            $this->publish($event);
+            $this->publish($message);
 
             // Update last response with decorated result and terminate
             if ($this->decorated) {
@@ -163,16 +163,16 @@ abstract class AbstractQuery
             $hydrated = clone $this->modelHydrator->exchangeArray($data);
         } catch (\Exception $e) {
 
-            // Build event based on whether execution can fall back to decorated
+            // Build message based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
-                InvariableQueryEventInterface::TOPIC_FALLBACK_MODEL_HYDRATOR :
-                InvariableQueryEventInterface::TOPIC_FAILURE_MODEL_HYDRATOR;
-            $event = $this->eventBuilder
+                InvariableQueryMessageInterface::TOPIC_FALLBACK_MODEL_HYDRATOR :
+                InvariableQueryMessageInterface::TOPIC_FAILURE_MODEL_HYDRATOR;
+            $message = $this->messageBuilder
                 ->withTopic($topic)
                 ->withContent($data)
                 ->build()
                 ->addElapsedTime((int) (round(microtime() * 1000) - $time));
-            $this->publish($event);
+            $this->publish($message);
 
             // Update last response with decorated result and terminate
             if ($this->decorated) {
@@ -192,12 +192,12 @@ abstract class AbstractQuery
         $this->lastResponse = $hydrated;
 
         // Notify subscribers of successful query execution
-        $event = $this->eventBuilder
-            ->withTopic(InvariableQueryEventInterface::TOPIC_SUCCESS)
+        $message = $this->messageBuilder
+            ->withTopic(InvariableQueryMessageInterface::TOPIC_SUCCESS)
             ->withContent($data)
             ->build()
             ->addElapsedTime((int) (round(microtime() * 1000) - $time));
-        $this->publish($event);
+        $this->publish($message);
 
         return $hydrated;
     }
@@ -268,12 +268,12 @@ abstract class AbstractQuery
     /**
      * {@inheritdoc}
      */
-    public function publish(EventInterface $event)
+    public function publish(MessageInterface $message)
     {
-        // Walk topic subscriptions only notifying if event topic matches
+        // Walk topic subscriptions only notifying if message topic matches
         foreach ($this->subscriptions as $subHash => $topics) {
-            if (in_array($event->getTopic(), $topics)) {
-                $this->subscribers[$subHash]->update($event);
+            if (in_array($message->getTopic(), $topics)) {
+                $this->subscribers[$subHash]->update($message);
             }
         }
 
@@ -301,11 +301,11 @@ abstract class AbstractQuery
     }
 
     /**
-     * Sync event builder selection criteria with instance
+     * Sync message builder selection criteria with instance
      * 
      * @return AbstractQuery Fluent interface
      */
-    abstract protected function syncEventBuilder();
+    abstract protected function syncMessageBuilder();
 
     /**
      * Sync decorated query selection criteria with instance

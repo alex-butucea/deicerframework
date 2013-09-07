@@ -3,7 +3,7 @@
 namespace Deicer\Pubsub;
 
 /**
- * Interface for objects that can subscribe to published events
+ * Interface for objects that can subscribe to published messages
  *
  * @category   Deicer
  * @package    Pubsub
@@ -15,10 +15,10 @@ namespace Deicer\Pubsub;
 interface SubscriberInterface
 {
     /**
-     * Update instance with a published event
+     * Update instance with a published message
      *
-     * @param  EventInterface $event The event published
+     * @param  MessageInterface $message The message published
      * @return void
      */
-    public function update(EventInterface $event);
+    public function update(MessageInterface $message);
 }

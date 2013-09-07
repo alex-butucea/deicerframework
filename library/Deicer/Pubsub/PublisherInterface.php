@@ -3,7 +3,7 @@
 namespace Deicer\Pubsub;
 
 /**
- * Interface for objects that can publish events to subscribers
+ * Interface for objects that can publish messages to subscribers
  *
  * Api implies topic based filtering upon subscription
  *
@@ -17,7 +17,7 @@ namespace Deicer\Pubsub;
 interface PublisherInterface
 {
     /**
-     * Subscribe an object to recieve events of a given topic
+     * Subscribe an object to recieve messages of a given topic
      *
      * @throws NonStringException If $topic is a non string value
      * @param  SubscriberInterface $subscriber The object to subscribe
@@ -37,10 +37,10 @@ interface PublisherInterface
     public function unsubscribe(SubscriberInterface $subscriber, $topic);
 
     /**
-     * Publish an event to subscribers
+     * Publish an message to subscribers
      *
-     * @param  EventInterface $event The event to publish
+     * @param  MessageInterface $message The message to publish
      * @return void
      */
-    public function publish(EventInterface $event);
+    public function publish(MessageInterface $message);
 }

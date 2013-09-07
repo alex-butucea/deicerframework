@@ -1,24 +1,24 @@
 <?php
 
-namespace Deicer\Query\Event;
+namespace Deicer\Query\Message;
 
 use Deicer\Exception\Type\NonIntException;
 
 /**
- * An abstract representation of a query event
+ * An abstract representation of a query message
  *
  * @category   Deicer
  * @package    Query
- * @subpackage Event
+ * @subpackage Message
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-abstract class AbstractQueryEvent
+abstract class AbstractQueryMessage
 {
     /**
-     * The event topic
+     * The message topic
      *
      * @param string
      */
@@ -32,7 +32,7 @@ abstract class AbstractQueryEvent
     protected $content;
 
     /**
-     * Event publisher
+     * Message publisher
      *
      * @var QueryInterface
      */
@@ -84,7 +84,7 @@ abstract class AbstractQueryEvent
      *
      * @throws NonIntException If $interval is not an integer
      * @throws RangeException If $interval is negative
-     * @return AbstractQueryEvent Fluent inteface
+     * @return AbstractQueryMessage Fluent inteface
      */
     public function addElapsedTime($interval)
     {

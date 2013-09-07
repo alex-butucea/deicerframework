@@ -4,7 +4,7 @@ namespace Deicer\Query;
 
 use Deicer\Query\AbstractQuery;
 use Deicer\Query\TokenizedQueryInterface;
-use Deicer\Query\Event\TokenizedQueryEventBuilderInterface;
+use Deicer\Query\Message\TokenizedQueryMessageBuilderInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 use Deicer\Exception\Type\NonStringException;
 
@@ -33,15 +33,15 @@ abstract class AbstractTokenizedQuery extends AbstractQuery implements
      */
     public function __construct(
         $dataProvider,
-        TokenizedQueryEventBuilderInterface $eventBuilder,
+        TokenizedQueryMessageBuilderInterface $messageBuilder,
         RecursiveModelCompositeHydratorInterface $modelHydrator
     ) {
         $this->dataProvider  = $dataProvider;
-        $this->eventBuilder  = $eventBuilder;
+        $this->messageBuilder  = $messageBuilder;
         $this->modelHydrator = $modelHydrator;
         $this->lastResponse  = $modelHydrator->exchangeArray(array ());
 
-        $this->syncEventBuilder();
+        $this->syncMessageBuilder();
     }
 
     /**
@@ -79,9 +79,9 @@ abstract class AbstractTokenizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      */
-    protected function syncEventBuilder()
+    protected function syncMessageBuilder()
     {
-        $this->eventBuilder->withToken($this->token);
+        $this->messageBuilder->withToken($this->token);
 
         return $this;
     }

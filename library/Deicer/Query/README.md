@@ -202,29 +202,29 @@ try {
 ```
 
 ## PubSub API
-Whenever a query is executed, a PubSub event is published to any subscribers with the content being the data returned from the `fetchData` implementation.
-Subscribers need only implement `Deicer\Stdlib\Pubsub\SubscriberInterface` to subscribe to key event types / topics raised from a query's execution:
+Whenever a query is executed, a PubSub message is published to any subscribers with the content being the data returned from the `fetchData` implementation.
+Subscribers need only implement `Deicer\Stdlib\Pubsub\SubscriberInterface` to subscribe to key message types / topics raised from a query's execution:
 
 ```php
 namespace My;
 
-use Deicer\Stdlib\Pubsub\EventInterface;
+use Deicer\Stdlib\Pubsub\MessageInterface;
 use Deicer\Stdlib\Pubsub\SubcriberInterface;
 use Deicer\Query\Exception\ExceptionInterface as QueryException;
-use Deicer\Query\Event\QueryEventInterface as QueryEvent;
+use Deicer\Query\Message\QueryMessageInterface as QueryMessage;
 
-class EventLogger implements SubcriberInterface
+class Logger implements SubcriberInterface
 {
-    public function update(EventInterface $event)
+    public function update(MessageInterface $message)
     {
         /**
-         * Query events are string serialized as either:
+         * Query messages are string serialized as either:
          *
          * Invariable Query Execution: *concrete_class* | Result: "*topic*" | Elapsed Time: *time*ms | Content: *jsoned_content*
          * Tokenized Query Execution: *concrete_class* | Result: "*topic*" | Elapsed Time: *time*ms | Token: "*token*" | Content: *jsoned_content*
          * Parameterized Query Execution: *concrete_class* | Result: "*topic*" | Elapsed Time: *time*ms | Params: *jsoned_params* | Content: *jsoned_content*
          */
-         $message = (string) $event;
+         $message = (string) $message;
 
         // Only failure messages are received - log as error
         $this->write(LOG_ERR, $message);
@@ -232,13 +232,13 @@ class EventLogger implements SubcriberInterface
 }
 
 $query  = new \My\Query\FetchAllActiveListingsFromEtsy(...);
-$logger = new EventLogger();
+$logger = new Logger();
 
-// Subscribe logger to only query failure events
+// Subscribe logger to only query failure messages
 $query->
-    subscribe($logger, QueryEvent::TOPIC_FAILURE_DATA_TYPE)
-    subscribe($logger, QueryEvent::TOPIC_FAILURE_DATA_FETCH)
-    subscribe($logger, QueryEvent::TOPIC_FAILURE_MODEL_HYDRATOR);
+    subscribe($logger, QueryMessage::TOPIC_FAILURE_DATA_TYPE)
+    subscribe($logger, QueryMessage::TOPIC_FAILURE_DATA_FETCH)
+    subscribe($logger, QueryMessage::TOPIC_FAILURE_MODEL_HYDRATOR);
 
 try {
     $listings = $cacheQuery->execute();

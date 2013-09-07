@@ -3,7 +3,7 @@
 namespace Deicer\Query;
 
 use Deicer\Query\QueryInterface;
-use Deicer\Query\Event\InvariableQueryEventBuilderInterface;
+use Deicer\Query\Message\InvariableQueryMessageBuilderInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 use Deicer\Stdlib\Exe\ExecutableInterface;
 use Deicer\Pubsub\PublisherInterface;
@@ -31,13 +31,13 @@ interface InvariableQueryInterface extends
      * Invariable Query Constructor
      *
      * @param  mixed $dataProvider Query data provider - DB connection, CURl client, etc.
-     * @param  InvariableQueryEventBuilderInterface $eventBuilder Assembles pubsub events
+     * @param  InvariableQueryMessageBuilderInterface $messageBuilder Assembles pubsub messages
      * @param  RecursiveModelCompositeHydratorInterface $modelHydrator Hydrates query responses
      * @return InvariableQueryInterface
      */
     public function __construct(
         $dataProvider,
-        InvariableQueryEventBuilderInterface $eventBuilder,
+        InvariableQueryMessageBuilderInterface $messageBuilder,
         RecursiveModelCompositeHydratorInterface $modelHydrator
     );
 
