@@ -1,13 +1,12 @@
 <?php
 
-namespace Deicer\Stdlib\Pubsub;
+namespace Deicer\Pubsub;
 
 /**
  * Interface for events raised by a publisher object
  *
  * @category   Deicer
- * @package    Stdlib
- * @subpackage Pubsub
+ * @package    Pubsub
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com>

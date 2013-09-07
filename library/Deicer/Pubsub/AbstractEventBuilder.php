@@ -1,16 +1,15 @@
 <?php
 
-namespace Deicer\Stdlib\Pubsub;
+namespace Deicer\Pubsub;
 
-use Deicer\Stdlib\Pubsub\EventBuilderInterface;
+use Deicer\Pubsub\EventBuilderInterface;
 use Deicer\Exception\Type\NonStringException;
 
 /**
  * Abstract class for concrete builders that assemble pubsub events
  *
  * @category   Deicer
- * @package    Stdlib
- * @subpackage Pubsub
+ * @package    Pubsub
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com>

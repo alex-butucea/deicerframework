@@ -4,7 +4,7 @@ namespace Deicer\Query\Event;
 
 use Deicer\Query\Event\ParameterizedQueryEvent;
 use Deicer\Query\Event\ParameterizedQueryEventBuilderInterface;
-use Deicer\Stdlib\Pubsub\AbstractEventBuilder;
+use Deicer\Pubsub\AbstractEventBuilder;
 
 /**
  * Assembles instances of Parameterized Query Events

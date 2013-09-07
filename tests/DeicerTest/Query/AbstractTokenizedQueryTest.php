@@ -42,7 +42,7 @@ class AbstractTokenizedQueryTest extends \PHPUnit_Framework_TestCase
             'Deicer\Query\Event\TokenizedQueryEventInterface'
         );
         $this->subscriber = $this->getMock(
-            'Deicer\Stdlib\Pubsub\SubscriberInterface'
+            'Deicer\Pubsub\SubscriberInterface'
         );
 
         $this->event
@@ -215,9 +215,9 @@ class AbstractTokenizedQueryTest extends \PHPUnit_Framework_TestCase
 
     public function testSubscribeSubscribesSubscriberToStatedTopic()
     {
-        $fooEvent = $this->getMock('Deicer\Stdlib\Pubsub\EventInterface');
-        $barEvent = $this->getMock('Deicer\Stdlib\Pubsub\EventInterface');
-        $bazEvent = $this->getMock('Deicer\Stdlib\Pubsub\EventInterface');
+        $fooEvent = $this->getMock('Deicer\Pubsub\EventInterface');
+        $barEvent = $this->getMock('Deicer\Pubsub\EventInterface');
+        $bazEvent = $this->getMock('Deicer\Pubsub\EventInterface');
 
         $fooEvent->expects($this->any())
             ->method('getTopic')
@@ -289,9 +289,9 @@ class AbstractTokenizedQueryTest extends \PHPUnit_Framework_TestCase
 
     public function testUnsubscribeUnsubscribesSubscriberFromStatedTopic()
     {
-        $fooEvent = $this->getMock('Deicer\Stdlib\Pubsub\EventInterface');
-        $barEvent = $this->getMock('Deicer\Stdlib\Pubsub\EventInterface');
-        $bazEvent = $this->getMock('Deicer\Stdlib\Pubsub\EventInterface');
+        $fooEvent = $this->getMock('Deicer\Pubsub\EventInterface');
+        $barEvent = $this->getMock('Deicer\Pubsub\EventInterface');
+        $bazEvent = $this->getMock('Deicer\Pubsub\EventInterface');
 
         $fooEvent->expects($this->any())
             ->method('getTopic')

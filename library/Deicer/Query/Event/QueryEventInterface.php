@@ -3,7 +3,7 @@
 namespace Deicer\Query\Event;
 
 use Deicer\Stdlib\StringSerializableInterface;
-use Deicer\Stdlib\Pubsub\EventInterface;
+use Deicer\Pubsub\EventInterface;
 use Deicer\Stdlib\Exe\ExecutionInterface;
 
 /**

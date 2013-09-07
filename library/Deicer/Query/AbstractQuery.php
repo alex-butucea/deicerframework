@@ -7,8 +7,8 @@ use Deicer\Query\Event\InvariableQueryEventInterface;
 use Deicer\Query\Exception\DataTypeException;
 use Deicer\Query\Exception\DataFetchException;
 use Deicer\Query\Exception\ModelHydratorException;
-use Deicer\Stdlib\Pubsub\EventInterface;
-use Deicer\Stdlib\Pubsub\SubscriberInterface;
+use Deicer\Pubsub\EventInterface;
+use Deicer\Pubsub\SubscriberInterface;
 use Deicer\Exception\Type\NonArrayException;
 use Deicer\Exception\Type\NonStringException;
 

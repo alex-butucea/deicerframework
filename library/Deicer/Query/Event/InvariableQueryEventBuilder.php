@@ -4,7 +4,7 @@ namespace Deicer\Query\Event;
 
 use Deicer\Query\Event\InvariableQueryEvent;
 use Deicer\Query\Event\InvariableQueryEventBuilderInterface;
-use Deicer\Stdlib\Pubsub\AbstractEventBuilder;
+use Deicer\Pubsub\AbstractEventBuilder;
 
 /**
  * Assembles instances of Invariable Query Events

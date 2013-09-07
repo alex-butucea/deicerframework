@@ -4,7 +4,7 @@ namespace Deicer\Query\Event;
 
 use Deicer\Query\Event\TokenizedQueryEvent;
 use Deicer\Query\Event\TokenizedQueryEventBuilderInterface;
-use Deicer\Stdlib\Pubsub\AbstractEventBuilder;
+use Deicer\Pubsub\AbstractEventBuilder;
 use Deicer\Exception\Type\NonStringException;
 
 /**

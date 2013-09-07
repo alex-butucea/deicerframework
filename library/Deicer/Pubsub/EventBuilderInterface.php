@@ -1,13 +1,12 @@
 <?php
 
-namespace Deicer\Stdlib\Pubsub;
+namespace Deicer\Pubsub;
 
 /**
  * Interface for builders that assemble events to be raised by publishers
  *
  * @category   Deicer
- * @package    Stdlib
- * @subpackage Pubsub
+ * @package    Pubsub
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com>

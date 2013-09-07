@@ -4,7 +4,7 @@ namespace Deicer\Query\Event;
 
 use Deicer\Query\ParameterizedQueryInterface;
 use Deicer\Query\Event\QueryEventInterface;
-use Deicer\Stdlib\Pubsub\EventInterface;
+use Deicer\Pubsub\EventInterface;
 use Deicer\Stdlib\ParameterProviderInterface;
 
 /**

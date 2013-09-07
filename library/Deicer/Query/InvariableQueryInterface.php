@@ -6,7 +6,7 @@ use Deicer\Query\QueryInterface;
 use Deicer\Query\Event\InvariableQueryEventBuilderInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 use Deicer\Stdlib\Exe\ExecutableInterface;
-use Deicer\Stdlib\Pubsub\PublisherInterface;
+use Deicer\Pubsub\PublisherInterface;
 
 /**
  * {@inheritdoc}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Deicer\Stdlib\Pubsub;
+namespace Deicer\Pubsub;
 
 /**
  * Interface for objects that can publish events to subscribers
@@ -8,8 +8,7 @@ namespace Deicer\Stdlib\Pubsub;
  * Api implies topic based filtering upon subscription
  *
  * @category   Deicer
- * @package    Stdlib
- * @subpackage Pubsub
+ * @package    Pubsub
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com>

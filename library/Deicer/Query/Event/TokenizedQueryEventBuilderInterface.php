@@ -2,7 +2,7 @@
 
 namespace Deicer\Query\Event;
 
-use Deicer\Stdlib\Pubsub\EventBuilderInterface;
+use Deicer\Pubsub\EventBuilderInterface;
 
 /**
  * Marker interface for concrete Tokenized Query Event Builder
