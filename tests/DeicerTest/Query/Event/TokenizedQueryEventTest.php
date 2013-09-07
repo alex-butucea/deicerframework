@@ -115,7 +115,7 @@ class TokenizedQueryEventTest extends \PHPUnit_Framework_TestCase
             'failure_data_type',
             $content,
             $publisher,
-            'foobar'    
+            'foobar',
         );
         $fixture->addElapsedTime(567);
 
