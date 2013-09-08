@@ -1,5 +1,4 @@
-Model Component
-===============
+# Model Component
 A pair of abstract classes to serve as the base for your Data Transfer Objects or models in your application.
 Classes support array hydration and extraction to allow easy initialization and data transfer.
 Simply extend the two abstract classes below to provide a consistent, Composite Pattern API for your models.

@@ -1,24 +1,19 @@
-Deicer Framework
-==============
-A collection of solutions to common challenges encountered while developing PHP applications.
-Framework components have been implemented using recognised design patterns that promote loosely coupled, easily testable code.
-All code has been written with standards in mind and is PSR-2 compliant.
+# Deicer Framework
+A PSR-2 compliant Data Access Layer framework for modern PHP applications.
 
 This is very much a work in progress, however if this helps you or you're just passing through and like what you see, feel free to drop me a line.
 
-Framework Components
---------------------
+## Framework Components
 The framework is comprised of the following components:
 
-- Deicer\Exception - Semantic exception hierarchy
-- Deicer\Model - DTO and model abstracts
-- Deicer\Query - Read only Data Access Objects
-- Deicer\Stdlib - Generic interfaces and implementations
+- `Deicer\Exception` - Semantic exception hierarchy
+- `Deicer\Model` - Base classes for DTO and Value Objects
+- `Deicer\Query` - Read only Data Access Objects
+- `Deicer\Stdlib` - Generic interfaces
 
-See the README.md contained within the root of each component for more info
+See the README.md contained within the root of each component for more info.
 
-System Requirements
--------------------
+## System Requirements
 Deicer Framework requires PHP 5.3.3 or later.
 
 ---------------------------------------------------
