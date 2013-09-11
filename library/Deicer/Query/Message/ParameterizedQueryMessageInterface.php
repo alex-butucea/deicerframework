@@ -34,7 +34,8 @@ interface ParameterizedQueryMessageInterface extends
      * 
      * @const string
      */
-    const SERIALIZED_FORMAT = 'Parameterized Query Execution: %s | Result: "%s" | Elapsed Time: %dms | Params: %s | Content: %s';
+    const SERIALIZED_FORMAT =
+        'Parameterized Query Execution: %s | Result: "%s" | Elapsed Time: %dms | Params: %s | Content: %s';
 
     /**
      * Parameterized query constructor

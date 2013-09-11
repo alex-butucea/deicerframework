@@ -33,7 +33,8 @@ interface TokenizedQueryMessageInterface extends
      * 
      * @const string
      */
-    const SERIALIZED_FORMAT = 'Tokenized Query Execution: %s | Result: "%s" | Elapsed Time: %dms | Token: "%s" | Content: %s';
+    const SERIALIZED_FORMAT =
+        'Tokenized Query Execution: %s | Result: "%s" | Elapsed Time: %dms | Token: "%s" | Content: %s';
 
     /**
      * Tokenized query constructor
