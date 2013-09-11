@@ -10,7 +10,7 @@
 namespace Deicer\Query;
 
 use Deicer\Query\QueryInterface;
-use Deicer\Query\Message\InvariableQueryMessageInterface;
+use Deicer\Query\Message\QueryMessageTopic;
 use Deicer\Query\Exception\DataTypeException;
 use Deicer\Query\Exception\DataFetchException;
 use Deicer\Query\Exception\ModelHydratorException;
@@ -114,8 +114,8 @@ abstract class AbstractQuery
 
             // Build message based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
-                InvariableQueryMessageInterface::TOPIC_FALLBACK_DATA_FETCH :
-                InvariableQueryMessageInterface::TOPIC_FAILURE_DATA_FETCH;
+                QueryMessageTopic::FALLBACK_DATA_FETCH :
+                QueryMessageTopic::FAILURE_DATA_FETCH;
             $message = $this->messageBuilder
                 ->withTopic($topic)
                 ->withContent(array ())
@@ -142,8 +142,8 @@ abstract class AbstractQuery
         // Enforce returned data type strength if no decorated query exists
         if (! is_array($data)) {
             $topic = ($this->decorated) ?
-                InvariableQueryMessageInterface::TOPIC_FALLBACK_DATA_TYPE :
-                InvariableQueryMessageInterface::TOPIC_FAILURE_DATA_TYPE;
+                QueryMessageTopic::FALLBACK_DATA_TYPE :
+                QueryMessageTopic::FAILURE_DATA_TYPE;
             $message = $this->messageBuilder
                 ->withTopic($topic)
                 ->withContent(array ())
@@ -172,8 +172,8 @@ abstract class AbstractQuery
 
             // Build message based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
-                InvariableQueryMessageInterface::TOPIC_FALLBACK_MODEL_HYDRATOR :
-                InvariableQueryMessageInterface::TOPIC_FAILURE_MODEL_HYDRATOR;
+                QueryMessageTopic::FALLBACK_MODEL_HYDRATOR :
+                QueryMessageTopic::FAILURE_MODEL_HYDRATOR;
             $message = $this->messageBuilder
                 ->withTopic($topic)
                 ->withContent($data)
@@ -200,7 +200,7 @@ abstract class AbstractQuery
 
         // Notify subscribers of successful query execution
         $message = $this->messageBuilder
-            ->withTopic(InvariableQueryMessageInterface::TOPIC_SUCCESS)
+            ->withTopic(QueryMessageTopic::SUCCESS)
             ->withContent($data)
             ->build()
             ->addElapsedTime((int) (round(microtime() * 1000) - $time));
