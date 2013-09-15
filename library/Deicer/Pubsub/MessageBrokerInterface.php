@@ -25,7 +25,7 @@ use Deicer\Pubsub\SubscriberInterface;
 interface MessageBrokerInterface
 {
     /**
-     * Add a set of subscribers to the pool
+     * Register a set of subscribers to receive messages
      *
      * @throws LengthException If $subscribers is empty
      * @throws InvalidArgumentException If $subscribers contains non SubscriberInterface
@@ -35,7 +35,7 @@ interface MessageBrokerInterface
     public function addSubscribers(array $subscribers);
 
     /**
-     * Add a subscriber to the pool
+     * Register a subscriber to receive messages
      *
      * @param  SubscriberInterface $subscriber The subscriber to add
      * @return int Index of the subscriber added
@@ -43,7 +43,7 @@ interface MessageBrokerInterface
     public function addSubscriber(SubscriberInterface $subscriber);
 
     /**
-     * Remove a subscriber from the pool
+     * Unregister a subscriber
      *
      * @throws InvalidArgumentException If $index is a non int
      * @throws OutOfRangeException If no subscriber exists at $index
