@@ -77,16 +77,7 @@ abstract class AbstractMessageBroker
      */
     public function removeSubscriber($index)
     {
-        if (!is_int($index)) {
-            throw new \InvalidArgumentException(
-                'Non int $index passed in: ' . __METHOD__
-            );
-        } elseif (empty($this->subscribers[$index])) {
-            throw new \OutOfRangeException(
-                'Non-existent subscriber $index in: ' . __METHOD__
-            );
-        }
-
+        $this->validateSubscriberIndex($index, __FUNCTION__);
         unset($this->subscribers[$index]);
         return $this;
     }
@@ -101,5 +92,28 @@ abstract class AbstractMessageBroker
         }
 
         return $this;
+    }
+
+    /**
+     * Validates a subscriber index by throwing an exception if invalid
+     *
+     * @throws InvalidArgumentException If $subscriberIndex is a non int
+     * @throws OutOfRangeException If no subscriber exists at $index
+     * @param  int $index The subscriber index to validate
+     * @param  int $invoker Method name that invoked validation
+     *
+     * @return void
+     */
+    protected function validateSubscriberIndex($index, $invoker)
+    {
+        if (!is_int($index)) {
+            throw new \InvalidArgumentException(
+                'Non int $index passed in: ' . __CLASS__ . '::' . $invoker
+            );
+        } elseif (empty($this->subscribers[$index])) {
+            throw new \OutOfRangeException(
+                'Non-existent subscriber $index in: ' . __CLASS__ . '::' . $invoker
+            );
+        }
     }
 }
