@@ -26,6 +26,7 @@ class UnfilteredMessageBrokerTest extends \PHPUnit_Framework_TestCase
     public $fixture;
     public $message;
     public $publisher;
+    public $subscriber;
 
     public function setUp()
     {
