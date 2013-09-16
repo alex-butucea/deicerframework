@@ -25,4 +25,15 @@ use Deicer\Pubsub\UnfilteredMessageBrokerInterface;
 class UnfilteredMessageBroker extends AbstractMessageBroker implements
     UnfilteredMessageBrokerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function publish(MessageInterface $message)
+    {
+        foreach ($this->subscribers as $sub) {
+            $sub->update($message);
+        }
+
+        return $this;
+    }
 }

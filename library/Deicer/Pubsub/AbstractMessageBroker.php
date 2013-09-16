@@ -83,18 +83,6 @@ abstract class AbstractMessageBroker
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function publish(MessageInterface $message)
-    {
-        foreach ($this->subscribers as $sub) {
-            $sub->update($message);
-        }
-
-        return $this;
-    }
-
-    /**
      * Validates a subscriber index by throwing an exception if invalid
      *
      * @throws InvalidArgumentException If $subscriberIndex is a non int
