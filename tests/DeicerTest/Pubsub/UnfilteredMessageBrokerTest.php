@@ -97,6 +97,20 @@ class UnfilteredMessageBrokerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(3, $this->fixture->addSubscriber($this->subscriber));
     }
 
+    public function testAddSubscriberEnsuresMessageDelivery()
+    {
+        $foo = $this->getMock('Deicer\Pubsub\SubscriberInterface');
+        $bar = $this->getMock('Deicer\Pubsub\SubscriberInterface');
+        $baz = $this->getMock('Deicer\Pubsub\SubscriberInterface');
+
+        $foo->expects($this->once())->method('update')->with($this->message);
+        $bar->expects($this->once())->method('update')->with($this->message);
+        $baz->expects($this->once())->method('update')->with($this->message);
+
+        $this->fixture->addSubscribers(array ($foo, $bar, $baz));
+        $this->fixture->publish($this->message);
+    }
+
     public function testRemoveSubscriberImplementsFluentInterface()
     {
         $index  = $this->fixture->addSubscriber($this->subscriber);
@@ -122,17 +136,18 @@ class UnfilteredMessageBrokerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($actual, $this->fixture);
     }
 
-    public function testPublishDistributesCorrectMessage()
+    public function testRemoveSubscriberEnsuresNoMessageDelivery()
     {
         $foo = $this->getMock('Deicer\Pubsub\SubscriberInterface');
         $bar = $this->getMock('Deicer\Pubsub\SubscriberInterface');
         $baz = $this->getMock('Deicer\Pubsub\SubscriberInterface');
 
         $foo->expects($this->once())->method('update')->with($this->message);
-        $bar->expects($this->once())->method('update')->with($this->message);
+        $bar->expects($this->never())->method('update');
         $baz->expects($this->once())->method('update')->with($this->message);
 
         $this->fixture->addSubscribers(array ($foo, $bar, $baz));
+        $this->fixture->removeSubscriber(1);
         $this->fixture->publish($this->message);
     }
 }
