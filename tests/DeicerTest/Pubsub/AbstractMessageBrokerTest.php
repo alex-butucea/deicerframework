@@ -114,17 +114,6 @@ abstract class AbstractMessageBrokerTest extends \PHPUnit_Framework_TestCase
         $this->fixture->removeSubscriber(2);
     }
 
-    public function testRemoveSubscriberEnsuresNoMessageDelivery()
-    {
-        $this->subscribers[0]->expects($this->once())->method('update')->with($this->message);
-        $this->subscribers[1]->expects($this->never())->method('update');
-        $this->subscribers[2]->expects($this->once())->method('update')->with($this->message);
-
-        $this->fixture->addSubscribers($this->subscribers);
-        $this->fixture->removeSubscriber(1);
-        $this->fixture->publish($this->message);
-    }
-
     public function testPublishImplementsFluentInterface()
     {
         $actual = $this->fixture->publish($this->message);
