@@ -32,15 +32,23 @@ class UnfilteredMessageBrokerTest extends AbstractMessageBrokerTest
 
     public function testAddSubscriberEnsuresMessageDelivery()
     {
-        $foo = $this->getMock('Deicer\Pubsub\SubscriberInterface');
-        $bar = $this->getMock('Deicer\Pubsub\SubscriberInterface');
-        $baz = $this->getMock('Deicer\Pubsub\SubscriberInterface');
+        $this->subscribers[0]->expects($this->once())->method('update')->with($this->message);
+        $this->subscribers[1]->expects($this->once())->method('update')->with($this->message);
+        $this->subscribers[2]->expects($this->once())->method('update')->with($this->message);
 
-        $foo->expects($this->once())->method('update')->with($this->message);
-        $bar->expects($this->once())->method('update')->with($this->message);
-        $baz->expects($this->once())->method('update')->with($this->message);
+        $this->fixture->addSubscriber($this->subscribers[0]);
+        $this->fixture->addSubscriber($this->subscribers[1]);
+        $this->fixture->addSubscriber($this->subscribers[2]);
+        $this->fixture->publish($this->message);
+    }
 
-        $this->fixture->addSubscribers(array ($foo, $bar, $baz));
+    public function testAddSubscribersEnsuresMessageDelivery()
+    {
+        $this->subscribers[0]->expects($this->once())->method('update')->with($this->message);
+        $this->subscribers[1]->expects($this->once())->method('update')->with($this->message);
+        $this->subscribers[2]->expects($this->once())->method('update')->with($this->message);
+
+        $this->fixture->addSubscribers($this->subscribers);
         $this->fixture->publish($this->message);
     }
 
@@ -52,6 +60,17 @@ class UnfilteredMessageBrokerTest extends AbstractMessageBrokerTest
 
         $this->fixture->addSubscribers($this->subscribers);
         $this->fixture->removeSubscriber(1);
+        $this->fixture->publish($this->message);
+    }
+
+    public function testRemoveSubscribersEnsuresNoMessageDelivery()
+    {
+        $this->subscribers[0]->expects($this->once())->method('update')->with($this->message);
+        $this->subscribers[1]->expects($this->never())->method('update');
+        $this->subscribers[2]->expects($this->never())->method('update');
+
+        $this->fixture->addSubscribers($this->subscribers);
+        $this->fixture->removeSubscribers(array (1, 2));
         $this->fixture->publish($this->message);
     }
 }

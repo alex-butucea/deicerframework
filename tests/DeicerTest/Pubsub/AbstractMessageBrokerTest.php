@@ -95,10 +95,29 @@ abstract class AbstractMessageBrokerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(3, $this->fixture->addSubscriber($this->subscriber));
     }
 
+    public function testRemoveSubscribersImplementsFluentInterface()
+    {
+        $this->fixture->addSubscriber($this->subscriber);
+        $actual = $this->fixture->removeSubscriber(0);
+        $this->assertSame($actual, $this->fixture);
+    }
+
+    public function testRemoveSubscribersWithNonIntIndexThrowsException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->fixture->removeSubscribers(array ('foo'));
+    }
+
+    public function testRemoveSubscribersWithNonExistentIndexThrowsException()
+    {
+        $this->setExpectedException('OutOfRangeException');
+        $this->fixture->removeSubscribers(array (2));
+    }
+
     public function testRemoveSubscriberImplementsFluentInterface()
     {
-        $index  = $this->fixture->addSubscriber($this->subscriber);
-        $actual = $this->fixture->removeSubscriber($index);
+        $this->fixture->addSubscriber($this->subscriber);
+        $actual = $this->fixture->removeSubscriber(0);
         $this->assertSame($actual, $this->fixture);
     }
 

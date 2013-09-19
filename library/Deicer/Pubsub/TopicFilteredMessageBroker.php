@@ -34,13 +34,29 @@ class TopicFilteredMessageBroker extends AbstractMessageBroker implements
 
     /**
      * {@inheritdoc}
-     * 
+     *
      * Also clears topic filters
      */
     public function removeSubscriber($index)
     {
         parent::removeSubscriber($index);
         unset($this->subscriptions[$index]);
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Also clears topic filters
+     */
+    public function removeSubscribers(array $subscriberIndices)
+    {
+        parent::removeSubscribers($subscriberIndices);
+
+        foreach ($subscriberIndices as $index) {
+            unset($this->subscriptions[$index]);
+        }
+
         return $this;
     }
 

@@ -75,6 +75,22 @@ abstract class AbstractMessageBroker
     /**
      * {@inheritdoc}
      */
+    public function removeSubscribers(array $subscriberIndices)
+    {
+        foreach ($subscriberIndices as $index) {
+            $this->validateSubscriberIndex($index, __FUNCTION__);
+        }
+
+        foreach ($subscriberIndices as $index) {
+            unset($this->subscribers[$index]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function removeSubscriber($index)
     {
         $this->validateSubscriberIndex($index, __FUNCTION__);

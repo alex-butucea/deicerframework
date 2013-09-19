@@ -30,6 +30,36 @@ class TopicFilteredMessageBrokerTest extends AbstractMessageBrokerTest
         parent::setUp();
     }
 
+    public function testRemoveSubscribersEnsuresNoMessageDelivery()
+    {
+        $this->subscribers[0]->expects($this->once())->method('update')->with($this->message);
+        $this->subscribers[1]->expects($this->never())->method('update');
+        $this->subscribers[2]->expects($this->never())->method('update');
+
+        $this->fixture->addSubscribers($this->subscribers);
+        $this->fixture->subscribeToTopic(0, 'foobar');
+        $this->fixture->subscribeToTopic(1, 'foobar');
+        $this->fixture->subscribeToTopic(2, 'foobar');
+        $this->fixture->removeSubscribers(array (1, 2));
+        $this->fixture->publish($this->message);
+    }
+
+    public function testRemoveSubscribersAlsoRemovesTopicFilters()
+    {
+        $this->subscribers[0]->expects($this->once())->method('update')->with($this->message);
+        $this->subscribers[1]->expects($this->never())->method('update');
+        $this->subscribers[2]->expects($this->never())->method('update');
+
+        $this->fixture->addSubscribers($this->subscribers);
+        $this->fixture->subscribeToTopic(0, 'foobar');
+        $this->fixture->subscribeToTopic(1, 'foobar');
+        $this->fixture->subscribeToTopic(2, 'foobar');
+        $this->fixture->removeSubscribers(array (1, 2));
+        $this->fixture->addSubscriber($this->subscribers[1]);
+        $this->fixture->addSubscriber($this->subscribers[2]);
+        $this->fixture->publish($this->message);
+    }
+
     public function testRemoveSubscriberEnsuresNoMessageDelivery()
     {
         $this->subscribers[0]->expects($this->once())->method('update')->with($this->message);

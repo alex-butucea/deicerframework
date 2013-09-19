@@ -29,6 +29,7 @@ interface MessageBrokerInterface
      *
      * @throws LengthException If $subscribers is empty
      * @throws InvalidArgumentException If $subscribers contains non SubscriberInterface
+     *
      * @param  array $subscribers List of subscribers to add to pool
      * @return array Subscribers re-indexed by their new pool index
      */
@@ -41,6 +42,18 @@ interface MessageBrokerInterface
      * @return int Index of the subscriber added
      */
     public function addSubscriber(SubscriberInterface $subscriber);
+
+    /**
+     * Unregister a set of subscribers
+     *
+     * @throws LengthException If $subscriberIndices is empty
+     * @throws InvalidArgumentException If $subscriberIndices contains non int
+     * @throws OutOfRangeException If $subscriberIndices contains nonexistent index
+     *
+     * @param  int $subscriberIndices The indices of the subscribers to remove
+     * @return MessageBrokerInterface Fluent interface
+     */
+    public function removeSubscribers(array $subscriberIndices);
 
     /**
      * Unregister a subscriber
