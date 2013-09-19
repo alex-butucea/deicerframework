@@ -110,14 +110,7 @@ class TopicFilteredMessageBrokerTest extends AbstractMessageBrokerTest
     {
         $this->fixture->addSubscriber($this->subscriber);
         $this->setExpectedException('InvalidArgumentException');
-        $this->fixture->subscribeToTopic(0, new \stdClass());
-    }
-
-    public function testSubscribeToTopicWithNonStringTopicArrayThrowsException()
-    {
-        $this->fixture->addSubscriber($this->subscriber);
-        $this->setExpectedException('InvalidArgumentException');
-        $this->fixture->subscribeToTopic(0, array ('foo', array (), 'bar'));
+        $this->fixture->subscribeToTopic(0, array ());
     }
 
     public function testSubscribeToTopicWithEmptyTopicThrowsException()
@@ -130,10 +123,10 @@ class TopicFilteredMessageBrokerTest extends AbstractMessageBrokerTest
     public function testSubscribeToTopicWithNonExistentSubscriberIndexThrowsException()
     {
         $this->setExpectedException('OutOfRangeException');
-        $this->fixture->unsubscribeFromTopic(0, 'foo');
+        $this->fixture->subscribeToTopic(0, 'foo');
     }
 
-    public function testSubscribeToTopicWithSingleTopicSubscribesSubscriberToTopicOnce()
+    public function testSubscribeToTopicSubscribesSubscriberToTopicOnce()
     {
         $this->subscribers[0]->expects($this->once())->method('update')->with($this->message);
         $this->subscribers[1]->expects($this->never())->method('update');
@@ -149,18 +142,45 @@ class TopicFilteredMessageBrokerTest extends AbstractMessageBrokerTest
         $this->fixture->publish($this->message);
     }
 
-    public function testSubscribeToTopicWithTopicArraySubscribesSubscriberToUniqueTopicsOnce()
+    public function testSubscribeToTopicsImplementsFluentInterface()
+    {
+        $this->fixture->addSubscriber($this->subscriber);
+        $actual = $this->fixture->subscribeToTopics(0, array ('foo'));
+        $this->assertSame($actual, $this->fixture);
+    }
+
+    public function testSubscribeToTopicsWithTopicsContainingNonStringThrowsException()
+    {
+        $this->fixture->addSubscriber($this->subscriber);
+        $this->setExpectedException('InvalidArgumentException');
+        $this->fixture->subscribeToTopics(0, array ('foo', array (), 'bar'));
+    }
+
+    public function testSubscribeToTopicsWithTopicsContainingEmptyStringThrowsException()
+    {
+        $this->fixture->addSubscriber($this->subscriber);
+        $this->setExpectedException('InvalidArgumentException');
+        $this->fixture->subscribeToTopics(0, array (''));
+    }
+
+    public function testSubscribeToTopicsWithNonExistentSubscriberIndexThrowsException()
+    {
+        $this->setExpectedException('OutOfRangeException');
+        $this->fixture->subscribeToTopics(0, array('foo'));
+    }
+
+    public function testSubscribeToTopicsSubscribesSubscriberToUniqueTopicsOnce()
     {
         $this->subscribers[0]->expects($this->once())->method('update')->with($this->message);
         $this->subscribers[1]->expects($this->never())->method('update');
         $this->subscribers[2]->expects($this->once())->method('update')->with($this->message);
 
         $this->fixture->addSubscribers($this->subscribers);
-        $this->fixture->subscribeToTopic(0, array ('foobar', 'foobar'));
-        $this->fixture->subscribeToTopic(1, array ('foobaz'));
-        $this->fixture->subscribeToTopic(2, array ('qux', 'baz'));
-        $this->fixture->subscribeToTopic(2, array ('foo'));
-        $this->fixture->subscribeToTopic(2, array ('foo', 'foobar'));
+        $this->fixture->subscribeToTopics(0, array ('foobar', 'foobar'));
+        $this->fixture->subscribeToTopics(1, array ('foobaz'));
+        $this->fixture->subscribeToTopics(2, array ('qux', 'baz'));
+        $this->fixture->subscribeToTopics(2, array ('foo'));
+        $this->fixture->subscribeToTopics(2, array ('foo', 'foobar'));
 
         $this->fixture->publish($this->message);
     }
@@ -176,14 +196,7 @@ class TopicFilteredMessageBrokerTest extends AbstractMessageBrokerTest
     {
         $this->fixture->addSubscriber($this->subscriber);
         $this->setExpectedException('InvalidArgumentException');
-        $this->fixture->unsubscribeFromTopic(0, new \stdClass());
-    }
-
-    public function testUnsubscribeFromTopicWithNonStringTopicArrayThrowsException()
-    {
-        $this->fixture->addSubscriber($this->subscriber);
-        $this->setExpectedException('InvalidArgumentException');
-        $this->fixture->unsubscribeFromTopic(0, array ('foo', array (), 'bar'));
+        $this->fixture->unsubscribeFromTopic(0, array ());
     }
 
     public function testUnsubscribeFromTopicWithEmptyTopicThrowsException()
@@ -199,7 +212,7 @@ class TopicFilteredMessageBrokerTest extends AbstractMessageBrokerTest
         $this->fixture->unsubscribeFromTopic(0, 'foo');
     }
 
-    public function testUnsubscribeFromTopicWithSingleTopicUnsubscribesSubscriberFromTopic()
+    public function testUnsubscribeFromTopicUnsubscribesSubscriberFromTopic()
     {
         $this->subscribers[0]->expects($this->once())->method('update')->with($this->message);
         $this->subscribers[1]->expects($this->never())->method('update');
@@ -218,7 +231,34 @@ class TopicFilteredMessageBrokerTest extends AbstractMessageBrokerTest
         $this->fixture->publish($this->message);
     }
 
-    public function testUnsubscribeFromTopicWithTopicArrayUnsubscribesSubscriberFromTopics()
+    public function testUnsubscribeFromTopicsImplementsFluentInterface()
+    {
+        $this->fixture->addSubscriber($this->subscriber);
+        $actual = $this->fixture->unsubscribeFromTopics(0, array ('foo'));
+        $this->assertSame($actual, $this->fixture);
+    }
+
+    public function testUnsubscribeFromTopicsWithTopicsContainingNonStringThrowsException()
+    {
+        $this->fixture->addSubscriber($this->subscriber);
+        $this->setExpectedException('InvalidArgumentException');
+        $this->fixture->unsubscribeFromTopics(0, array ('foo', array (), 'bar'));
+    }
+
+    public function testUnsubscribeFromTopicsWithTopicsContainingEmptyStringThrowsException()
+    {
+        $this->fixture->addSubscriber($this->subscriber);
+        $this->setExpectedException('InvalidArgumentException');
+        $this->fixture->unsubscribeFromTopics(0, array (''));
+    }
+
+    public function testUnsubscribeFromTopicsWithNonExistentSubscriberIndexThrowsException()
+    {
+        $this->setExpectedException('OutOfRangeException');
+        $this->fixture->unsubscribeFromTopics(0, array ('foo'));
+    }
+
+    public function testUnsubscribeFromTopicsUnsubscribesSubscriberFromTopics()
     {
         $this->subscribers[0]->expects($this->once())->method('update')->with($this->message);
         $this->subscribers[1]->expects($this->never())->method('update');
@@ -228,9 +268,9 @@ class TopicFilteredMessageBrokerTest extends AbstractMessageBrokerTest
         $this->fixture->subscribeToTopic(0, 'foobar');
         $this->fixture->subscribeToTopic(1, 'foobar');
         $this->fixture->subscribeToTopic(2, 'foobar');
-        $this->fixture->unsubscribeFromTopic(0, array ('foo', 'bar'));
-        $this->fixture->unsubscribeFromTopic(1, array ('foobar', 'foobaz'));
-        $this->fixture->unsubscribeFromTopic(2, array ('qux'));
+        $this->fixture->unsubscribeFromTopics(0, array ('foo', 'bar'));
+        $this->fixture->unsubscribeFromTopics(1, array ('foobar', 'foobaz'));
+        $this->fixture->unsubscribeFromTopics(2, array ('qux'));
 
         $this->fixture->publish($this->message);
     }

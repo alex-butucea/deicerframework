@@ -26,34 +26,58 @@ use Deicer\Pubsub\MessageBrokerInterface;
 interface TopicFilteredMessageBrokerInterface extends MessageBrokerInterface
 {
     /**
-     * Subscribes a registered subscriber to a given topic(s)
+     * Subscribes a registered subscriber to a given topic
      * 
      * @throws InvalidArgumentException If $subscriberIndex is non int
      * @throws OutOfRangeException If no subscriber exists at $index
      * @throws InvalidArgumentException If $topic is non string
-     * @throws InvalidArgumentException If $topic is non array
-     * @throws InvalidArgumentException If $topic is array containing non string
      * 
-     * @param  int $subscriberIndex Index of pooled subscriber
-     * @param  string|array $topic Topic / list of topics
+     * @param  int $subscriberIndex Index of registered subscriber
+     * @param  string $topic Topic to subscribe to
      * 
      * @return TopicFilteredMessageBrokerInterface Fluent interface
      */
     public function subscribeToTopic($subscriberIndex, $topic);
 
     /**
-     * Unsubscribes a registered subscriber from a given topic(s)
+     * Subscribes a registered subscriber to a given list of topics
+     * 
+     * @throws InvalidArgumentException If $subscriberIndex is non int
+     * @throws OutOfRangeException If no subscriber exists at $index
+     * @throws InvalidArgumentException If $topics contains non string
+     * 
+     * @param  int $subscriberIndex Index of registered subscriber
+     * @param  array $topics List of topics to subscribe to
+     * 
+     * @return TopicFilteredMessageBrokerInterface Fluent interface
+     */
+    public function subscribeToTopics($subscriberIndex, array $topics);
+
+    /**
+     * Unsubscribes a registered subscriber from a given topic
      * 
      * @throws InvalidArgumentException If $subscriberIndex is non int
      * @throws OutOfRangeException If no subscriber exists at $index
      * @throws InvalidArgumentException If $topic is non string
-     * @throws InvalidArgumentException If $topic is non array
-     * @throws InvalidArgumentException If $topic is array containing non string
      * 
-     * @param  int $subscriberIndex Index of pooled subscriber
-     * @param  string|array $topic Topic / list of topics
+     * @param  int $subscriberIndex Index of registered subscriber
+     * @param  string $topic Topic to unsubscribe from
      * 
      * @return TopicFilteredMessageBrokerInterface Fluent interface
      */
     public function unsubscribeFromTopic($subscriberIndex, $topic);
+
+    /**
+     * Unsubscribes a registered subscriber from a given list of topics
+     * 
+     * @throws InvalidArgumentException If $subscriberIndex is non int
+     * @throws OutOfRangeException If no subscriber exists at $index
+     * @throws InvalidArgumentException If $topics contains non string
+     * 
+     * @param  int $subscriberIndex Index of pooled subscriber
+     * @param  array $topics List of topics to unsubscribe from
+     * 
+     * @return TopicFilteredMessageBrokerInterface Fluent interface
+     */
+    public function unsubscribeFromTopics($subscriberIndex, array $topics);
 }

@@ -86,23 +86,39 @@ class TopicFilteredMessageBroker extends AbstractMessageBroker implements
         $this->validateSubscriberIndex($subscriberIndex, __FUNCTION__);
         $this->validateTopic($topic, __FUNCTION__);
 
-        // Normalize subscriptions and dont over-subscribe
+        // Normalize subscriptions
         if (empty($this->subscriptions[$subscriberIndex])) {
             $this->subscriptions[$subscriberIndex] = array ();
         }
         
         // Subscribe to topic once only
-        if (is_string($topic)) {
-            if (!in_array($topic, $this->subscriptions[$subscriberIndex])) {
-                $this->subscriptions[$subscriberIndex][] = $topic;
-            }
-        } elseif (is_array($topic)) {
-            foreach ($topic as $top) {
-                if (!in_array($top, $this->subscriptions[$subscriberIndex])) {
-                    $this->subscriptions[$subscriberIndex][] = $top;
-                }
-            }
+        if (!in_array($topic, $this->subscriptions[$subscriberIndex])) {
+            $this->subscriptions[$subscriberIndex][] = $topic;
         }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function subscribeToTopics($subscriberIndex, array $topics)
+    {
+        $this->validateSubscriberIndex($subscriberIndex, __FUNCTION__);
+        foreach ($topics as $topic) {
+            $this->validateTopic($topic, __FUNCTION__);
+        }
+
+        // Normalize subscriptions
+        if (empty($this->subscriptions[$subscriberIndex])) {
+            $this->subscriptions[$subscriberIndex] = array ();
+        }
+
+        // Dont over subscribe
+        $this->subscriptions[$subscriberIndex] = array_merge(
+            $this->subscriptions[$subscriberIndex],
+            $topics
+        );
 
         return $this;
     }
@@ -121,17 +137,32 @@ class TopicFilteredMessageBroker extends AbstractMessageBroker implements
         }
 
         $topics = array_flip($this->subscriptions[$subscriberIndex]);
-        if (is_string($topic)) {
-            if (isset($topics[$topic])) {
-                unset($this->subscriptions[$subscriberIndex][$topics[$topic]]);
-            }
-        } elseif (is_array($topic)) {
-            foreach ($topic as $top) {
-                if (isset($topics[$top])) {
-                    unset($this->subscriptions[$subscriberIndex][$topics[$top]]);
-                }
-            }
+        if (isset($topics[$topic])) {
+            unset($this->subscriptions[$subscriberIndex][$topics[$topic]]);
         }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unsubscribeFromTopics($subscriberIndex, array $topics)
+    {
+        $this->validateSubscriberIndex($subscriberIndex, __FUNCTION__);
+        foreach ($topics as $topic) {
+            $this->validateTopic($topic, __FUNCTION__);
+        }
+
+        // Not subscribed to any topics - no futher action required
+        if (empty($this->subscriptions[$subscriberIndex])) {
+            return $this;
+        }
+
+        $this->subscriptions[$subscriberIndex] = array_diff(
+            $this->subscriptions[$subscriberIndex],
+            $topics
+        );
 
         return $this;
     }
@@ -139,16 +170,13 @@ class TopicFilteredMessageBroker extends AbstractMessageBroker implements
     /**
      * Validates a topic by throwing an exception if invalid
      *
-     * @throws InvalidArgumentException If $topic is non string or array
-     * @throws InvalidArgumentException If $topic is array containing non string
-     *
+     * @throws InvalidArgumentException If $topic is non string
      * @param  int $invoker Method name that invoked validation
-     *
      * @return void
      */
     public function validateTopic($topic, $invoker)
     {
-        if (!is_string($topic) && !is_array($topic)) {
+        if (!is_string($topic)) {
             throw new \InvalidArgumentException(
                 'Non string|array $topic passed in: '
                 . __CLASS__ . '::' . $invoker
@@ -159,22 +187,5 @@ class TopicFilteredMessageBroker extends AbstractMessageBroker implements
                 . __CLASS__ . '::' . $invoker
             );
         }
-
-        // Validate array elements if several topics passed
-        if (is_array($topic)) {
-            foreach ($topic as $top) {
-                if (!is_string($top)) {
-                    throw new \InvalidArgumentException(
-                        'Non string containing array $topic passed in: ' .
-                        __CLASS__ . '::' . $invoker
-                    );
-                }
-            }
-        }
-    }
-
-    protected function innerUnsubscribeFromTopic($subscriberIndex, $topic)
-    {
-
     }
 }
