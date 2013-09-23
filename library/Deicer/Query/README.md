@@ -227,7 +227,7 @@ class Logger implements SubcriberInterface
          $message = (string) $message;
 
         // Only failure messages are received - log as error
-        $this->write(LOG_ERR, $message);
+        $this->log('error', $message);
     }
 }
 
