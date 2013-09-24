@@ -15,7 +15,7 @@ use DeicerTest\Model\TestableModelComposite;
 use DeicerTest\Framework\TestCase;
 
 /**
- * Deicer Model Hydrator unit test suite
+ * Deicer Model Hydrator tests
  *
  * @category   DeicerTest
  * @package    Model

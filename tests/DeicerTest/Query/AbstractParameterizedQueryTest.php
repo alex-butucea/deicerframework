@@ -17,7 +17,7 @@ use DeicerTest\Query\TestableParameterizedQueryWithExceptionThrowingFetchData;
 use DeicerTest\Framework\TestCase;
 
 /**
- * Deicer Parameterized Query unit test suite
+ * Deicer Parameterized Query tests
  * 
  * @category   DeicerTest
  * @package    Query

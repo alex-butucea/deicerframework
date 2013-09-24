@@ -13,7 +13,7 @@ use DeicerTest\Framework\TestCase;
 use Deicer\Exception\Type\NonArrayException;
 
 /**
- * Deicer Array Type Exception unit test suite
+ * Deicer Array Type Exception tests
  * 
  * @category   DeicerTest
  * @package    Exception

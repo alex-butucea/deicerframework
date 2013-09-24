@@ -13,7 +13,7 @@ use DeicerTest\Framework\TestCase;
 use Deicer\Exception\Type\NonStringException;
 
 /**
- * Deicer String Type Exception unit test suite
+ * Deicer String Type Exception tests
  * 
  * @category   DeicerTest
  * @package    Exception

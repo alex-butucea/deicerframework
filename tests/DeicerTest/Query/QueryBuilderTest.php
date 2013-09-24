@@ -13,7 +13,7 @@ use Deicer\Query\QueryBuilder;
 use DeicerTest\Framework\TestCase;
 
 /**
- * Deicer Query Builder unit test suite
+ * Deicer Query Builder tests
  * 
  * @category   DeicerTest
  * @package    Query

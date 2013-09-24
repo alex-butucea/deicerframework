@@ -17,7 +17,7 @@ use DeicerTest\Query\TestableTokenizedQueryWithExceptionThrowingFetchData;
 use DeicerTest\Framework\TestCase;
 
 /**
- * Deicer Tokenized Query unit test suite
+ * Deicer Tokenized Query tests
  * 
  * @category   DeicerTest
  * @package    Query

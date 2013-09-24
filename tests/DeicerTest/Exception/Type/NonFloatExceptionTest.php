@@ -13,7 +13,7 @@ use DeicerTest\Framework\TestCase;
 use Deicer\Exception\Type\NonFloatException;
 
 /**
- * Deicer Float Type Exception unit test suite
+ * Deicer Float Type Exception tests
  * 
  * @category   DeicerTest
  * @package    Exception

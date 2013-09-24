@@ -13,7 +13,7 @@ use DeicerTest\Framework\TestCase;
 use Deicer\Exception\Type\NonIntException;
 
 /**
- * Deicer Int Type Exception unit test suite
+ * Deicer Int Type Exception tests
  * 
  * @category   DeicerTest
  * @package    Exception

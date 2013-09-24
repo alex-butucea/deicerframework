@@ -13,7 +13,7 @@ use DeicerTest\Framework\TestCase;
 use Deicer\Exception\Type\NonInstanceException;
 
 /**
- * Deicer Instance Type Exception unit test suite
+ * Deicer Instance Type Exception tests
  * 
  * @category   DeicerTest
  * @package    Exception

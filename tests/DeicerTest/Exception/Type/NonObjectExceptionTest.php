@@ -13,7 +13,7 @@ use DeicerTest\Framework\TestCase;
 use Deicer\Exception\Type\NonObjectException;
 
 /**
- * Deicer Object Type Exception unit test suite
+ * Deicer Object Type Exception tests
  * 
  * @category   DeicerTest
  * @package    Exception

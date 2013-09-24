@@ -13,7 +13,7 @@ use Deicer\Query\Message\TokenizedQueryMessageBuilder;
 use DeicerTest\Framework\TestCase;
 
 /**
- * Deicer Tokenized Query Message Builder unit test suite
+ * Deicer Tokenized Query Message Builder tests
  * 
  * @category   DeicerTest
  * @package    Query

@@ -13,7 +13,7 @@ use Deicer\Query\Message\InvariableQueryMessageBuilder;
 use DeicerTest\Framework\TestCase;
 
 /**
- * Deicer Invariable Query Message Builder unit test suite
+ * Deicer Invariable Query Message Builder tests
  * 
  * @category   DeicerTest
  * @package    Query

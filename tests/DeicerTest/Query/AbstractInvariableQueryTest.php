@@ -17,7 +17,7 @@ use DeicerTest\Query\TestableInvariableQueryWithExceptionThrowingFetchData;
 use DeicerTest\Framework\TestCase;
 
 /**
- * Deicer Invariable Query unit test suite
+ * Deicer Invariable Query tests
  * 
  * @category   DeicerTest
  * @package    Query

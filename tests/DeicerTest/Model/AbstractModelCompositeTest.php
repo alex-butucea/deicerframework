@@ -13,7 +13,7 @@ use Deicer\Model\ModelInterface;
 use DeicerTest\Framework\TestCase;
 
 /**
- * Abstract Deicer Model Composite unit test suite
+ * Abstract Deicer Model Composite tests
  * 
  * @category   DeicerTest
  * @package    Model

@@ -12,7 +12,7 @@ namespace DeicerTest\Model;
 use DeicerTest\Framework\TestCase;
 
 /**
- * Abstract Deicer Model unit test suite
+ * Abstract Deicer Model tests
  * 
  * @category   DeicerTest
  * @package    Model

@@ -13,7 +13,7 @@ use Deicer\Query\Message\ParameterizedQueryMessageBuilder;
 use DeicerTest\Framework\TestCase;
 
 /**
- * Deicer Parameterized Query Message Builder unit test suite
+ * Deicer Parameterized Query Message Builder tests
  * 
  * @category   DeicerTest
  * @package    Query

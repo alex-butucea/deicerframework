@@ -13,7 +13,7 @@ use DeicerTest\Framework\TestCase;
 use Deicer\Exception\Type\NonResourceException;
 
 /**
- * Deicer Resource Type Exception unit test suite
+ * Deicer Resource Type Exception tests
  * 
  * @category   DeicerTest
  * @package    Exception

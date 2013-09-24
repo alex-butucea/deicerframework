@@ -13,7 +13,7 @@ use DeicerTest\Framework\TestCase;
 use Deicer\Exception\Type\NonBoolException;
 
 /**
- * Deicer Bool Type Exception unit test suite
+ * Deicer Bool Type Exception tests
  * 
  * @category   DeicerTest
  * @package    Exception
