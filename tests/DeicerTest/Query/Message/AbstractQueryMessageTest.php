@@ -24,46 +24,17 @@ use \PHPUnit_Framework_TestCase as TestCase;
  */
 abstract class AbstractQueryMessageTest extends TestCase
 {
-    public $mockQuery;
-
     abstract public function fixtureFactory($topic, $content, $publisher);
-
-    public function testConstructorInternalisesTopic()
-    {
-        $fixture = $this->fixtureFactory('foo', null, $this->mockQuery);
-        $this->assertSame('foo', $fixture->getTopic());
-    }
-
-    public function testConstructorInternalisesContent()
-    {
-        $fixture = $this->fixtureFactory('', 'bar', $this->mockQuery);
-        $this->assertSame('bar', $fixture->getContent());
-    }
-
-    public function testConstructorInternalisesPublisher()
-    {
-        $fixture = $this->fixtureFactory('', 'bar', $this->mockQuery);
-        $this->assertSame($this->mockQuery, $fixture->getPublisher());
-    }
-
-    public function testConstructorTopicTypeStrength()
-    {
-        $this->setExpectedException('Deicer\Exception\Type\NonStringException');
-        $this->fixtureFactory(null, null, $this->mockQuery);
-        $this->fixtureFactory(1234, null, $this->mockQuery);
-        $this->fixtureFactory(array (), null, $this->mockQuery);
-        $this->fixtureFactory(new \stdClass(), null, $this->mockQuery);
-    }
 
     public function testGetElapsedTimeDefaultsToZero()
     {
-        $fixture = $this->fixtureFactory('', '', $this->mockQuery);
+        $fixture = $this->fixtureFactory('', '', $this->publisher);
         $this->assertSame(0, $fixture->getElapsedTime());
     }
 
     public function testAddElapsedTimeIncrementsCorrectly()
     {
-        $fixture = $this->fixtureFactory('', '', $this->mockQuery);
+        $fixture = $this->fixtureFactory('', '', $this->publisher);
         $fixture->addElapsedTime(0);
         $this->assertSame(0, $fixture->getElapsedTime());
         $fixture->addElapsedTime(123);
@@ -75,7 +46,7 @@ abstract class AbstractQueryMessageTest extends TestCase
     public function testAddElapsedTimeTypeStrength()
     {
         $this->setExpectedException('Deicer\Exception\Type\NonIntException');
-        $fixture = $this->fixtureFactory('', '', $this->mockQuery);
+        $fixture = $this->fixtureFactory('', '', $this->publisher);
         $fixture->addElapsedTime(null);
         $fixture->addElapsedTime('foo');
         $fixture->addElapsedTime(array ());
@@ -85,7 +56,7 @@ abstract class AbstractQueryMessageTest extends TestCase
     public function testAddElapsedTimeRejectsNegativeIntervals()
     {
         $this->setExpectedException('\RangeException');
-        $fixture = $this->fixtureFactory('', '', $this->mockQuery);
+        $fixture = $this->fixtureFactory('', '', $this->publisher);
         $fixture->addElapsedTime(-1);
     }
 }

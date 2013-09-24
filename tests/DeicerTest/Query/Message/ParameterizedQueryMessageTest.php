@@ -32,7 +32,7 @@ class ParameterizedQueryMessageTest extends AbstractQueryMessageTest
 
     public function setUp()
     {
-        $this->mockQuery = $this->getMock('Deicer\Query\ParameterizedQueryInterface');
+        $this->publisher = $this->getMock('Deicer\Query\ParameterizedQueryInterface');
     }
 
     public function fixtureFactory($topic, $content, $publisher)
@@ -42,13 +42,13 @@ class ParameterizedQueryMessageTest extends AbstractQueryMessageTest
 
     public function testConstructorInternalisesParams()
     {
-        $fixture = new ParameterizedQueryMessage('foo', null, $this->mockQuery, $this->params);
+        $fixture = new ParameterizedQueryMessage('foo', null, $this->publisher, $this->params);
         $this->assertSame($this->params, $fixture->getParams());
     }
 
     public function testGetParamWithValidNameReturnsCorrectParam()
     {
-        $fixture = new ParameterizedQueryMessage('foo', null, $this->mockQuery, $this->params);
+        $fixture = new ParameterizedQueryMessage('foo', null, $this->publisher, $this->params);
         $this->assertSame('bar', $fixture->getParam('foo'));
         $this->assertSame('qux', $fixture->getParam('baz'));
     }
@@ -56,7 +56,7 @@ class ParameterizedQueryMessageTest extends AbstractQueryMessageTest
     public function testGetParamWithInvalidNameThrowsException()
     {
         $this->setExpectedException('\OutOfBoundsException');
-        $fixture = new ParameterizedQueryMessage('foo', null, $this->mockQuery, $this->params);
+        $fixture = new ParameterizedQueryMessage('foo', null, $this->publisher, $this->params);
         $fixture->getParam('foobar');
     }
 
@@ -74,7 +74,7 @@ class ParameterizedQueryMessageTest extends AbstractQueryMessageTest
         $fixture = new ParameterizedQueryMessage(
             'failure_data_fetch',
             $content,
-            $this->mockQuery,
+            $this->publisher,
             $params
         );
         $fixture->addElapsedTime(890);

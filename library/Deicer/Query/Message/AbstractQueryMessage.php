@@ -9,6 +9,7 @@
 
 namespace Deicer\Query\Message;
 
+use Deicer\Pubsub\Message;
 use Deicer\Exception\Type\NonIntException;
 
 /**
@@ -22,61 +23,14 @@ use Deicer\Exception\Type\NonIntException;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-abstract class AbstractQueryMessage
+abstract class AbstractQueryMessage extends Message
 {
-    /**
-     * The message topic
-     *
-     * @param string
-     */
-    protected $topic = '';
-
-    /**
-     * The content payload
-     *
-     * @var mixed
-     */
-    protected $content;
-
-    /**
-     * Message publisher
-     *
-     * @var QueryInterface
-     */
-    protected $publisher;
-
     /**
      * {@inheritdoc}
      *
      * @var int
      */
     protected $elapsedTime = 0;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTopic()
-    {
-        return $this->topic;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return QueryInterface
-     */
-    public function getPublisher()
-    {
-        return $this->publisher;
-    }
 
     /**
      * {@inheritdoc}

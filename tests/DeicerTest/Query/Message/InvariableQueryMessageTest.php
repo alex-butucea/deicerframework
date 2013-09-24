@@ -27,7 +27,7 @@ class InvariableQueryMessageTest extends AbstractQueryMessageTest
 {
     public function setUp()
     {
-        $this->mockQuery = $this->getMock('Deicer\Query\InvariableQueryInterface');
+        $this->publisher = $this->getMock('Deicer\Query\InvariableQueryInterface');
     }
 
     public function fixtureFactory($topic, $content, $publisher)
@@ -47,7 +47,7 @@ class InvariableQueryMessageTest extends AbstractQueryMessageTest
         $fixture = new InvariableQueryMessage(
             'failure_model_hydrator',
             $content,
-            $this->mockQuery
+            $this->publisher
         );
         $fixture->addElapsedTime(1234);
 

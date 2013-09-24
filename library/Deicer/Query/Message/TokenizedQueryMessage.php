@@ -45,17 +45,11 @@ class TokenizedQueryMessage extends AbstractQueryMessage implements
         TokenizedQueryInterface $publisher,
         $token
     ) {
-        if (! is_string($topic)) {
-            throw new NonStringException();
-        }
-
         if (! is_string($token)) {
             throw new NonStringException();
         }
 
-        $this->topic = $topic;
-        $this->content = $content;
-        $this->publisher = $publisher;
+        parent::__construct($topic, $content, $publisher);
         $this->token = $token;
     }
 

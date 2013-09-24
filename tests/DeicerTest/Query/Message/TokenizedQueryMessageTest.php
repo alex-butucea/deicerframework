@@ -27,7 +27,7 @@ class TokenizedQueryMessageTest extends AbstractQueryMessageTest
 {
     public function setUp()
     {
-        $this->mockQuery = $this->getMock('Deicer\Query\TokenizedQueryInterface');
+        $this->publisher = $this->getMock('Deicer\Query\TokenizedQueryInterface');
     }
 
     public function fixtureFactory($topic, $content, $publisher)
@@ -37,17 +37,17 @@ class TokenizedQueryMessageTest extends AbstractQueryMessageTest
 
     public function testConstructorInternalisesToken()
     {
-        $fixture = new TokenizedQueryMessage('foo', null, $this->mockQuery, 'bar');
+        $fixture = new TokenizedQueryMessage('foo', null, $this->publisher, 'bar');
         $this->assertSame('bar', $fixture->getToken());
     }
 
     public function testConstructorTokenTypeStrength()
     {
         $this->setExpectedException('Deicer\Exception\Type\NonStringException');
-        new TokenizedQueryMessage('', null, $this->mockQuery, null);
-        new TokenizedQueryMessage('', null, $this->mockQuery, 1234);
-        new TokenizedQueryMessage('', null, $this->mockQuery, array ());
-        new TokenizedQueryMessage('', null, $this->mockQuery, new \stdClass());
+        new TokenizedQueryMessage('', null, $this->publisher, null);
+        new TokenizedQueryMessage('', null, $this->publisher, 1234);
+        new TokenizedQueryMessage('', null, $this->publisher, array ());
+        new TokenizedQueryMessage('', null, $this->publisher, new \stdClass());
     }
 
     public function testToStringSerializesMessageStateCorrectly()
@@ -63,7 +63,7 @@ class TokenizedQueryMessageTest extends AbstractQueryMessageTest
         $fixture = new TokenizedQueryMessage(
             'failure_data_type',
             $content,
-            $this->mockQuery,
+            $this->publisher,
             'foobar'
         );
         $fixture->addElapsedTime(567);

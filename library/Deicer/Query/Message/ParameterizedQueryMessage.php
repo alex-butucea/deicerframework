@@ -45,13 +45,7 @@ class ParameterizedQueryMessage extends AbstractQueryMessage implements
         ParameterizedQueryInterface $publisher,
         array $params
     ) {
-        if (! is_string($topic)) {
-            throw new NonStringException();
-        }
-
-        $this->topic = $topic;
-        $this->content = $content;
-        $this->publisher = $publisher;
+        parent::__construct($topic, $content, $publisher);
         $this->params = $params;
     }
 

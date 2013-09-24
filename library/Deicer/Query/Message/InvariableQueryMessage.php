@@ -37,13 +37,7 @@ class InvariableQueryMessage extends AbstractQueryMessage implements
         $content,
         InvariableQueryInterface $publisher
     ) {
-        if (! is_string($topic)) {
-            throw new NonStringException();
-        }
-
-        $this->topic = $topic;
-        $this->content = $content;
-        $this->publisher = $publisher;
+        parent::__construct($topic, $content, $publisher);
     }
 
     /**
