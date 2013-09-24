@@ -9,6 +9,7 @@
 
 namespace DeicerTest\Exception;
 
+use DeicerTest\Framework\TestCase;
 use Deicer\Exception\Type\NonInstanceException;
 
 /**
@@ -22,7 +23,7 @@ use Deicer\Exception\Type\NonInstanceException;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class NonInstanceExceptionTest extends \PHPUnit_Framework_TestCase
+class NonInstanceExceptionTest extends TestCase
 {
     public function testConstructorDefaultsMessage()
     {

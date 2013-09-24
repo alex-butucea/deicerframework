@@ -9,6 +9,7 @@
 
 namespace DeicerTest\Exception;
 
+use DeicerTest\Framework\TestCase;
 use Deicer\Exception\Type\NonArrayException;
 
 /**
@@ -22,7 +23,7 @@ use Deicer\Exception\Type\NonArrayException;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class NonArrayExceptionTest extends \PHPUnit_Framework_TestCase
+class NonArrayExceptionTest extends TestCase
 {
     public function testConstructorDefaultsMessage()
     {

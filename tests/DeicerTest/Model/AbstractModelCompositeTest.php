@@ -10,6 +10,7 @@
 namespace DeicerTest\Model;
 
 use Deicer\Model\ModelInterface;
+use DeicerTest\Framework\TestCase;
 
 /**
  * Abstract Deicer Model Composite unit test suite
@@ -21,7 +22,7 @@ use Deicer\Model\ModelInterface;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class AbstractModelCompositeTest extends \PHPUnit_Framework_TestCase
+class AbstractModelCompositeTest extends TestCase
 {
     public $validExchangeArrayArg;
     public $invalidExchangeArrayArg;

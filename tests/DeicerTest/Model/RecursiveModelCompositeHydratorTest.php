@@ -12,6 +12,7 @@ namespace DeicerTest\Model;
 use Deicer\Model\RecursiveModelCompositeHydrator;
 use DeicerTest\Model\TestableModel;
 use DeicerTest\Model\TestableModelComposite;
+use DeicerTest\Framework\TestCase;
 
 /**
  * Deicer Model Hydrator unit test suite
@@ -23,7 +24,7 @@ use DeicerTest\Model\TestableModelComposite;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class RecursiveModelCompositeHydratorTest extends \PHPUnit_Framework_TestCase
+class RecursiveModelCompositeHydratorTest extends TestCase
 {
     public $fixture;
 

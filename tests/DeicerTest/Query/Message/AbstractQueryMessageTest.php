@@ -9,7 +9,7 @@
 
 namespace DeicerTest\Query\Message;
 
-use \PHPUnit_Framework_TestCase as TestCase;
+use DeicerTest\Pubsub\MessageTest;
 
 /**
  * Deicer Abstract Query Message tests
@@ -22,10 +22,8 @@ use \PHPUnit_Framework_TestCase as TestCase;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-abstract class AbstractQueryMessageTest extends TestCase
+abstract class AbstractQueryMessageTest extends MessageTest
 {
-    abstract public function fixtureFactory($topic, $content, $publisher);
-
     public function testGetElapsedTimeDefaultsToZero()
     {
         $fixture = $this->fixtureFactory('', '', $this->publisher);

@@ -9,6 +9,8 @@
 
 namespace DeicerTest\Pubsub;
 
+use DeicerTest\Framework\TestCase;
+
 /**
  * Common Message Broker tests
  *
@@ -19,7 +21,7 @@ namespace DeicerTest\Pubsub;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-abstract class AbstractMessageBrokerTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractMessageBrokerTest extends TestCase
 {
     public $fixture;
     public $message;

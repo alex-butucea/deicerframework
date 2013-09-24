@@ -9,6 +9,8 @@
 
 namespace DeicerTest\Model;
 
+use DeicerTest\Framework\TestCase;
+
 /**
  * Abstract Deicer Model unit test suite
  * 
@@ -19,7 +21,7 @@ namespace DeicerTest\Model;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class AbstractModelTest extends \PHPUnit_Framework_TestCase
+class AbstractModelTest extends TestCase
 {
     protected $validExchangeArrayArg = array (
         'id'         => 456,

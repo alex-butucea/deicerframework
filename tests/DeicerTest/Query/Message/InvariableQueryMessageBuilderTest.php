@@ -10,6 +10,7 @@
 namespace DeicerTest\Query\Message;
 
 use Deicer\Query\Message\InvariableQueryMessageBuilder;
+use DeicerTest\Framework\TestCase;
 
 /**
  * Deicer Invariable Query Message Builder unit test suite
@@ -22,7 +23,7 @@ use Deicer\Query\Message\InvariableQueryMessageBuilder;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class InvariableQueryMessageBuilderTest extends \PHPUnit_Framework_TestCase
+class InvariableQueryMessageBuilderTest extends TestCase
 {
     public $fixture;
     public $mockPublisher;

@@ -7,28 +7,20 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace DeicerTest\Model;
+namespace DeicerTest\Framework;
 
-use \Deicer\Model\AbstractModel;
+use \PHPUnit_Framework_TestCase as PHPUnitTestCase;
 
 /**
- * Deicer Test Model
- *
- * Represents a generic concrete implementation of a Deicer Model
+ * PHPUnit Test Case extension
  *
  * @category   DeicerTest
- * @package    Model
+ * @package    Framework
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
- * @author     Alex Butucea <alex826@gmail.com> 
+ * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableModel extends AbstractModel
+class TestCase extends PHPUnitTestCase
 {
-    public $id = 0;
-    public $name = '';
-    public $categories = array ();
-    public $child;
-    protected $foo;
-    private $bar;
 }

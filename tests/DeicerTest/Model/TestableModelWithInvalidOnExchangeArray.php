@@ -9,10 +9,13 @@
 
 namespace DeicerTest\Model;
 
+use DeicerTest\Model\TestableModel;
+
 /**
  * Deicer Invalid Test Model
  *
- * Represents a concrete implementation of a Deicer Model with an invalid implementation of onExchangeArray()
+ * Represents a concrete implementation of a Deicer Model
+ * with an invalid implementation of onExchangeArray()
  *
  * @category   DeicerTest
  * @package    Model

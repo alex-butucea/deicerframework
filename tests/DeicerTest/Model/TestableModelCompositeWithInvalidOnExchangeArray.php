@@ -14,7 +14,8 @@ use \Deicer\Model\AbstractModelComposite;
 /**
  * Deicer Test Model Composite
  *
- * Represents a concrete implementation of a Deicer Model Composite with an invalid implementation of onExchangeArray
+ * Represents a concrete implementation of a Deicer Model Composite
+ * with an invalid implementation of onExchangeArray
  *
  * @category   DeicerTest
  * @package    Model

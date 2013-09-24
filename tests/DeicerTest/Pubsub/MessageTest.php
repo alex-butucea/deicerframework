@@ -10,7 +10,7 @@
 namespace DeicerTest\Pubsub;
 
 use Deicer\Pubsub\Message;
-use \PHPUnit_Framework_TestCase as TestCase;
+use DeicerTest\Framework\TestCase;
 
 /**
  * Pubsub Message tests

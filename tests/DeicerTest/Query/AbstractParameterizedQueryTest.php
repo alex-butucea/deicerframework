@@ -14,6 +14,7 @@ use Deicer\Query\Exception\DataFetchException;
 use Deicer\Query\Exception\ModelHydratorException;
 use DeicerTest\Query\TestableParameterizedQueryWithValidFetchData;
 use DeicerTest\Query\TestableParameterizedQueryWithExceptionThrowingFetchData;
+use DeicerTest\Framework\TestCase;
 
 /**
  * Deicer Parameterized Query unit test suite
@@ -25,7 +26,7 @@ use DeicerTest\Query\TestableParameterizedQueryWithExceptionThrowingFetchData;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class AbstractParameterizedQueryTest extends \PHPUnit_Framework_TestCase
+class AbstractParameterizedQueryTest extends TestCase
 {
     public $fixture;
     public $composite;
@@ -94,9 +95,9 @@ class AbstractParameterizedQueryTest extends \PHPUnit_Framework_TestCase
             );
 
             $composite
-                ->expects(\PHPUnit_Framework_TestCase::any())
+                ->expects(TestCase::any())
                 ->method('count')
-                ->will(\PHPUnit_Framework_TestCase::returnValue(count($values)));
+                ->will(TestCase::returnValue(count($values)));
 
             return $composite;
         };

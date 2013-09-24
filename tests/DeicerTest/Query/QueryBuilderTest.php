@@ -10,6 +10,7 @@
 namespace DeicerTest\Query;
 
 use Deicer\Query\QueryBuilder;
+use DeicerTest\Framework\TestCase;
 
 /**
  * Deicer Query Builder unit test suite
@@ -21,7 +22,7 @@ use Deicer\Query\QueryBuilder;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class QueryBuilderTest extends \PHPUnit_Framework_TestCase
+class QueryBuilderTest extends TestCase
 {
     public $fixture;
     public $model;
