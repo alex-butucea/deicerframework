@@ -12,7 +12,7 @@ namespace Deicer\Query;
 use Deicer\Query\QueryInterface;
 use Deicer\Query\Message\InvariableQueryMessageBuilderInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
-use Deicer\Stdlib\Exe\ExecutableInterface;
+use Deicer\Stdlib\ExecutableInterface;
 use Deicer\Pubsub\PublisherInterface;
 
 /**

@@ -11,7 +11,7 @@ namespace Deicer\Query\Message;
 
 use Deicer\Stdlib\StringSerializableInterface;
 use Deicer\Pubsub\MessageInterface;
-use Deicer\Stdlib\Exe\ExecutionInterface;
+use Deicer\Stdlib\ExecutionInterface;
 
 /**
  * Marker interface for query messages

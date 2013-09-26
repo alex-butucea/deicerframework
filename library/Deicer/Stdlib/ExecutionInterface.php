@@ -7,7 +7,7 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace Deicer\Stdlib\Exe;
+namespace Deicer\Stdlib;
 
 /**
  * Interface for objects yielded from a call to an Executable object

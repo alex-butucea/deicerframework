@@ -14,7 +14,7 @@ use Deicer\Query\Message\TokenizedQueryMessageBuilderInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 use Deicer\Stdlib\TokenConsumerInterface;
 use Deicer\Stdlib\TokenProviderInterface;
-use Deicer\Stdlib\Exe\ExecutableInterface;
+use Deicer\Stdlib\ExecutableInterface;
 use Deicer\Pubsub\PublisherInterface;
 
 /**
