@@ -6,7 +6,7 @@ Simply extend the two abstract classes below to provide a consistent, Composite 
 - `Deicer\Model\AbstractModel` - Base class for DTOs and models.
 - `Deicer\Model\AbstractModelComposite` - An iterable, composite set of models.
 
-For more concrete examples of the above, check out the `DeicerTestAsset\Model` namespace.
+For concrete examples of the above, check out the `DeicerTestAsset\Model` namespace.
 
 ---------------------------------------------------
 Copyright (c) 2013 Alex Butucea <alex826@gmail.com>

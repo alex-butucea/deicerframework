@@ -190,7 +190,7 @@ $handler->getTopicFilteredMessageBroker()->subscribeToTopics(
 set_error_handler(array ($handler, 'handleError'));
 ```
 
-For more concrete examples of the above, check out the `DeicerTestAsset\Pubsub` namespace.
+For more usage examples, check out the `DeicerTest\Pubsub` namespace.
 
 [0]: http://en.wikipedia.org/wiki/Publish_subscribe "Read about the Publish-subscribe Pattern on Wikipedia"
 
