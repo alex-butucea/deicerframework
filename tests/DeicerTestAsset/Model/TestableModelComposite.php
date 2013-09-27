@@ -7,15 +7,14 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace DeicerTest\Model;
+namespace DeicerTestAsset\Model;
 
-use DeicerTest\Model\TestableModel;
+use \Deicer\Model\AbstractModelComposite;
 
 /**
- * Deicer Invalid Test Model
+ * Deicer Test Model Composite
  *
- * Represents a concrete implementation of a Deicer Model
- * with an invalid implementation of onExchangeArray()
+ * Represents a concrete implementation of a Deicer Model Composite
  *
  * @category   DeicerTest
  * @package    Model
@@ -24,15 +23,6 @@ use DeicerTest\Model\TestableModel;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableModelWithInvalidOnExchangeArray extends TestableModel
+class TestableModelComposite extends AbstractModelComposite
 {
-    /**
-     * Returns unexpected type to test validation
-     *
-     * @see Deicer\Model\AbstactModel::onExchangeArray()
-     */
-    protected function onExchangeArray(array $values)
-    {
-        return new \stdClass();
-    }
 }

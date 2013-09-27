@@ -7,15 +7,15 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace DeicerTest\Query;
+namespace DeicerTestAsset\Query;
 
-use Deicer\Query\AbstractInvariableQuery;
+use Deicer\Query\AbstractParameterizedQuery;
 
 /**
- * Deicer Test Invariable Query
+ * Deicer Test Parameterized Query
  *
- * Represents a concrete implementation of a Deicer Invariable Query
- * with an implementation of fetchData() that throws an exception
+ * Represents a concrete implementation of a Deicer Parameterized Query with
+ * an invalid implementation of fetchData() that returns a non array
  *
  * @category   DeicerTest
  * @package    Query
@@ -24,21 +24,23 @@ use Deicer\Query\AbstractInvariableQuery;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableInvariableQueryWithExceptionThrowingFetchData extends
- AbstractInvariableQuery
+class TestableParameterizedQueryWithNonArrayReturningFetchData extends
+ AbstractParameterizedQuery
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected $params = array (
+        'genre'  => '',
+        'year'   => 0,
+        'author' => '',
+    );
+
     /**
      * {@inheritdoc}
      */
     protected function fetchData()
     {
-        throw new \Exception(
-            'foo',
-            123,
-            new \Exception(
-                'bar',
-                456
-            )
-        );
+        return false;
     }
 }

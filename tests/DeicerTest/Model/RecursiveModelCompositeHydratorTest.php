@@ -10,8 +10,8 @@
 namespace DeicerTest\Model;
 
 use Deicer\Model\RecursiveModelCompositeHydrator;
-use DeicerTest\Model\TestableModel;
-use DeicerTest\Model\TestableModelComposite;
+use DeicerTestAsset\Model\TestableModel;
+use DeicerTestAsset\Model\TestableModelComposite;
 use DeicerTest\Framework\TestCase;
 
 /**

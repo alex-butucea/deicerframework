@@ -31,7 +31,7 @@ class QueryBuilderTest extends TestCase
     public function setUp()
     {
         $this->fixture = new QueryBuilder(
-            'DeicerTest\Query'
+            'DeicerTestAsset\Query'
         );
 
         $this->model = $this->getMock(
@@ -108,7 +108,7 @@ class QueryBuilderTest extends TestCase
         $this->setExpectedException('LogicException');
         $this->fixture
             ->withModelPrototype($this->model)
-            ->build('DeicerTest\Query\TestableInvariableQueryWithValidFetchData');
+            ->build('DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData');
     }
 
     public function testBuildThrowsExceptionIfModelCompositePrototypeInUnset()
@@ -116,7 +116,7 @@ class QueryBuilderTest extends TestCase
         $this->setExpectedException('LogicException');
         $this->fixture
             ->withModelCompositePrototype($this->composite)
-            ->build('DeicerTest\Query\TestableInvariableQueryWithValidFetchData');
+            ->build('DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData');
     }
 
     public function testBuildThrowsExceptionIfClassnameIsEmpty()
@@ -154,7 +154,7 @@ class QueryBuilderTest extends TestCase
             ->build('TestableInvariableQueryWithValidFetchData');
 
         $this->assertInstanceOf(
-            'DeicerTest\Query\TestableInvariableQueryWithValidFetchData',
+            'DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData',
             $actual
         );
     }
@@ -167,7 +167,7 @@ class QueryBuilderTest extends TestCase
             ->build('TestableTokenizedQueryWithValidFetchData');
 
         $this->assertInstanceOf(
-            'DeicerTest\Query\TestableTokenizedQueryWithValidFetchData',
+            'DeicerTestAsset\Query\TestableTokenizedQueryWithValidFetchData',
             $actual
         );
     }
@@ -180,7 +180,7 @@ class QueryBuilderTest extends TestCase
             ->build('TestableParameterizedQueryWithValidFetchData');
 
         $this->assertInstanceOf(
-            'DeicerTest\Query\TestableParameterizedQueryWithValidFetchData',
+            'DeicerTestAsset\Query\TestableParameterizedQueryWithValidFetchData',
             $actual
         );
     }
@@ -197,7 +197,7 @@ class QueryBuilderTest extends TestCase
             ->build('TestableInvariableQueryWithValidFetchData');
 
         $this->assertInstanceOf(
-            'DeicerTest\Query\TestableInvariableQueryWithValidFetchData',
+            'DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData',
             $actual
         );
 
@@ -216,7 +216,7 @@ class QueryBuilderTest extends TestCase
             ->build('TestableInvariableQueryWithValidFetchData');
 
         $this->assertInstanceOf(
-            'DeicerTest\Query\TestableInvariableQueryWithValidFetchData',
+            'DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData',
             $actual
         );
     }

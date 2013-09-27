@@ -7,37 +7,38 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace DeicerTest\Query;
+namespace DeicerTestAsset\Model;
 
-use Deicer\Query\AbstractTokenizedQuery;
+use DeicerTestAsset\Model\TestableModel;
 
 /**
- * Deicer Test Tokenized Query
+ * Deicer Test Model
  *
- * Represents a concrete implementation of a Deicer Tokenized Query with
- * an implementation of fetchData() incompatible with model properties
+ * Represents a concrete implementation of a Deicer Model
+ * with an valid implementation of onExchangeArray()
  *
  * @category   DeicerTest
- * @package    Query
+ * @package    Model
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableTokenizedQueryWithModelIncompatibleFetchData extends
- AbstractTokenizedQuery
+class TestableModelWithValidOnExchangeArray extends TestableModel
 {
     /**
-     * {@inheritdoc}
+     * Lowercases all keys
+     *
+     * @see Deicer\Model\AbstactModel::onExchangeArray()
      */
-    protected function fetchData()
+    protected function onExchangeArray(array $values)
     {
-        return array (
-            array (
-                'id'   => 1,
-                'name' => 'foo',
-                'role' => 'bar',
-            ),
-        );
+        $filtered = array ();
+
+        foreach ($values as $k => $v) {
+            $filtered[strtolower($k)] = $v;
+        }
+
+        return $filtered;
     }
 }

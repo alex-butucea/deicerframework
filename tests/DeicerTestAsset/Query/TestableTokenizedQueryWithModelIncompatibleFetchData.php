@@ -7,15 +7,15 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace DeicerTest\Query;
+namespace DeicerTestAsset\Query;
 
-use Deicer\Query\AbstractParameterizedQuery;
+use Deicer\Query\AbstractTokenizedQuery;
 
 /**
- * Deicer Test Parameterized Query
+ * Deicer Test Tokenized Query
  *
- * Represents a concrete implementation of a Deicer Parameterized Query
- * with an valid implementation of fetchData()
+ * Represents a concrete implementation of a Deicer Tokenized Query with
+ * an implementation of fetchData() incompatible with model properties
  *
  * @category   DeicerTest
  * @package    Query
@@ -24,17 +24,9 @@ use Deicer\Query\AbstractParameterizedQuery;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableParameterizedQueryWithValidFetchData extends AbstractParameterizedQuery
+class TestableTokenizedQueryWithModelIncompatibleFetchData extends
+ AbstractTokenizedQuery
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected $params = array (
-        'genre'  => '',
-        'year'   => 0,
-        'author' => '',
-    );
-
     /**
      * {@inheritdoc}
      */
@@ -44,10 +36,7 @@ class TestableParameterizedQueryWithValidFetchData extends AbstractParameterized
             array (
                 'id'   => 1,
                 'name' => 'foo',
-            ),
-            array (
-                'id'   => 2,
-                'name' => 'bar',
+                'role' => 'bar',
             ),
         );
     }

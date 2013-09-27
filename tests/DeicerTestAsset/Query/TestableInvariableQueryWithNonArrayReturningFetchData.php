@@ -7,32 +7,31 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace DeicerTest\Model;
+namespace DeicerTestAsset\Query;
 
-use \Deicer\Model\AbstractModelComposite;
+use Deicer\Query\AbstractInvariableQuery;
 
 /**
- * Deicer Test Model Composite
+ * Deicer Test Invariable Query
  *
- * Represents a concrete implementation of a Deicer Model Composite
- * with an invalid implementation of onExchangeArray
+ * Represents a concrete implementation of a Deicer Invariable Query with
+ * an invalid implementation of fetchData() that returns a non array
  *
  * @category   DeicerTest
- * @package    Model
+ * @package    Query
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableModelCompositeWithInvalidOnExchangeArray extends AbstractModelComposite
+class TestableInvariableQueryWithNonArrayReturningFetchData extends
+ AbstractInvariableQuery
 {
     /**
-     * Returns unexpected type to test validation
-     *
-     * @see Deicer\Model\AbstactModelComposite::onExchangeArray()
+     * {@inheritdoc}
      */
-    protected function onExchangeArray(array $values)
+    protected function fetchData()
     {
-        return new \stdClass();
+        return false;
     }
 }

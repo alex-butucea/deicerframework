@@ -7,7 +7,7 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace DeicerTest\Query;
+namespace DeicerTestAsset\Query;
 
 use Deicer\Query\AbstractParameterizedQuery;
 

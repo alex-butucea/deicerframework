@@ -7,7 +7,7 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace DeicerTest\Query;
+namespace DeicerTestAsset\Query;
 
 use Deicer\Query\AbstractInvariableQuery;
 
@@ -15,7 +15,7 @@ use Deicer\Query\AbstractInvariableQuery;
  * Deicer Test Invariable Query
  *
  * Represents a concrete implementation of a Deicer Invariable Query with
- * an invalid implementation of fetchData() that returns a non array
+ * an implementation of fetchData() incompatible with model properties
  *
  * @category   DeicerTest
  * @package    Query
@@ -24,7 +24,7 @@ use Deicer\Query\AbstractInvariableQuery;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableInvariableQueryWithNonArrayReturningFetchData extends
+class TestableInvariableQueryWithModelIncompatibleFetchData extends
  AbstractInvariableQuery
 {
     /**
@@ -32,6 +32,12 @@ class TestableInvariableQueryWithNonArrayReturningFetchData extends
      */
     protected function fetchData()
     {
-        return false;
+        return array (
+            array (
+                'id'   => 1,
+                'name' => 'foo',
+                'role' => 'bar',
+            ),
+        );
     }
 }

@@ -9,6 +9,9 @@
 
 namespace DeicerTest\Model;
 
+use DeicerTestAsset\Model\TestableModel;
+use DeicerTestAsset\Model\TestableModelWithValidOnExchangeArray;
+use DeicerTestAsset\Model\TestableModelWithInvalidOnExchangeArray;
 use DeicerTest\Framework\TestCase;
 
 /**
@@ -208,7 +211,7 @@ class AbstractModelTest extends TestCase
     public function testSpawnReturnsNewInstance()
     {
         $fixture = new TestableModel();
-        $this->assertInstanceOf('DeicerTest\Model\TestableModel', $fixture->spawn());
+        $this->assertInstanceOf('DeicerTestAsset\Model\TestableModel', $fixture->spawn());
     }
 
     public function testGetArrayCopyReturnsPublicProperties()

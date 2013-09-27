@@ -7,14 +7,14 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace DeicerTest\Model;
+namespace DeicerTestAsset\Model;
 
-use \Deicer\Model\AbstractModelComposite;
+use \Deicer\Model\AbstractModel;
 
 /**
- * Deicer Test Model Composite
+ * Deicer Test Model
  *
- * Represents a concrete implementation of a Deicer Model Composite
+ * Represents a generic concrete implementation of a Deicer Model
  *
  * @category   DeicerTest
  * @package    Model
@@ -23,6 +23,12 @@ use \Deicer\Model\AbstractModelComposite;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableModelComposite extends AbstractModelComposite
+class TestableModel extends AbstractModel
 {
+    public $id = 0;
+    public $name = '';
+    public $categories = array ();
+    public $child;
+    protected $foo;
+    private $bar;
 }

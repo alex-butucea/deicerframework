@@ -12,8 +12,10 @@ namespace DeicerTest\Query;
 use Deicer\Query\Exception\DataTypeException;
 use Deicer\Query\Exception\DataFetchException;
 use Deicer\Query\Exception\ModelHydratorException;
-use DeicerTest\Query\TestableInvariableQueryWithValidFetchData;
-use DeicerTest\Query\TestableInvariableQueryWithExceptionThrowingFetchData;
+use DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData;
+use DeicerTestAsset\Query\TestableInvariableQueryWithExceptionThrowingFetchData;
+use DeicerTestAsset\Query\TestableInvariableQueryWithNonArrayReturningFetchData;
+use DeicerTestAsset\Query\TestableInvariableQueryWithModelIncompatibleFetchData;
 use DeicerTest\Framework\TestCase;
 
 /**

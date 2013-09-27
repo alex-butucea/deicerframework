@@ -247,7 +247,7 @@ try {
 }
 ```
 
-For more concrete examples of the above, check out the `DeicerTest\Query` namespace.
+For more concrete examples of the above, check out the `DeicerTestAsset\Query` namespace.
 
 [0]: http://en.wikipedia.org/wiki/Command_query_separation "Read about the concept of Command Query Separation on Wikipedia"
 

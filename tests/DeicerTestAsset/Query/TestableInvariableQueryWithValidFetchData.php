@@ -7,15 +7,15 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace DeicerTest\Query;
+namespace DeicerTestAsset\Query;
 
-use Deicer\Query\AbstractParameterizedQuery;
+use Deicer\Query\AbstractInvariableQuery;
 
 /**
- * Deicer Test Parameterized Query
+ * Deicer Test Invariable Query
  *
- * Represents a concrete implementation of a Deicer Parameterized Query with
- * an invalid implementation of fetchData() that returns a non array
+ * Represents a concrete implementation of a Deicer Invariable Query
+ * with an valid implementation of fetchData()
  *
  * @category   DeicerTest
  * @package    Query
@@ -24,23 +24,22 @@ use Deicer\Query\AbstractParameterizedQuery;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableParameterizedQueryWithNonArrayReturningFetchData extends
- AbstractParameterizedQuery
+class TestableInvariableQueryWithValidFetchData extends AbstractInvariableQuery
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected $params = array (
-        'genre'  => '',
-        'year'   => 0,
-        'author' => '',
-    );
-
     /**
      * {@inheritdoc}
      */
     protected function fetchData()
     {
-        return false;
+        return array (
+            array (
+                'id'   => 1,
+                'name' => 'foo',
+            ),
+            array (
+                'id'   => 2,
+                'name' => 'bar',
+            ),
+        );
     }
 }

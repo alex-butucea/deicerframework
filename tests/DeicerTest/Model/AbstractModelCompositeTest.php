@@ -9,7 +9,9 @@
 
 namespace DeicerTest\Model;
 
-use Deicer\Model\ModelInterface;
+use DeicerTestAsset\Model\TestableModelComposite;
+use DeicerTestAsset\Model\TestableModelCompositeWithValidOnExchangeArray;
+use DeicerTestAsset\Model\TestableModelCompositeWithInvalidOnExchangeArray;
 use DeicerTest\Framework\TestCase;
 
 /**
@@ -323,7 +325,7 @@ class AbstractModelCompositeTest extends TestCase
     public function testSpawnReturnsNewInstance()
     {
         $fixture = new TestableModelComposite();
-        $this->assertInstanceOf('DeicerTest\Model\TestableModelComposite', $fixture->spawn());
+        $this->assertInstanceOf('DeicerTestAsset\Model\TestableModelComposite', $fixture->spawn());
     }
 
     public function testGetArrayCopyReturnsInternalisedModelSet()

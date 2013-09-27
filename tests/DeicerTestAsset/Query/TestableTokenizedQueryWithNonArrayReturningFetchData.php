@@ -7,15 +7,15 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace DeicerTest\Query;
+namespace DeicerTestAsset\Query;
 
 use Deicer\Query\AbstractTokenizedQuery;
 
 /**
  * Deicer Test Tokenized Query
  *
- * Represents a concrete implementation of a Deicer Tokenized Query
- * with an implementation of fetchData() that throws an exception
+ * Represents a concrete implementation of a Deicer Tokenized Query with
+ * an invalid implementation of fetchData() that returns a non array
  *
  * @category   DeicerTest
  * @package    Query
@@ -24,7 +24,7 @@ use Deicer\Query\AbstractTokenizedQuery;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableTokenizedQueryWithExceptionThrowingFetchData extends
+class TestableTokenizedQueryWithNonArrayReturningFetchData extends
  AbstractTokenizedQuery
 {
     /**
@@ -32,13 +32,6 @@ class TestableTokenizedQueryWithExceptionThrowingFetchData extends
      */
     protected function fetchData()
     {
-        throw new \Exception(
-            'foo',
-            123,
-            new \Exception(
-                'bar',
-                456
-            )
-        );
+        return false;
     }
 }
