@@ -14,7 +14,7 @@ error_reporting(E_ALL | E_STRICT);
 $rootPath = realpath(dirname(__DIR__));
 $paths = array (
     $rootPath,
-    $rootPath . '/library',
+    $rootPath . '/src',
     $rootPath . '/tests',
 );
 set_include_path(implode(PATH_SEPARATOR, $paths) . PATH_SEPARATOR . get_include_path());

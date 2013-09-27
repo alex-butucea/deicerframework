@@ -62,7 +62,7 @@
     <!-- ============================================  -->
     <target name="prepare-coverage-report" description="Setup test coverage db" depends="prepare-build-dir">
         <coverage-setup database="./build/coverage-report/database">
-            <fileset dir="./library">
+            <fileset dir="./src">
                 <include name="**/*.php"/>
             </fileset>
         </coverage-setup>
@@ -128,7 +128,7 @@
             destdir="./build/doc"
             template="responsive"
         >
-            <fileset dir="./library">
+            <fileset dir="./src">
                 <include name="**/*.php" />
             </fileset>
         </phpdoc2>
@@ -158,7 +158,7 @@
             allowedFileExtensions="php"
         >
             <formatter type="full" outfile="./build/standards-report/standards"/>
-            <fileset dir="./library">
+            <fileset dir="./src">
                 <include name="**/*.php" />
             </fileset>
             <fileset dir="./tests">
@@ -175,7 +175,7 @@
             tofile="./build/phplint-report/phplint"
             deprecatedAsError="true"
         >
-            <fileset dir="./library">
+            <fileset dir="./src">
                 <include name="**/*.php" />
             </fileset>
             <fileset dir="./tests">

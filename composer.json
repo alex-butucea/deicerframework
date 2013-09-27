@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Deicer\\": "library/",
+            "Deicer\\": "src/",
             "DeicerTest\\": "tests/",
             "DeicerTestAsset\\": "tests/"
         }
