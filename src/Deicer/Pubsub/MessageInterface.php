@@ -9,6 +9,8 @@
 
 namespace Deicer\Pubsub;
 
+use Deicer\Stdlib\StringSerializableInterface;
+
 /**
  * Interface for messages raised by a publisher object
  *
@@ -19,7 +21,7 @@ namespace Deicer\Pubsub;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface MessageInterface
+interface MessageInterface extends StringSerializableInterface
 {
     /**
      * Get the message topic

@@ -62,4 +62,21 @@ class MessageTest extends TestCase
         $this->fixtureFactory(array (), null, $this->publisher);
         $this->fixtureFactory(new \stdClass(), null, $this->publisher);
     }
+
+    public function testToStringSerializesMessageStateCorrectly()
+    {
+        $content = array ('foo' => array ('bar' => 'baz', 'qux' => new \stdClass()));
+
+        $regex  = '^Topic: "foobar" \| ';
+        $regex .= 'Content: ' . preg_quote(json_encode($content)) . ' \| ';
+        $regex .= 'Publisher: (.)+PublisherInterface(.)+$';
+
+        $fixture = $this->fixtureFactory(
+            'foobar',
+            $content,
+            $this->publisher
+        );
+
+        $this->assertRegExp('/' . $regex . '/', (string) $fixture);
+    }
 }

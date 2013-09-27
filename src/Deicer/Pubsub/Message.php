@@ -11,6 +11,7 @@ namespace Deicer\Pubsub;
 
 use Deicer\Pubsub\MessageInterface;
 use Deicer\Pubsub\PublisherInterface;
+use Deicer\Stdlib\StringSerializableInterface;
 use Deicer\Exception\Type\NonStringException;
 
 /**
@@ -87,5 +88,20 @@ class Message implements MessageInterface
         $this->topic = $topic;
         $this->content = $content;
         $this->publisher = $publisher;
+    }
+
+    /**
+     * Retruns topic, json-encoded content and publisher classname
+     *
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return sprintf(
+            'Topic: "%s" | Content: %s | Publisher: %s',
+            $this->topic,
+            json_encode($this->content),
+            get_class($this->publisher)
+        );
     }
 }

@@ -9,7 +9,6 @@
 
 namespace Deicer\Query\Message;
 
-use Deicer\Stdlib\StringSerializableInterface;
 use Deicer\Pubsub\MessageInterface;
 use Deicer\Stdlib\ExecutionInterface;
 
@@ -24,9 +23,6 @@ use Deicer\Stdlib\ExecutionInterface;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface QueryMessageInterface extends
- MessageInterface,
- ExecutionInterface,
- StringSerializableInterface
+interface QueryMessageInterface extends MessageInterface, ExecutionInterface
 {
 }
