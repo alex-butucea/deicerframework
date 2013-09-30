@@ -24,6 +24,9 @@ interface MessageBuilderInterface
     /**
      * Set the message topic
      *
+     * @throws InvalidArgumentException If $topic is empty
+     * @throws InvalidArgumentException If $topic is a non string
+     *
      * @param  string $topic Topic to build with
      * @return MessageBuilderInterface Fluent interface
      */
@@ -48,6 +51,9 @@ interface MessageBuilderInterface
     /**
      * Assemble message instance using internalised properties
      * 
+     * @throws LogicException If topic is empty
+     * @throws LogicException If publisher has not been set
+     *
      * @return MessageInterface
      */
     public function build();
