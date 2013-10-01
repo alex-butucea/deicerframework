@@ -2,19 +2,30 @@
 The Pubsub component is utilised by several framework components to provide transparent execution flow and opportunities for extension whilst maintaining loose coupling.
 [Publish-subscribe pattern on Wikipedia][0]
 
-Published messages are delivered by Message Brokers to separate concern and minimise boilerplate code in publisher implementations.
+Messages are implemented as immutable objects and are comprised of the following properties:
+
+- `topic (string)` - Used to categorise messages and perform filtering
+- `content (mixed)` - Arbitrary data that makes up message payload
+- `publisher (PublisherInterface)` - Message originator instance
+- `attributes (array)` - Associative array of message meta-data
+
+Published messages are delivered and subscriptions are maintained by Message Brokers to separate concern and minimise boilerplate code in publisher implementations.
+Simply implement one of the following publisher interfaces as-per example, depending on whether filtering is required.
 
 ## Unfiltered Subscription
+Publishers should implement `UnfilteredPublisherInterface` and return an instance of
+`UnfilteredMessageBroker` on calls to the `getUnfilteredMessageBroker()` method.
+
 The `UnfilteredMessageBroker` delivers messages of all topics to it's subscribers.
 
 ```php
 namespace My;
 
 use My\AuthService;
-use Deicer\Stdlib\Pubsub\Message;
-use Deicer\Stdlib\Pubsub\MessageInterface;
-use Deicer\Stdlib\Pubsub\SubcriberInterface;
-use Deicer\Stdlib\Pubsub\UnfilteredPublisherInterface;
+use Deicer\Pubsub\Message;
+use Deicer\Pubsub\MessageInterface;
+use Deicer\Pubsub\SubcriberInterface;
+use Deicer\Pubsub\UnfilteredPublisherInterface;
 
 class Authenticator implements UnfilteredPublisherInterface
 {
@@ -106,16 +117,19 @@ $subscriberIndex = $auth->getUnfilteredMessageBroker()->addSubscriber($logger);
 ```
 
 ## Topic Filtered Subscription
+Publishers should implement `TopicFilteredPublisherInterface` and return an instance of
+`TopicFilteredMessageBroker` on calls to the `getTopicFilteredMessageBroker()` method.
+
 The `TopicFilteredMessageBroker` selectively delivers messages by allowing subscribers to state which topics they are interested in receiving.
 
 ```php
 namespace My;
 
 use My\SmsService;
-use Deicer\Stdlib\Pubsub\Message;
-use Deicer\Stdlib\Pubsub\MessageInterface;
-use Deicer\Stdlib\Pubsub\SubcriberInterface;
-use Deicer\Stdlib\Pubsub\TopicFilteredPublisherInterface;
+use Deicer\Pubsub\Message;
+use Deicer\Pubsub\MessageInterface;
+use Deicer\Pubsub\SubcriberInterface;
+use Deicer\Pubsub\TopicFilteredPublisherInterface;
 
 class OutageNotifier implements SubcriberInterface
 {
