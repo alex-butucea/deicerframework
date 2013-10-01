@@ -48,6 +48,18 @@ interface MessageBuilderInterface
      */
     public function withPublisher(PublisherInterface $publisher);
 
+
+    /**
+     * Set the message attributes
+     *
+     * @throws InvalidArgumentException If $attributes contains non-string key
+     * @throws InvalidArgumentException If $attributes contains non-null/scalar value
+     *
+     * @param  array $attributes
+     * @return MessageBuilderInterface Fluent interface
+     */
+    public function withAttributes(array $attributes);
+
     /**
      * Assemble message instance using internalised properties
      * 

@@ -46,6 +46,13 @@ class MessageBuilder implements MessageBuilderInterface
     protected $publisher;
 
     /**
+     * Attributes to build with
+     *
+     * @var array
+     */
+    protected $attributes = array ();
+
+    /**
      * {@inheritdoc}
      */
     public function withTopic($topic)
@@ -85,6 +92,35 @@ class MessageBuilder implements MessageBuilderInterface
     /**
      * {@inheritdoc}
      */
+    public function withAttributes(array $attributes)
+    {
+        // Ensure attribute names are strings and values are null/scalar
+        foreach ($attributes as $key => $value) {
+            if (empty($key)) {
+                throw new \InvalidArgumentException(
+                    'Empty key in $attributes passed in: ' .
+                    __METHOD__
+                );
+            } elseif (!is_string($key)) {
+                throw new \InvalidArgumentException(
+                    'Non-int key in $attributes passed in: ' .
+                    __METHOD__
+                );
+            } elseif (!is_null($value) && !is_scalar($value)) {
+                throw new \InvalidArgumentException(
+                    'Non-null/non-scalar value in $attributes passed in: ' .
+                    __METHOD__
+                );
+            }
+        }
+
+        $this->attributes = $attributes;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function build()
     {
         if (empty($this->topic)) {
@@ -100,7 +136,8 @@ class MessageBuilder implements MessageBuilderInterface
         return new Message(
             $this->topic,
             $this->content,
-            $this->publisher
+            $this->publisher,
+            $this->attributes
         );
     }
 }

@@ -26,6 +26,10 @@ class MessageBuilderTest extends TestCase
 {
     public $fixture;
     public $mockPublisher;
+    public $attributes = array (
+        'foo' => 'bar',
+        'baz' => 'qux',
+    );
 
     public function setUp()
     {
@@ -47,6 +51,32 @@ class MessageBuilderTest extends TestCase
     {
         $this->assertSame($this->fixture, $this->fixture->withPublisher($this->mockPublisher));
     }
+
+    public function testWithAttributesImplementsFluentInterface()
+    {
+        $this->assertSame($this->fixture, $this->fixture->withAttributes($this->attributes));
+    }
+
+    public function testWithAttributesWithArrayContainingNonSringKeyThrowsException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->attributes[1] = 'quux';
+        $this->fixture->withAttributes($this->attributes);
+    }
+
+    public function testWithAttributesWithArrayContainingEmptyKeyThrowsException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->attributes[''] = 'quux';
+        $this->fixture->withAttributes($this->attributes);
+    }
+
+    public function testWithAttributesWithArrayContainingNonScalarValueThrowsException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->attributes['quux'] = new \stdClass();
+        $this->fixture->withAttributes($this->attributes);
+     }
 
     public function testWithTopicThrowsExceptionIfTopicIsEmpty()
     {
@@ -116,5 +146,16 @@ class MessageBuilderTest extends TestCase
             ->withPublisher($this->mockPublisher)
             ->build();
         $this->assertSame($this->mockPublisher, $built->getPublisher());
+    }
+
+    public function testBuildUsesSetAttributes()
+    {
+        $built = $this->fixture
+            ->withTopic('foo')
+            ->withContent('bar')
+            ->withPublisher($this->mockPublisher)
+            ->withAttributes($this->attributes)
+            ->build();
+        $this->assertSame($this->attributes, $built->getAttributes());
     }
 }
