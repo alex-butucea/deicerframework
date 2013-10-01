@@ -9,6 +9,7 @@
 
 namespace Deicer\Pubsub;
 
+use Deicer\Stdlib\AttributeProviderInterface;
 use Deicer\Stdlib\StringSerializableInterface;
 
 /**
@@ -21,7 +22,9 @@ use Deicer\Stdlib\StringSerializableInterface;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface MessageInterface extends StringSerializableInterface
+interface MessageInterface extends
+ AttributeProviderInterface,
+ StringSerializableInterface
 {
     /**
      * Get the message topic
@@ -43,4 +46,26 @@ interface MessageInterface extends StringSerializableInterface
      * @return PublisherInterface
      */
     public function getPublisher();
+
+    /**
+     * Message constructor
+     *
+     * @throws InvalidArgumentException If $topic is empty
+     * @throws InvalidArgumentException If $topic is a non-string
+     * @throws InvalidArgumentException If $attributes contains non-string key
+     * @throws InvalidArgumentException If $attributes contains non-null/scalar value
+     *
+     * @param  string $topic Topic to set
+     * @param  mixed $content Content to set
+     * @param  PublisherInterface $publisher Message originator
+     * @param  array $attributes Supplementary attributes to set
+     *
+     * @return MessageInterface
+     */
+    public function __construct(
+        $topic,
+        $content,
+        PublisherInterface $publisher,
+        array $attributes = array ()
+    );
 }

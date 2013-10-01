@@ -65,8 +65,6 @@ class Message implements MessageInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @return PublisherInterface
      */
     public function getPublisher()
     {
@@ -76,18 +74,74 @@ class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttribute($name)
+    {
+        if (empty($name)) {
+            throw new \InvalidArgumentException(
+                'Empty $name passed in: ' . __METHOD__
+            );
+        } elseif (!is_string($name)) {
+            throw new \InvalidArgumentException(
+                'Non-string $name passed in: ' . __METHOD__
+            );
+        }
+
+        return (array_key_exists($name, $this->attributes)) ?
+            $this->attributes[$name] :
+            null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(
         $topic,
         $content,
-        PublisherInterface $publisher
+        PublisherInterface $publisher,
+        array $attributes = array ()
     ) {
-        if (! is_string($topic)) {
-            throw new NonStringException();
+        if (empty($topic)) {
+            throw new \InvalidArgumentException(
+                'Empty $topic passed in: ' . __METHOD__
+            );
+        } elseif (!is_string($topic)) {
+            throw new \InvalidArgumentException(
+                'Non-string $topic passed in: ' . __METHOD__
+            );
         }
 
-        $this->topic = $topic;
-        $this->content = $content;
-        $this->publisher = $publisher;
+        // Ensure attribute names are strings and values are null/scalar
+        foreach ($attributes as $key => $value) {
+            if (empty($key)) {
+                throw new \InvalidArgumentException(
+                    'Empty key in $attributes passed in: ' .
+                    __METHOD__
+                );
+            } elseif (!is_string($key)) {
+                throw new \InvalidArgumentException(
+                    'Non-int key in $attributes passed in: ' .
+                    __METHOD__
+                );
+            } elseif (!is_null($value) && !is_scalar($value)) {
+                throw new \InvalidArgumentException(
+                    'Non-null/non-scalar value in $attributes passed in: ' .
+                    __METHOD__
+                );
+            }
+        }
+
+        $this->topic      = $topic;
+        $this->content    = $content;
+        $this->publisher  = $publisher;
+        $this->attributes = $attributes;
     }
 
     /**

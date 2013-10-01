@@ -31,36 +31,102 @@ class MessageTest extends TestCase
         $this->publisher = $this->getMock('Deicer\Pubsub\PublisherInterface');
     }
 
-    public function fixtureFactory($topic, $content, $publisher)
+    public function testConstructInternalisesTopic()
     {
-        return new Message($topic, $content, $publisher);
-    }
-
-    public function testConstructorInternalisesTopic()
-    {
-        $fixture = $this->fixtureFactory('foo', null, $this->publisher);
+        $fixture = new Message('foo', null, $this->publisher);
         $this->assertSame('foo', $fixture->getTopic());
     }
 
-    public function testConstructorInternalisesContent()
+    public function testConstructInternalisesContent()
     {
-        $fixture = $this->fixtureFactory('', 'bar', $this->publisher);
+        $fixture = new Message('foo', 'bar', $this->publisher);
         $this->assertSame('bar', $fixture->getContent());
     }
 
-    public function testConstructorInternalisesPublisher()
+    public function testConstructInternalisesPublisher()
     {
-        $fixture = $this->fixtureFactory('', 'bar', $this->publisher);
+        $fixture = new Message('foo', 'bar', $this->publisher);
         $this->assertSame($this->publisher, $fixture->getPublisher());
     }
 
-    public function testConstructorTopicTypeStrength()
+    public function testConstructiWithEmptyTopicThrowsException()
     {
-        $this->setExpectedException('Deicer\Exception\Type\NonStringException');
-        $this->fixtureFactory(null, null, $this->publisher);
-        $this->fixtureFactory(1234, null, $this->publisher);
-        $this->fixtureFactory(array (), null, $this->publisher);
-        $this->fixtureFactory(new \stdClass(), null, $this->publisher);
+        $this->setExpectedException('InvalidArgumentException');
+        new Message('', null, $this->publisher);
+    }
+
+    public function testConstructiWithNonStringTopicThrowsException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        new Message(new \stdClass(), null, $this->publisher);
+    }
+
+    public function testConstructWithArrayContainingNonSringKeyThrowsException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $attributes = array (
+            'foo' => 'bar',
+            1     => 'qux',
+        );
+        new Message('foo', null, $this->publisher, $attributes);
+    }
+
+    public function testConstructWithArrayContainingEmptyKeyThrowsException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $attributes = array (
+            'foo' => 'bar',
+            ''    => 'qux',
+        );
+        new Message('foo', null, $this->publisher, $attributes);
+    }
+
+    public function testConstructWithArrayContainingNonScalarValueThrowsException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $attributes = array (
+            'foo'    => 'bar',
+            'baz'    => new \stdClass(),
+            'foobar' => 'foobaz',
+        );
+        new Message('foo', null, $this->publisher, $attributes);
+     }
+
+    public function testConstructInternalisesAttributes()
+    {
+        $attributes = array (
+            'foo'    => 'bar',
+            'baz'    => 'qux',
+            'foobar' => 'foobaz',
+        );
+        $fixture = new Message('foo', null, $this->publisher, $attributes);
+        $this->assertSame($attributes, $fixture->getAttributes());
+    }
+
+    public function testGetAttributeWithEmptyThrowsException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $fixture = new Message('foo', null, $this->publisher);
+        $fixture->getAttribute('');
+    }
+
+    public function testGetAttributeWithNonStringThrowsException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $fixture = new Message('foo', null, $this->publisher);
+        $fixture->getAttribute(array ());
+    }
+
+    public function testGetAttributeWithNonExistentAttributeReturnsNull()
+    {
+        $fixture = new Message('foo', null, $this->publisher, array ('foo' => 'bar'));
+        $this->assertNull($fixture->getAttribute('baz'));
+    }
+
+    public function testGetAttributeReturnsRequestedAttribute()
+    {
+        $fixture = new Message('foo', null, $this->publisher, array ('foo' => 'bar'));
+        $this->assertSame('bar', $fixture->getAttribute('foo'));
     }
 
     public function testToStringSerializesMessageStateCorrectly()
@@ -71,7 +137,7 @@ class MessageTest extends TestCase
         $regex .= 'Content: ' . preg_quote(json_encode($content)) . ' \| ';
         $regex .= 'Publisher: (.)+PublisherInterface(.)+$';
 
-        $fixture = $this->fixtureFactory(
+        $fixture = new Message(
             'foobar',
             $content,
             $this->publisher
