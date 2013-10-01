@@ -76,7 +76,7 @@ class MessageBuilderTest extends TestCase
         $this->setExpectedException('InvalidArgumentException');
         $this->attributes['quux'] = new \stdClass();
         $this->fixture->withAttributes($this->attributes);
-     }
+    }
 
     public function testWithTopicThrowsExceptionIfTopicIsEmpty()
     {

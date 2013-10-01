@@ -61,7 +61,7 @@ class MessageTest extends TestCase
         new Message(new \stdClass(), null, $this->publisher);
     }
 
-    public function testConstructWithArrayContainingNonSringKeyThrowsException()
+    public function testConstructWithAttributesArrayContainingNonSringKeyThrowsException()
     {
         $this->setExpectedException('InvalidArgumentException');
         $attributes = array (
@@ -71,7 +71,7 @@ class MessageTest extends TestCase
         new Message('foo', null, $this->publisher, $attributes);
     }
 
-    public function testConstructWithArrayContainingEmptyKeyThrowsException()
+    public function testConstructWithAttributesArrayContainingEmptyKeyThrowsException()
     {
         $this->setExpectedException('InvalidArgumentException');
         $attributes = array (
@@ -81,7 +81,7 @@ class MessageTest extends TestCase
         new Message('foo', null, $this->publisher, $attributes);
     }
 
-    public function testConstructWithArrayContainingNonScalarValueThrowsException()
+    public function testConstructWithAttributesArrayContainingNonScalarValueThrowsException()
     {
         $this->setExpectedException('InvalidArgumentException');
         $attributes = array (
@@ -90,7 +90,7 @@ class MessageTest extends TestCase
             'foobar' => 'foobaz',
         );
         new Message('foo', null, $this->publisher, $attributes);
-     }
+    }
 
     public function testConstructInternalisesAttributes()
     {
