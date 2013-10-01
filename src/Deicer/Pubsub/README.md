@@ -4,6 +4,7 @@ The Pubsub component is utilised by several framework components to provide tran
 
 Published messages are delivered by Message Brokers to separate concern and minimise boilerplate code in publisher implementations.
 
+## Unfiltered Subscription
 The `UnfilteredMessageBroker` delivers messages of all topics to it's subscribers.
 
 ```php
@@ -104,6 +105,7 @@ $logger = new AuthLogger();
 $subscriberIndex = $auth->getUnfilteredMessageBroker()->addSubscriber($logger);
 ```
 
+## Topic Filtered Subscription
 The `TopicFilteredMessageBroker` selectively delivers messages by allowing subscribers to state which topics they are interested in receiving.
 
 ```php
@@ -188,6 +190,65 @@ $handler->getTopicFilteredMessageBroker()->subscribeToTopics(
 
 // Redirect all PHP errors to handler for distribution as Pubsub messages
 set_error_handler(array ($handler, 'handleError'));
+```
+
+## Message Builder
+A Message Builder is available to ease the composition of messages and help keep your code DRY.
+
+```php
+namespace My\Mvc;
+
+use Deicer\Pubsub\MessageBuilder;
+use My\Mvc\ActionControllerInterface;
+
+class IndexController implements ActionControllerInterface, PublisherInterface
+{
+    protected $messageBroker;
+    protected $messageBuilder;
+
+    // ...
+
+    public function __construct(
+        TopicFilteredMessageBrokerInterface $messageBroker,
+        MessageBuilderInterface $messageBuilder
+    ) {
+        $this->messageBroker  = $messageBroker;
+        $this->messageBuilder = $messageBuilder;
+    }
+
+    public function indexAction()
+    {
+        // ... Populate $this->viewModel ...
+
+        $this->messageBuilder->withTopic('mvc.index.index')
+    }
+
+    public function aboutAction()
+    {
+        // ... Populate $this->viewModel ...
+
+        $this->messageBuilder->withTopic('mvc.index.about')
+    }
+
+    public function newsAction()
+    {
+        // ... Populate $this->viewModel ...
+
+        $this->messageBuilder->withTopic('mvc.index.news')
+    }
+
+    public function postDispatch()
+    {
+        // Build message using set topic
+        $message = $this->messageBuilder
+            ->withContent($this->viewModel)
+            ->withPublisher($this)
+            ->build();
+
+        // Publish built message to subscribers
+        $this->messageBroker->publish($message);
+    }
+}
 ```
 
 For more usage examples, check out the `DeicerTest\Pubsub` namespace.
