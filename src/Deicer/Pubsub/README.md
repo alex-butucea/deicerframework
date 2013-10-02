@@ -7,7 +7,7 @@ Messages are implemented as immutable objects and are comprised of the following
 - `topic (string)` - Used to categorise messages and perform filtering
 - `content (mixed)` - Arbitrary data that makes up message payload
 - `publisher (PublisherInterface)` - Message originator instance
-- `attributes (array)` - Associative array of message meta-data
+- `attributes (array)` - Optional associative array of message meta-data
 
 Published messages are delivered and subscriptions are maintained by Message Brokers to separate concern and minimise boilerplate code in publisher implementations.
 Simply implement one of the following publisher interfaces as-per example, depending on whether filtering is required.
@@ -29,7 +29,8 @@ use Deicer\Pubsub\UnfilteredPublisherInterface;
 
 class Authenticator implements UnfilteredPublisherInterface
 {
-    const MAX_RETRIES = 5;
+    const MAX_FAILED_ATTEMPTS = 5;
+    protected $failedAttepts = 0;
     protected $unfilteredBroker;
     protected $service;
 
@@ -47,7 +48,9 @@ class Authenticator implements UnfilteredPublisherInterface
             'username' => $username,
             'password' => md5($password),
             'address'  => $_SERVER['REMOTE_ADDR'],
-        ),
+        );
+
+        $attribs = array ('failedAttempts' => $failedAttempts);
 
         // User submitted incorrect credentials
         if ($invalidPassword) {
@@ -55,18 +58,20 @@ class Authenticator implements UnfilteredPublisherInterface
                 new Message(
                     'auth.invalid_password', // Topic
                     $messageContent,         // Content
-                    $this                    // Publisher
+                    $this,                   // Publisher
+                    $attribs                 // Attributes
                 );
             );
         }
 
         // Potential brute force attack
-        if ($retries > self::MAX_RETRIES) {
+        if ($failedAttempts > self::MAX_FAILED_ATTEMPTS) {
             $this->unfilteredBroker->publish(
                 new Message(
-                    'auth.retries_exceeded',
+                    'auth.failed_attempts_exceeded',
                     $messageContent,
-                    $this
+                    $this,
+                    $attribs
                 );
             );
 
@@ -79,7 +84,8 @@ class Authenticator implements UnfilteredPublisherInterface
                 new Message(
                     'auth.success',
                     $messageContent,
-                    $this
+                    $this,
+                    $attribs
                 );
             );
 
@@ -171,12 +177,15 @@ class ErrorHandler implements TopicFilteredPublisherInterface
             'errline' => $errline,
         )
 
+        $attribs = array ('timestamp' => date('Y-m-d H:i:s'));
+
         // Notify subscribers of error
         $this->filteredBroker->publish(
             new Message(
                 'error.' . $errno, // Use unique error indentifier for filtering
                 $content,
-                $this
+                $this,
+                $attribs
             );
         );
 
@@ -257,6 +266,7 @@ class IndexController implements ActionControllerInterface, PublisherInterface
         $message = $this->messageBuilder
             ->withContent($this->viewModel)
             ->withPublisher($this)
+            ->withAttributes($_REQUEST)
             ->build();
 
         // Publish built message to subscribers
