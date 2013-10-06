@@ -92,7 +92,7 @@ class Message implements MessageInterface
             throw new \InvalidArgumentException(
                 'Empty $name passed in: ' . __METHOD__
             );
-        } 
+        }
 
         return (array_key_exists($name, $this->attributes)) ?
             $this->attributes[$name] :
