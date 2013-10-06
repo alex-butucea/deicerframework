@@ -11,9 +11,6 @@ namespace Deicer\Query;
 
 use Deicer\Query\AbstractQuery;
 use Deicer\Query\TokenizedQueryInterface;
-use Deicer\Query\Message\TokenizedQueryMessageBuilderInterface;
-use Deicer\Model\RecursiveModelCompositeHydratorInterface;
-use Deicer\Exception\Type\NonStringException;
 
 /**
  * {@inheritdoc}
@@ -38,27 +35,10 @@ abstract class AbstractTokenizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      */
-    public function __construct(
-        $dataProvider,
-        TokenizedQueryMessageBuilderInterface $messageBuilder,
-        RecursiveModelCompositeHydratorInterface $modelHydrator
-    ) {
-        $this->dataProvider  = $dataProvider;
-        $this->messageBuilder  = $messageBuilder;
-        $this->modelHydrator = $modelHydrator;
-        $this->lastResponse  = $modelHydrator->exchangeArray(array ());
-
-        $this->syncMessageBuilder();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function decorate(TokenizedQueryInterface $decoratable)
     {
         $this->decorated = $decoratable;
         $this->syncDecorated();
-
         return $this;
     }
 
@@ -67,8 +47,11 @@ abstract class AbstractTokenizedQuery extends AbstractQuery implements
      */
     public function setToken($token)
     {
-        if (! is_string($token)) {
-            throw new NonStringException();
+        if (!is_string($token)) {
+            throw new \InvalidArgumentException(
+                'Non-string $token passed in: ' .
+                get_called_class() . '::' . __FUNCTION__
+            );
         }
 
         $this->token = $token;
@@ -86,16 +69,6 @@ abstract class AbstractTokenizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      */
-    protected function syncMessageBuilder()
-    {
-        $this->messageBuilder->withToken($this->token);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function syncDecorated()
     {
         if ($this->decorated) {
@@ -103,5 +76,13 @@ abstract class AbstractTokenizedQuery extends AbstractQuery implements
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getSupplementaryMessageAttributes()
+    {
+        return array ('token' => $this->token);
     }
 }

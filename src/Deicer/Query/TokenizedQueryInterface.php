@@ -10,12 +10,8 @@
 namespace Deicer\Query;
 
 use Deicer\Query\QueryInterface;
-use Deicer\Query\Message\TokenizedQueryMessageBuilderInterface;
-use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 use Deicer\Stdlib\TokenConsumerInterface;
 use Deicer\Stdlib\TokenProviderInterface;
-use Deicer\Stdlib\ExecutableInterface;
-use Deicer\Pubsub\PublisherInterface;
 
 /**
  * Marker interface for tokenized queries
@@ -33,25 +29,9 @@ use Deicer\Pubsub\PublisherInterface;
  */
 interface TokenizedQueryInterface extends
  QueryInterface,
- ExecutableInterface,
- PublisherInterface,
  TokenConsumerInterface,
  TokenProviderInterface
 {
-    /**
-     * Tokenized Query Constructor
-     *
-     * @param  mixed $dataProvider Query data provider - DB connection, CURl client, etc.
-     * @param  TokenizedQueryMessageBuilderInterface $messageBuilder Assembles pubsub messages
-     * @param  RecursiveModelCompositeHydratorInterface $modelHydrator Hydrates query responses
-     * @return TokenizedQueryInterface
-     */
-    public function __construct(
-        $dataProvider,
-        TokenizedQueryMessageBuilderInterface $messageBuilder,
-        RecursiveModelCompositeHydratorInterface $modelHydrator
-    );
-
     /**
      * Decorate a query to implement a fallback on query execution failure
      *

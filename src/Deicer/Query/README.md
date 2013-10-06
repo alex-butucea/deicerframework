@@ -210,7 +210,7 @@ namespace My;
 
 use Deicer\Stdlib\Pubsub\MessageInterface;
 use Deicer\Stdlib\Pubsub\SubcriberInterface;
-use Deicer\Query\Message\QueryMessageTopic;
+use Deicer\Query\Message\MessageTopic;
 use Deicer\Query\Exception\ExceptionInterface as QueryException;
 
 class Logger implements SubcriberInterface
@@ -236,10 +236,9 @@ $logger = new Logger();
 
 // Subscribe logger to only query failure messages
 $query->
-    subscribe($logger, QueryMessageTopic::FAILURE_DATA_TYPE)
-    subscribe($logger, QueryMessageTopic::FAILURE_DATA_FETCH)
-    subscribe($logger, QueryMessageTopic::FAILURE_MODEL_HYDRATOR);
-
+    subscribe($logger, MessageTopic::FAILURE_DATA_TYPE)
+    subscribe($logger, MessageTopic::FAILURE_DATA_FETCH)
+    subscribe($logger, MessageTopic::FAILURE_MODEL_HYDRATOR);
 try {
     $listings = $cacheQuery->execute();
 } catch (QueryException $e) {

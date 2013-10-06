@@ -10,14 +10,15 @@
 namespace Deicer\Query;
 
 use Deicer\Query\QueryInterface;
-use Deicer\Query\Message\QueryMessageTopic;
+use Deicer\Query\MessageTopic;
 use Deicer\Query\Exception\DataTypeException;
 use Deicer\Query\Exception\DataFetchException;
 use Deicer\Query\Exception\ModelHydratorException;
 use Deicer\Pubsub\MessageInterface;
-use Deicer\Pubsub\SubscriberInterface;
-use Deicer\Exception\Type\NonArrayException;
-use Deicer\Exception\Type\NonStringException;
+use Deicer\Pubsub\MessageBuilderInterface;
+use Deicer\Pubsub\UnfilteredMessageBrokerInterface;
+use Deicer\Pubsub\TopicFilteredMessageBrokerInterface;
+use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 
 /**
  * Abstract Deicer Query
@@ -41,9 +42,23 @@ abstract class AbstractQuery
     /**
      * Assembles pubsub messages 
      * 
-     * @var InvariableQueryMessageBuilderInterface
+     * @var MessageBuilderInterface
      */
     protected $messageBuilder;
+
+    /**
+     * Pubsub message broker with no filtering
+     * 
+     * @var UnfilteredMessageBrokerInterface
+     */
+    protected $unfilteredBroker;
+
+    /**
+     * Pubsub message broker with topic filtering
+     * 
+     * @var TopicFilteredMessageBrokerInterface
+     */
+    protected $topicFilteredBroker;
 
     /**
      * Hydrates query responses 
@@ -60,24 +75,6 @@ abstract class AbstractQuery
     protected $decorated;
 
     /**
-     * Subscriber instances
-     *
-     * SubscriberObjectHash => SubscriberObject
-     * 
-     * @var array
-     */
-    protected $subscribers = array ();
-
-    /**
-     * Associative array of message subscribers to topcis
-     *
-     * SubscriberObjectHash => array (TopicSubscription, TopicSubscription)
-     *
-     * @var array
-     */
-    protected $subscriptions = array ();
-
-    /**
      * Model composite yeilded from last execuction
      * 
      * @var ModelCompositeInterface
@@ -87,9 +84,43 @@ abstract class AbstractQuery
     /**
      * {@inheritdoc}
      */
+    public function __construct(
+        $dataProvider,
+        MessageBuilderInterface $messageBuilder,
+        UnfilteredMessageBrokerInterface $unfilteredBroker,
+        TopicFilteredMessageBrokerInterface $topicFilteredBroker,
+        RecursiveModelCompositeHydratorInterface $modelHydrator
+    ) {
+        $this->dataProvider        = $dataProvider;
+        $this->messageBuilder      = $messageBuilder;
+        $this->unfilteredBroker    = $unfilteredBroker;
+        $this->topicFilteredBroker = $topicFilteredBroker;
+        $this->modelHydrator       = $modelHydrator;
+        $this->lastResponse        = $modelHydrator->exchangeArray(array ());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getLastResponse()
     {
         return $this->lastResponse;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnfilteredMessageBroker()
+    {
+        return $this->unfilteredBroker;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTopicFilteredMessageBroker()
+    {
+        return $this->topicFilteredBroker;
     }
 
     /**
@@ -103,10 +134,11 @@ abstract class AbstractQuery
     {
         // Initialize message and record time in milliseconds
         $this->messageBuilder->withPublisher($this);
-        $time = round(microtime() * 1000);
+        $time = round(microtime(true) * 1000);
 
         // Sync selection criteria to reflect instance
-        $this->syncMessageBuilder()->syncDecorated();
+        $this->syncDecorated();
+
         // Attempt to fetchData, rethrow exception if no decorated query exists
         try {
             $data = $this->fetchData();
@@ -114,13 +146,16 @@ abstract class AbstractQuery
 
             // Build message based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
-                QueryMessageTopic::FALLBACK_DATA_FETCH :
-                QueryMessageTopic::FAILURE_DATA_FETCH;
+                MessageTopic::FALLBACK_DATA_FETCH :
+                MessageTopic::FAILURE_DATA_FETCH;
             $message = $this->messageBuilder
                 ->withTopic($topic)
-                ->withContent(array ())
-                ->build()
-                ->addElapsedTime((int) (round(microtime() * 1000) - $time));
+                ->withContent(null)
+                ->withAttributes(
+                    $this->getSupplementaryMessageAttributes() +
+                    array ('elapsed_time' => $this->calculateElapsedTime($time))
+                )
+                ->build();
             $this->publish($message);
 
             // Update last response with decorated result and terminate
@@ -142,13 +177,16 @@ abstract class AbstractQuery
         // Enforce returned data type strength if no decorated query exists
         if (! is_array($data)) {
             $topic = ($this->decorated) ?
-                QueryMessageTopic::FALLBACK_DATA_TYPE :
-                QueryMessageTopic::FAILURE_DATA_TYPE;
+                MessageTopic::FALLBACK_DATA_TYPE :
+                MessageTopic::FAILURE_DATA_TYPE;
             $message = $this->messageBuilder
                 ->withTopic($topic)
-                ->withContent(array ())
-                ->build()
-                ->addElapsedTime((int) (round(microtime() * 1000) - $time));
+                ->withContent(null)
+                ->withAttributes(
+                    $this->getSupplementaryMessageAttributes() +
+                    array ('elapsed_time' => $this->calculateElapsedTime($time))
+                )
+                ->build();
             $this->publish($message);
 
             // Update last response with decorated result and terminate
@@ -172,13 +210,16 @@ abstract class AbstractQuery
 
             // Build message based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
-                QueryMessageTopic::FALLBACK_MODEL_HYDRATOR :
-                QueryMessageTopic::FAILURE_MODEL_HYDRATOR;
+                MessageTopic::FALLBACK_MODEL_HYDRATOR :
+                MessageTopic::FAILURE_MODEL_HYDRATOR;
             $message = $this->messageBuilder
                 ->withTopic($topic)
                 ->withContent($data)
-                ->build()
-                ->addElapsedTime((int) (round(microtime() * 1000) - $time));
+                ->withAttributes(
+                    $this->getSupplementaryMessageAttributes() +
+                    array ('elapsed_time' => $this->calculateElapsedTime($time))
+                )
+                ->build();
             $this->publish($message);
 
             // Update last response with decorated result and terminate
@@ -200,119 +241,47 @@ abstract class AbstractQuery
 
         // Notify subscribers of successful query execution
         $message = $this->messageBuilder
-            ->withTopic(QueryMessageTopic::SUCCESS)
+            ->withTopic(MessageTopic::SUCCESS)
             ->withContent($data)
-            ->build()
-            ->addElapsedTime((int) (round(microtime() * 1000) - $time));
+            ->withAttributes(
+                $this->getSupplementaryMessageAttributes() +
+                array ('elapsed_time' => $this->calculateElapsedTime($time))
+            )
+            ->build();
         $this->publish($message);
 
         return $hydrated;
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * Only permits object instances to subscribe to a given topic once
-     *
-     * @throws InvalidArgumentException If $topic is empty
+     * Calcualtes the elapsed time (ms) since a given start point
+     * 
+     * @param  int $start Start to calcualte elapsed time from
+     * @return int
      */
-    public function subscribe(SubscriberInterface $subscriber, $topic)
+    protected function calculateElapsedTime($start)
     {
-        $this->validateTopic($topic);
-
-        // Generate subscriber hash and store instance
-        $hash = spl_object_hash($subscriber);
-        $this->subscribers[$hash] = $subscriber;
-
-        // Normalise subscriber topic subscriptions
-        if (! isset($this->subscriptions[$hash])) {
-            $this->subscriptions[$hash] = array ();
-        }
-        
-        // Deny subscribers from subscribing to the same topic more than once
-        if (! in_array($topic, $this->subscriptions[$hash])) {
-            $this->subscriptions[$hash][] = $topic;
-        }
-
-        return $this;
+        return (int) (round(microtime(true) * 1000) - $start);
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @throws OutOfBoundsException If $subscriber is not registered
-     * @throws OutOfBoundsException If $subscriber is not subscribed to $topic
-     */
-    public function unsubscribe(SubscriberInterface $subscriber, $topic)
-    {
-        $this->validateTopic($topic);
-        
-        // Generate subscriber hash and terminate execution if not subscribed
-        $hash = spl_object_hash($subscriber);
-        if (empty($this->subscribers[$hash]) ||
-            empty($this->subscriptions[$hash])
-        ) {
-            throw new \OutOfBoundsException(
-                'Unsubscribed $subscriber passed for unsubscription in: ' .
-                get_called_class() . '::' . __FUNCTION__
-            );
-        }
-
-        // Locate topic subscription and terminate if not subscribed
-        $index = array_search($topic, $this->subscriptions[$hash]);
-        if ($index === false) {
-            throw new \OutOfBoundsException(
-                'Unsubscribed $topic passed for unsubscription in: ' .
-                get_called_class() . '::' . __FUNCTION__
-            );
-        }
-
-        // Unsubscribe from topic and return fluent interface
-        unset($this->subscriptions[$hash][$index]);
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function publish(MessageInterface $message)
-    {
-        // Walk topic subscriptions only notifying if message topic matches
-        foreach ($this->subscriptions as $subHash => $topics) {
-            if (in_array($message->getTopic(), $topics)) {
-                $this->subscribers[$subHash]->update($message);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Throws exception if given topic is invalid
-     *
-     * @throws NonStringException If $topic is a non string value
-     * @throws InvalidArgumentException If $topic is empty
-     * @param  string $topic PubSub topic to validate
+     * Publishes message using registered message brokers
+     * 
+     * @param  MessageInterface $message Message to publish
      * @return void
      */
-    protected function validateTopic($topic)
+    protected function publish(MessageInterface $message)
     {
-        if (! is_string($topic)) {
-            throw new NonStringException();
-        } elseif (empty($topic)) {
-            throw new \InvalidArgumentException(
-                '$topic must not be empty string in: ' .
-                get_called_class() . '::' . __FUNCTION__
-            );
-        }
+        $this->unfilteredBroker->publish($message);
+        $this->topicFilteredBroker->publish($message);
     }
 
     /**
-     * Sync message builder selection criteria with instance
-     * 
-     * @return AbstractQuery Fluent interface
+     * Get supplementary attributes to inject into published messages
+     *
+     * @return array
      */
-    abstract protected function syncMessageBuilder();
+    abstract protected function getSupplementaryMessageAttributes();
 
     /**
      * Sync decorated query selection criteria with instance

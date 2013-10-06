@@ -7,7 +7,7 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace Deicer\Query\Message;
+namespace Deicer\Query;
 
 /**
  * Query Message Topic Container
@@ -20,7 +20,7 @@ namespace Deicer\Query\Message;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class QueryMessageTopic
+class MessageTopic
 {
     /**
      * Pubsub topic implying execution was a success

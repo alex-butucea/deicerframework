@@ -10,10 +10,6 @@
 namespace Deicer\Query;
 
 use Deicer\Query\QueryInterface;
-use Deicer\Query\Message\InvariableQueryMessageBuilderInterface;
-use Deicer\Model\RecursiveModelCompositeHydratorInterface;
-use Deicer\Stdlib\ExecutableInterface;
-use Deicer\Pubsub\PublisherInterface;
 
 /**
  * {@inheritdoc}
@@ -29,25 +25,8 @@ use Deicer\Pubsub\PublisherInterface;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface InvariableQueryInterface extends
- QueryInterface,
- ExecutableInterface,
- PublisherInterface
+interface InvariableQueryInterface extends QueryInterface
 {
-    /**
-     * Invariable Query Constructor
-     *
-     * @param  mixed $dataProvider Query data provider - DB connection, CURl client, etc.
-     * @param  InvariableQueryMessageBuilderInterface $messageBuilder Assembles pubsub messages
-     * @param  RecursiveModelCompositeHydratorInterface $modelHydrator Hydrates query responses
-     * @return InvariableQueryInterface
-     */
-    public function __construct(
-        $dataProvider,
-        InvariableQueryMessageBuilderInterface $messageBuilder,
-        RecursiveModelCompositeHydratorInterface $modelHydrator
-    );
-
     /**
      * Decorate a query to implement a fallback on query execution failure
      *

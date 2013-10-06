@@ -9,6 +9,14 @@
 
 namespace Deicer\Query;
 
+use Deicer\Stdlib\ExecutableInterface;
+use Deicer\Pubsub\MessageBuilderInterface;
+use Deicer\Pubsub\UnfilteredPublisherInterface;
+use Deicer\Pubsub\TopicFilteredPublisherInterface;
+use Deicer\Pubsub\UnfilteredMessageBrokerInterface;
+use Deicer\Pubsub\TopicFilteredMessageBrokerInterface;
+use Deicer\Model\RecursiveModelCompositeHydratorInterface;
+
 /**
  * Deicer Query Interface
  *
@@ -23,8 +31,30 @@ namespace Deicer\Query;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface QueryInterface
+interface QueryInterface extends
+ ExecutableInterface,
+ UnfilteredPublisherInterface,
+ TopicFilteredPublisherInterface
 {
+    /**
+     * Query Constructor
+     *
+     * @param  mixed $dataProvider Query data provider - DB connection, CURl client, etc.
+     * @param  MessageBuilderInterface $messageBuilder Assembles pubsub messages
+     * @param  UnfilteredPublisherInterface $unfilteredBroker Unfiltered message broker
+     * @param  TopicFilteredMessageBrokerInterface $topicFilteredBroker Topic filtered broker
+     * @param  RecursiveModelCompositeHydratorInterface $modelHydrator Hydrates query responses
+     *
+     * @return QueryInterface
+     */
+    public function __construct(
+        $dataProvider,
+        MessageBuilderInterface $messageBuilder,
+        UnfilteredMessageBrokerInterface $unfilteredBroker,
+        TopicFilteredMessageBrokerInterface $topicFilteredBroker,
+        RecursiveModelCompositeHydratorInterface $modelHydrator
+    );
+
     /**
      * Returns the last model composite yeilded from query execution
      * 

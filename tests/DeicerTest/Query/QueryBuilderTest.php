@@ -90,13 +90,13 @@ class QueryBuilderTest extends TestCase
 
     public function testConstructNamespaceTypeStrength()
     {
-        $this->setExpectedException('Deicer\Exception\Type\NonStringException');
+        $this->setExpectedException('InvalidArgumentException');
         new QueryBuilder(array ());
     }
 
     public function testBuildClassnameTypeStrength()
     {
-        $this->setExpectedException('Deicer\Exception\Type\NonStringException');
+        $this->setExpectedException('InvalidArgumentException');
         $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)
@@ -139,7 +139,7 @@ class QueryBuilderTest extends TestCase
 
     public function testBuildThrowsExceptionIfClassDoesntImplementRecognisedInterface()
     {
-        $this->setExpectedException('Deicer\Exception\Type\NonInstanceException');
+        $this->setExpectedException('UnexpectedValueException');
         $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)

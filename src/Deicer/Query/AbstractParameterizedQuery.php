@@ -11,10 +11,7 @@ namespace Deicer\Query;
 
 use Deicer\Query\AbstractQuery;
 use Deicer\Query\ParameterizedQueryInterface;
-use Deicer\Query\Message\ParameterizedQueryMessageBuilderInterface;
 use Deicer\Query\Exception\NonExistentParamException;
-use Deicer\Model\RecursiveModelCompositeHydratorInterface;
-use Deicer\Exception\Type\NonStringException;
 
 /**
  * {@inheritdoc}
@@ -30,7 +27,7 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
      ParameterizedQueryInterface
 {
     /**
-     * Key value pairs of parameters used to seed selection algorithm
+     * Key value pairs that make up selection criteria
      * 
      * @var array
      */
@@ -39,27 +36,10 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      */
-    public function __construct(
-        $dataProvider,
-        ParameterizedQueryMessageBuilderInterface $messageBuilder,
-        RecursiveModelCompositeHydratorInterface $modelHydrator
-    ) {
-        $this->dataProvider  = $dataProvider;
-        $this->messageBuilder  = $messageBuilder;
-        $this->modelHydrator = $modelHydrator;
-        $this->lastResponse  = $modelHydrator->exchangeArray(array ());
-
-        $this->syncMessageBuilder();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function decorate(ParameterizedQueryInterface $decoratable)
     {
         $this->decorated = $decoratable;
         $this->syncDecorated();
-
         return $this;
     }
 
@@ -82,7 +62,7 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      *
-     * @throws NonStringException If $name is not a string
+     * @throws InvalidArgumentException If $name is not a string
      * @throws NonExistentParamException If query doesn't contain param $name
      */
     public function setParam($name, $value)
@@ -119,7 +99,7 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      *
-     * @throws NonStringException If $name is not a string
+     * @throws InvalidArgumentException If $name is not a string
      * @throws NonExistentParamException If query doesn't contain param $name
      */
     public function getParam($name)
@@ -131,11 +111,9 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      */
-    protected function syncMessageBuilder()
+    protected function getSupplementaryMessageAttributes()
     {
-        $this->messageBuilder->withParams($this->params);
-
-        return $this;
+        return $this->params;
     }
 
     /**
@@ -153,7 +131,7 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
     /**
      * Throws exception if concrete implementation doesn't contain param passed
      * 
-     * @throws NonStringException If $name is not a string
+     * @throws InvalidArgumentException If $name is not a string
      * @throws NonExistentParamException If query doesn't contain param $param
      * @param  string $param The param to validate
      * @param  string $method The name of the method called
@@ -162,7 +140,7 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
     protected function validateParam($param, $method)
     {
         if (! is_string($param)) {
-            throw new NonStringException(
+            throw new \InvalidArgumentException(
                 'Non string $param passed in: ' . $method
             );
         } elseif (! array_key_exists($param, $this->params)) {

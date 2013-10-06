@@ -13,12 +13,10 @@ use Deicer\Query\QueryBuilderInterface;
 use Deicer\Model\ModelInterface;
 use Deicer\Model\ModelCompositeInterface;
 use Deicer\Model\RecursiveModelCompositeHydrator;
-use Deicer\Query\Message\InvariableQueryMessageBuilder;
-use Deicer\Query\Message\TokenizedQueryMessageBuilder;
-use Deicer\Query\Message\ParameterizedQueryMessageBuilder;
+use Deicer\Pubsub\MessageBuilder;
+use Deicer\Pubsub\UnfilteredMessageBroker;
+use Deicer\Pubsub\TopicFilteredMessageBroker;
 use Deicer\Exception\NonExistentClassException;
-use Deicer\Exception\Type\NonStringException;
-use Deicer\Exception\Type\NonInstanceException;
 
 /**
  * {@inheritdoc}
@@ -66,7 +64,7 @@ class QueryBuilder implements QueryBuilderInterface
     public function __construct($namespace)
     {
         if (! is_string($namespace)) {
-            throw new NonStringException(
+            throw new \InvalidArgumentException(
                 'Non-string $namespace passed in: ' . __METHOD__
             );
         }
@@ -122,7 +120,7 @@ class QueryBuilder implements QueryBuilderInterface
         }
 
         if (! is_string($classname)) {
-            throw new NonStringException(
+            throw new \InvalidArgumentException(
                 'Non-string $classname passed in: ' . __METHOD__
             );
         }
@@ -135,16 +133,13 @@ class QueryBuilder implements QueryBuilderInterface
             throw new NonExistentClassException($e->getMessage(), 0, $e);
         }
 
-        // Select dependencies based on query interface
+        // Ensure query implements a valid interface
         $interfaces = $class->getInterfaces();
-        if (isset($interfaces['Deicer\Query\InvariableQueryInterface'])) {
-            $messageBuilder = new InvariableQueryMessageBuilder();
-        } elseif (isset($interfaces['Deicer\Query\TokenizedQueryInterface'])) {
-            $messageBuilder = new TokenizedQueryMessageBuilder();
-        } elseif (isset($interfaces['Deicer\Query\ParameterizedQueryInterface'])) {
-            $messageBuilder = new ParameterizedQueryMessageBuilder();
-        } else {
-            throw new NonInstanceException(
+        if (!isset($interfaces['Deicer\Query\InvariableQueryInterface']) &&
+            !isset($interfaces['Deicer\Query\TokenizedQueryInterface']) &&
+            !isset($interfaces['Deicer\Query\ParameterizedQueryInterface'])
+        ) {
+            throw new \UnexpectedValueException(
                 'Unexpected class interface in: ' . __METHOD__
             );
         }
@@ -152,7 +147,9 @@ class QueryBuilder implements QueryBuilderInterface
         // Assemble and return query
         return new $fullname(
             $this->dataProvider,
-            $messageBuilder,
+            new MessageBuilder(),
+            new UnfilteredMessageBroker(),
+            new TopicFilteredMessageBroker(),
             new RecursiveModelCompositeHydrator(
                 $this->modelPrototype,
                 $this->modelCompositePrototype

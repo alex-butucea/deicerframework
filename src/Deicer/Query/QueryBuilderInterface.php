@@ -29,7 +29,7 @@ interface QueryBuilderInterface
     /**
      * Query builder constructor
      * 
-     * @throws NonStringException If $namespace is not a string
+     * @throws InvalidArgumentException If $namespace is not a string
      * @param  string $namespace Namespace concrete queries are located under
      * @return QueryBuilderInterface
      */
@@ -68,8 +68,8 @@ interface QueryBuilderInterface
      * @throws LogicException If model prototype has not been set 
      * @throws LogicException If model composite prototype has not been set 
      * @throws InvalidArgumentException If $classname is empty
-     * @throws NonStringException If $classname is not a string
-     * @throws NonInstanceException If query doesnt implement QueryInterface
+     * @throws InvalidArgumentException If $classname is not a string
+     * @throws UnexpectedValueException If query doesnt implement QueryInterface
      * @throws NonExistentClassException If class doesn't exist
      * 
      * @param  string $classname Query name that is appended onto set namespace 

@@ -9,6 +9,8 @@
 
 namespace Deicer\Pubsub;
 
+use Deicer\Pubsub\PublisherInterface;
+
 /**
  * Unfiltered Pubsub Message Publisher
  *
@@ -21,7 +23,7 @@ namespace Deicer\Pubsub;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface UnfilteredPublisherInterface
+interface UnfilteredPublisherInterface extends PublisherInterface
 {
     /**
      * Returns the unfiltered message broker for subscribers

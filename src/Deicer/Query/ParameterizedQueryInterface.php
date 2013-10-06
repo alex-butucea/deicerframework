@@ -10,10 +10,6 @@
 namespace Deicer\Query;
 
 use Deicer\Query\QueryInterface;
-use Deicer\Query\Message\ParameterizedQueryMessageBuilderInterface;
-use Deicer\Model\RecursiveModelCompositeHydratorInterface;
-use Deicer\Stdlib\ExecutableInterface;
-use Deicer\Pubsub\PublisherInterface;
 use Deicer\Stdlib\ParameterConsumerInterface;
 use Deicer\Stdlib\ParameterProviderInterface;
 
@@ -33,25 +29,9 @@ use Deicer\Stdlib\ParameterProviderInterface;
  */
 interface ParameterizedQueryInterface extends
  QueryInterface,
- ExecutableInterface,
- PublisherInterface,
  ParameterConsumerInterface,
  ParameterProviderInterface
 {
-    /**
-     * Parameterized Query Constructor
-     *
-     * @param  mixed $dataProvider Query data provider - DB connection, CURl client, etc.
-     * @param  ParameterizedQueryMessageBuilderInterface $messageBuilder Assembles pubsub messages
-     * @param  RecursiveModelCompositeHydratorInterface $modelHydrator Hydrates query responses
-     * @return ParameterizedQueryInterface
-     */
-    public function __construct(
-        $dataProvider,
-        ParameterizedQueryMessageBuilderInterface $messageBuilder,
-        RecursiveModelCompositeHydratorInterface $modelHydrator
-    );
-
     /**
      * Decorate a query to implement a fallback on query execution failure
      *
