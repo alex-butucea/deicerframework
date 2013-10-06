@@ -391,7 +391,7 @@ abstract class AbstractQueryTest extends TestCase
             ->method('exchangeArray')
             ->will($this->throwException(new \InvalidArgumentException($msg)));
 
-        $this->setUpMessageBuilder('failure_model_hydrator', $content);
+        $this->setUpMessageBuilder('failure.model_hydrator', $content);
         $this->setUpMessageBrokers($this->message);
         $this->setUpFixtureWithModelIncompatibleFetchData();
         $this->fixtureWithModelIncompatibleFetchData->execute();
@@ -400,7 +400,7 @@ abstract class AbstractQueryTest extends TestCase
     public function testExecuteNotifiesSubscribersOfDataFetchFailure()
     {
         $this->setExpectedException('Deicer\Query\Exception\DataFetchException');
-        $this->setUpMessageBuilder('failure_data_fetch', null);
+        $this->setUpMessageBuilder('failure.data_fetch', null);
         $this->setUpMessageBrokers($this->message);
         $this->setUpFixtureWithExceptionThrowingFetchData();
         $this->fixtureWithExceptionThrowingFetchData->execute();
@@ -409,7 +409,7 @@ abstract class AbstractQueryTest extends TestCase
     public function testExecuteNotifiesSubscribersOfDataTypeFailure()
     {
         $this->setExpectedException('Deicer\Query\Exception\DataTypeException');
-        $this->setUpMessageBuilder('failure_data_type', null);
+        $this->setUpMessageBuilder('failure.data_type', null);
         $this->setUpMessageBrokers($this->message);
         $this->setUpFixtureWithNonArrayReturningFetchData();
         $this->fixtureWithNonArrayReturningFetchData->execute();
@@ -431,7 +431,7 @@ abstract class AbstractQueryTest extends TestCase
             ->method('exchangeArray')
             ->will($this->throwException(new \InvalidArgumentException($msg)));
 
-        $this->setUpMessageBuilder('fallback_model_hydrator', $content);
+        $this->setUpMessageBuilder('fallback.model_hydrator', $content);
         $this->setUpMessageBrokers($this->message);
         $this->setUpFixtureWithModelIncompatibleFetchData();
         $this->fixtureWithModelIncompatibleFetchData->decorate($this->mockFixture);
@@ -440,7 +440,7 @@ abstract class AbstractQueryTest extends TestCase
 
     public function testExecuteNotifiesSubscribersOfFallbackDueToDataFetchFailure()
     {
-        $this->setUpMessageBuilder('fallback_data_fetch', null);
+        $this->setUpMessageBuilder('fallback.data_fetch', null);
         $this->setUpMessageBrokers($this->message);
         $this->setUpFixtureWithExceptionThrowingFetchData();
         $this->fixtureWithExceptionThrowingFetchData->decorate($this->mockFixture);
@@ -449,7 +449,7 @@ abstract class AbstractQueryTest extends TestCase
 
     public function testExecuteNotifiesSubscribersOfFallbackDueToDataTypeFailure()
     {
-        $this->setUpMessageBuilder('fallback_data_type', null);
+        $this->setUpMessageBuilder('fallback.data_type', null);
         $this->setUpMessageBrokers($this->message);
         $this->setUpFixtureWithNonArrayReturningFetchData();
         $this->fixtureWithNonArrayReturningFetchData->decorate($this->mockFixture);

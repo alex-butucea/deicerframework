@@ -37,7 +37,7 @@ class MessageTopic
      *
      * @const string
      */
-    const FAILURE_MODEL_HYDRATOR = 'failure_model_hydrator';
+    const FAILURE_MODEL_HYDRATOR = 'failure.model_hydrator';
 
     /**
      * Pubsub topic implying query was a failure and caused by
@@ -45,7 +45,7 @@ class MessageTopic
      *
      * @const string
      */
-    const FAILURE_DATA_FETCH = 'failure_data_fetch';
+    const FAILURE_DATA_FETCH = 'failure.data_fetch';
 
     /**
      * Pubsub topic implying execution was a failure and caused by
@@ -53,7 +53,7 @@ class MessageTopic
      *
      * @const string
      */
-    const FAILURE_DATA_TYPE = 'failure_data_type';
+    const FAILURE_DATA_TYPE = 'failure.data_type';
 
     // Query Fallback Topics
 
@@ -63,7 +63,7 @@ class MessageTopic
      *
      * @const string
      */
-    const FALLBACK_MODEL_HYDRATOR = 'fallback_model_hydrator';
+    const FALLBACK_MODEL_HYDRATOR = 'fallback.model_hydrator';
 
     /**
      * Pubsub topic implying query has fallen back to decorated instance due to
@@ -71,7 +71,7 @@ class MessageTopic
      *
      * @const string
      */
-    const FALLBACK_DATA_FETCH = 'fallback_data_fetch';
+    const FALLBACK_DATA_FETCH = 'fallback.data_fetch';
 
     /**
      * Pubsub topic implying query has fallen back to decorated instance due to
@@ -79,5 +79,5 @@ class MessageTopic
      *
      * @const string
      */
-    const FALLBACK_DATA_TYPE = 'fallback_data_type';
+    const FALLBACK_DATA_TYPE = 'fallback.data_type';
 }
