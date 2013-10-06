@@ -57,13 +57,13 @@ class MessageBuilder implements MessageBuilderInterface
      */
     public function withTopic($topic)
     {
-        if (empty($topic)) {
-            throw new \InvalidArgumentException(
-                'Non-empty topic required in: ' . __METHOD__
-            );
-        } elseif (!is_string($topic)) {
+        if (!is_string($topic)) {
             throw new \InvalidArgumentException(
                 'String topic required in: ' . __METHOD__
+            );
+        } elseif (empty($topic)) {
+            throw new \InvalidArgumentException(
+                'Non-empty topic required in: ' . __METHOD__
             );
         }
 

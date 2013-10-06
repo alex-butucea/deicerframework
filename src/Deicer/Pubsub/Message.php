@@ -84,15 +84,15 @@ class Message implements MessageInterface
      */
     public function getAttribute($name)
     {
-        if (empty($name)) {
-            throw new \InvalidArgumentException(
-                'Empty $name passed in: ' . __METHOD__
-            );
-        } elseif (!is_string($name)) {
+        if (!is_string($name)) {
             throw new \InvalidArgumentException(
                 'Non-string $name passed in: ' . __METHOD__
             );
-        }
+        } elseif (empty($name)) {
+            throw new \InvalidArgumentException(
+                'Empty $name passed in: ' . __METHOD__
+            );
+        } 
 
         return (array_key_exists($name, $this->attributes)) ?
             $this->attributes[$name] :
