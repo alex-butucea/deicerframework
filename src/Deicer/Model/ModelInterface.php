@@ -10,7 +10,7 @@
 namespace Deicer\Model;
 
 use Deicer\Stdlib\ClearableInterface;
-use Deicer\Stdlib\ExtactableInterface;
+use Deicer\Stdlib\ExtractableInterface;
 
 /**
  * Deicer Model Interface
@@ -27,7 +27,7 @@ use Deicer\Stdlib\ExtactableInterface;
 interface ModelInterface extends
  ComponentInterface,
  ClearableInterface,
- ExtactableInterface
+ ExtractableInterface
 {
     /**
      * Prevents additional properties to be injected into instance at runtime

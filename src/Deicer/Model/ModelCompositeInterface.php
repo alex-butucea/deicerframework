@@ -10,7 +10,7 @@
 namespace Deicer\Model;
 
 use Deicer\Stdlib\ClearableInterface;
-use Deicer\Stdlib\ExtactableInterface;
+use Deicer\Stdlib\ExtractableInterface;
 
 /**
  * Deicer Abstract Model Composite
@@ -26,7 +26,7 @@ use Deicer\Stdlib\ExtactableInterface;
  */
 interface ModelCompositeInterface extends
  ComponentInterface,
- ExtactableInterface,
+ ExtractableInterface,
  ClearableInterface,
  \Iterator,
  \Countable,
