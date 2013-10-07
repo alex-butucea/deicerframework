@@ -16,7 +16,7 @@ use Deicer\Model\RecursiveModelCompositeHydrator;
 use Deicer\Pubsub\MessageBuilder;
 use Deicer\Pubsub\UnfilteredMessageBroker;
 use Deicer\Pubsub\TopicFilteredMessageBroker;
-use Deicer\Exception\NonExistentClassException;
+use Deicer\Query\Exception\NonExistentQueryException;
 
 /**
  * {@inheritdoc}
@@ -130,7 +130,7 @@ class QueryBuilder implements QueryBuilderInterface
         try {
             $class = new \ReflectionClass($fullname);
         } catch (\ReflectionException $e) {
-            throw new NonExistentClassException($e->getMessage(), 0, $e);
+            throw new NonExistentQueryException($e->getMessage(), 0, $e);
         }
 
         // Ensure query implements a valid interface

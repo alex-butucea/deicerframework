@@ -130,7 +130,7 @@ class QueryBuilderTest extends TestCase
 
     public function testBuildThrowsExceptionIfClassDoesntExist()
     {
-        $this->setExpectedException('Deicer\Exception\NonExistentClassException');
+        $this->setExpectedException('Deicer\Query\Exception\NonExistentQueryException');
         $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)

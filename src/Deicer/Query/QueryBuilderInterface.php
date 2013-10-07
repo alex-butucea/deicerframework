@@ -70,7 +70,7 @@ interface QueryBuilderInterface
      * @throws InvalidArgumentException If $classname is empty
      * @throws InvalidArgumentException If $classname is not a string
      * @throws UnexpectedValueException If query doesnt implement QueryInterface
-     * @throws NonExistentClassException If class doesn't exist
+     * @throws NonExistentQueryException If query doesn't exist
      * 
      * @param  string $classname Query name that is appended onto set namespace 
      * @return QueryInterface Assembled query instance
