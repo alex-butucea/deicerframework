@@ -30,8 +30,8 @@ interface InvariableQueryInterface extends QueryInterface
     /**
      * Decorate a query to implement a fallback on query execution failure
      *
-     * @param  InvariableQueryInterface $decoratable The query to decorate
+     * @param  InvariableQueryInterface $decorable The query to decorate
      * @retrun InvariableQueryInterface Fluent interface
      */
-    public function decorate(InvariableQueryInterface $decoratable);
+    public function decorate(InvariableQueryInterface $decorable);
 }

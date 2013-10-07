@@ -35,11 +35,11 @@ interface ParameterizedQueryInterface extends
     /**
      * Decorate a query to implement a fallback on query execution failure
      *
-     * @throws IncompatibleParamsException If $decoratable doesnt use same params
-     * @param  ParameterizedQueryInterface $decoratable The query to decorate
+     * @throws IncompatibleParamsException If $decorable doesnt use same params
+     * @param  ParameterizedQueryInterface $decorable The query to decorate
      * @retrun ParameterizedQueryInterface Fluent interface
      */
-    public function decorate(ParameterizedQueryInterface $decoratable);
+    public function decorate(ParameterizedQueryInterface $decorable);
 
     /**
      * Attempt to set multiple query parameters, skipping invalid params

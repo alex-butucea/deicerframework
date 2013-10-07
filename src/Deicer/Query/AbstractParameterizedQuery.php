@@ -37,17 +37,17 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      */
-    public function decorate(ParameterizedQueryInterface $decoratable)
+    public function decorate(ParameterizedQueryInterface $decorable)
     {
         if (array_keys($this->getParams()) !=
-            array_keys($decoratable->getParams())
+            array_keys($decorable->getParams())
         ) {
             throw new IncompatibleParamsException(
-                'Parameter incompatible $decoratable passed in: ' . __METHOD__
+                'Parameter incompatible $decorable passed in: ' . __METHOD__
             );
         }
 
-        $this->decorated = $decoratable;
+        $this->decorated = $decorable;
         $this->syncDecorated();
         return $this;
     }

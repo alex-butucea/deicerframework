@@ -35,9 +35,9 @@ abstract class AbstractTokenizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      */
-    public function decorate(TokenizedQueryInterface $decoratable)
+    public function decorate(TokenizedQueryInterface $decorable)
     {
-        $this->decorated = $decoratable;
+        $this->decorated = $decorable;
         $this->syncDecorated();
         return $this;
     }

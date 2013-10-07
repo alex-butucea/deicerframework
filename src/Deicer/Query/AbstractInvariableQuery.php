@@ -28,9 +28,9 @@ abstract class AbstractInvariableQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      */
-    public function decorate(InvariableQueryInterface $decoratable)
+    public function decorate(InvariableQueryInterface $decorable)
     {
-        $this->decorated = $decoratable;
+        $this->decorated = $decorable;
         $this->syncDecorated();
 
         return $this;

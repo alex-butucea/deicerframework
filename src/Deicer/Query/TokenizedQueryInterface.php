@@ -35,8 +35,8 @@ interface TokenizedQueryInterface extends
     /**
      * Decorate a query to implement a fallback on query execution failure
      *
-     * @param  TokenizedQueryInterface $decoratable The query to decorate
+     * @param  TokenizedQueryInterface $decorable The query to decorate
      * @retrun TokenizedQueryInterface Fluent interface
      */
-    public function decorate(TokenizedQueryInterface $decoratable);
+    public function decorate(TokenizedQueryInterface $decorable);
 }
