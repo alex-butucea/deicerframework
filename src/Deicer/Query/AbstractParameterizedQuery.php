@@ -12,6 +12,7 @@ namespace Deicer\Query;
 use Deicer\Query\AbstractQuery;
 use Deicer\Query\ParameterizedQueryInterface;
 use Deicer\Query\Exception\NonExistentParamException;
+use Deicer\Query\Exception\IncompatibleParamsException;
 
 /**
  * {@inheritdoc}
@@ -38,6 +39,14 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
      */
     public function decorate(ParameterizedQueryInterface $decoratable)
     {
+        if (array_keys($this->getParams()) !=
+            array_keys($decoratable->getParams())
+        ) {
+            throw new IncompatibleParamsException(
+                'Parameter incompatible $decoratable passed in: ' . __METHOD__
+            );
+        }
+
         $this->decorated = $decoratable;
         $this->syncDecorated();
         return $this;
@@ -127,7 +136,7 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
     protected function syncDecorated()
     {
         if ($this->decorated) {
-            $this->decorated->trySetParams($this->params);
+            $this->decorated->setParams($this->params);
         }
 
         return $this;

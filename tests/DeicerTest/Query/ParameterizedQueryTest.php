@@ -13,6 +13,7 @@ use DeicerTestAsset\Query\TestableParameterizedQueryWithValidFetchData;
 use DeicerTestAsset\Query\TestableParameterizedQueryWithExceptionThrowingFetchData;
 use DeicerTestAsset\Query\TestableParameterizedQueryWithNonArrayReturningFetchData;
 use DeicerTestAsset\Query\TestableParameterizedQueryWithModelIncompatibleFetchData;
+use DeicerTestAsset\Query\TestableParameterizedQueryWithIncompatibleParams;
 use DeicerTest\Query\AbstractQueryTest;
 
 /**
@@ -88,6 +89,17 @@ class ParameterizedQueryTest extends AbstractQueryTest
         $this->mockFixture = $this->getMock(
             'Deicer\Query\ParameterizedQueryInterface'
         );
+
+        $params = array (
+            'genre'  => '',
+            'year'   => 0,
+            'author' => '',
+        );
+
+        $this->mockFixture
+            ->expects($this->any())
+            ->method('getParams')
+            ->will($this->returnValue($params));
 
         return $this;
     }
@@ -236,5 +248,18 @@ class ParameterizedQueryTest extends AbstractQueryTest
                 ),
             ),
         );
+    }
+
+    public function testDecorateWithParamIncompatibleQueryThrowsException()
+    {
+        $this->setExpectedException('Deicer\Query\Exception\IncompatibleParamsException');
+        $incompatible = new TestableParameterizedQueryWithIncompatibleParams(
+            new \stdClass(),
+            $this->messageBuilder,
+            $this->unfilteredMessageBroker,
+            $this->topicFilteredMessageBroker,
+            $this->hydrator
+        );
+        $this->fixture->decorate($incompatible);
     }
 }
