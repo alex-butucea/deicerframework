@@ -152,6 +152,24 @@ class ParameterizedQueryTest extends AbstractQueryTest
         );
     }
 
+    /**
+     * @dataProvider providerNonScalar
+     */
+    public function testSetParamValueTypeStrength($value)
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->fixture->setParam('author', $value);
+    }
+
+    /**
+     * @dataProvider providerNonScalars
+     */
+    public function testSetParamsValueTypeStrength($params)
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->fixture->setParams($params);
+    }
+
     public function testTrySetParamsImplementsFluentInterface()
     {
         $actual = $this->fixture->trySetParams(
@@ -190,5 +208,33 @@ class ParameterizedQueryTest extends AbstractQueryTest
         );
         $this->fixture->setParams($params);
         $this->assertSame($params, $this->fixture->getParams());
+    }
+
+    public function providerNonScalar()
+    {
+        return array (
+            array (array ()),
+            array (new \stdClass()),
+        );
+    }
+
+    public function providerNonScalars()
+    {
+        return array (
+            array (
+                array (
+                    'genre'  => array (),
+                    'year'   => array (),
+                    'author' => array (),
+                ),
+            ),
+            array (
+                array (
+                    'genre'  => new \stdClass(),
+                    'year'   => new \stdClass(),
+                    'author' => new \stdClass(),
+                ),
+            ),
+        );
     }
 }
