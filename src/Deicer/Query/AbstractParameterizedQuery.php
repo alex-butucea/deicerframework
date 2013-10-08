@@ -93,9 +93,18 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
     {
         $set = array ();
         foreach ($params as $key => $value) {
-            if (array_key_exists($key, $this->params)) {
-                $set[$key] = $value;
+
+            // Skip invalid params
+            try {
+                $this->validateParamName($key, __FUNCTION__);
+                $this->validateParamValue($value, __FUNCTION__);
+            } catch (\InvalidArgumentException $e) {
+                continue;
+            } catch (NonExistentParamException $e) {
+                continue;
             }
+
+            $set[$key] = $value;
         }
 
         $this->params = array_merge($this->params, $set);

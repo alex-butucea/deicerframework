@@ -104,6 +104,17 @@ class ParameterizedQueryTest extends AbstractQueryTest
         return $this;
     }
 
+    public function setUpFixtureParams()
+    {
+        $this->fixture->setParams(
+            array (
+                'genre'  => 'thriller',
+                'year'   => 2013,
+                'author' => 'Alex Butucea',
+            )
+        );
+    }
+
     public function testPublishedMessagesContainParamsAsAttributes()
     {
         $content = array (
@@ -116,6 +127,7 @@ class ParameterizedQueryTest extends AbstractQueryTest
                 'name' => 'bar',
             ),
         );
+
         $params  = array (
             'genre'  => 'thriller',
             'year'   => 2013,
@@ -125,7 +137,7 @@ class ParameterizedQueryTest extends AbstractQueryTest
         $this->setUpMessageBuilder('success', $content, $params);
         $this->setUpMessageBrokers($this->message);
         $this->setUpFixture();
-        $this->fixture->setParams($params);
+        $this->setUpFixtureParams();
         $this->fixture->execute();
     }
 
@@ -191,6 +203,64 @@ class ParameterizedQueryTest extends AbstractQueryTest
             )
         );
         $this->assertSame($actual, $this->fixture);
+    }
+
+    public function testTrySetParamsSkipsNonStringKeys()
+    {
+        $this->setUpFixtureParams();
+        $this->fixture->trySetParams(
+            array (
+                0       => 'foo',
+                'genre' => 'comedy',
+            )
+        );
+
+        $expected = array (
+            'genre'  => 'comedy',
+            'year'   => 2013,
+            'author' => 'Alex Butucea',
+        );
+
+        $this->assertSame($expected, $this->fixture->getParams());
+    }
+
+    public function testTrySetParamsSkipsNonExistentParams()
+    {
+        $this->setupfixtureparams();
+        $this->fixture->trySetParams(
+            array (
+                'foo'   => 'bar',
+                'genre' => 'comedy',
+            )
+        );
+
+        $expected = array (
+            'genre'  => 'comedy',
+            'year'   => 2013,
+            'author' => 'Alex Butucea',
+        );
+
+        $this->assertSame($expected, $this->fixture->getParams());
+    }
+
+    public function testTrySetParamsSkipsNonScalarOrNullValues()
+    {
+        $this->setupfixtureparams();
+        $this->fixture->trySetParams(
+            array (
+                'genre'  => new \stdClass(),
+                'year'   => 2010,
+                'author' => array (),
+            )
+        );
+
+        $expected = array (
+            'genre'  => 'thriller',
+            'year'   => 2010,
+            'author' => 'Alex Butucea',
+        );
+
+        $this->assertSame($expected, $this->fixture->getParams());
     }
 
     public function testGetParamNameTypeStrength()
