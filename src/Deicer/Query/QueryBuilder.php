@@ -36,31 +36,59 @@ class QueryBuilder implements QueryBuilderInterface
 {
     /**
      * Class namespace concrete queries are located under
-     * 
+     *
      * @var string
      */
     protected $namespace;
 
     /**
      * Data provider to build with
-     * 
+     *
      * @var mixed
      */
     protected $dataProvider;
 
     /**
      * Model prototype to build with
-     * 
+     *
      * @var ModelInterface
      */
     protected $modelPrototype;
 
     /**
      * Model composite prototype to build with
-     * 
+     *
      * @var ModelCompositeInterface
      */
     protected $modelCompositePrototype;
+
+    /**
+     * Lazy-loaded instance of MessageBuilder
+     *
+     * @var MessageBuilder
+     */
+    protected $messageBuilder;
+
+    /**
+     * Lazy-loaded instance of UnfilteredMessageBroker
+     *
+     * @var UnfilteredMessageBroker
+     */
+    protected $unfilteredMessageBroker;
+
+    /**
+     * Lazy-loaded instance of TopicFilteredMessageBroker
+     *
+     * @var TopicFilteredMessageBroker
+     */
+    protected $topicFilteredMessageBroker;
+
+    /**
+     * Lazy-loaded instance of RecursiveModelCompositeHydrator
+     *
+     * @var RecursiveModelCompositeHydrator
+     */
+    protected $modelHydrator;
 
     /**
      * {@inheritdoc}
@@ -151,13 +179,71 @@ class QueryBuilder implements QueryBuilderInterface
         // Assemble and return query
         return new $fullname(
             $this->dataProvider,
-            new MessageBuilder(),
-            new UnfilteredMessageBroker(),
-            new TopicFilteredMessageBroker(),
-            new RecursiveModelCompositeHydrator(
+            $this->getMessageBuilder(),
+            $this->getUnfilteredMessageBroker(),
+            $this->getTopicFilteredMessageBroker(),
+            $this->getModelHydrator()
+                ->setModelPrototype($this->modelPrototype)
+                ->setModelComposite($this->modelCompositePrototype)
+        );
+    }
+
+    /**
+     * Lazy-loads an instance of MessageBuilder
+     *
+     * @return MessageBuilder
+     */
+    protected function getMessageBuilder()
+    {
+        if (!$this->messageBuilder) {
+            $this->messageBuilder = new MessageBuilder();
+        }
+
+        return $this->messageBuilder;
+    }
+
+    /**
+     * Lazy-loads an instance of UnfilteredMessageBroker
+     *
+     * @return UnfilteredMessageBroker
+     */
+    protected function getUnfilteredMessageBroker()
+    {
+        if (!$this->unfilteredMessageBroker) {
+            $this->unfilteredMessageBroker = new UnfilteredMessageBroker();
+        }
+
+        return $this->unfilteredMessageBroker;
+    }
+
+    /**
+     * Lazy-loads an instance of TopicFilteredMessageBroker
+     *
+     * @return TopicFilteredMessageBroker
+     */
+    protected function getTopicFilteredMessageBroker()
+    {
+        if (!$this->topicFilteredMessageBroker) {
+            $this->topicFilteredMessageBroker = new TopicFilteredMessageBroker();
+        }
+
+        return $this->topicFilteredMessageBroker;
+    }
+
+    /**
+     * Lazy-loads an instance of RecursiveModelCompositeHydrator
+     *
+     * @return RecursiveModelCompositeHydrator
+     */
+    protected function getModelHydrator()
+    {
+        if (!$this->modelHydrator) {
+            $this->modelHydrator = new RecursiveModelCompositeHydrator(
                 $this->modelPrototype,
                 $this->modelCompositePrototype
-            )
-        );
+            );
+        }
+
+        return $this->modelHydrator;
     }
 }
