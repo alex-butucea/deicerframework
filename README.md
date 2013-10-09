@@ -4,7 +4,6 @@ A PSR-2 compliant Data Access Layer framework for modern PHP applications.
 ## Framework Components
 The framework is comprised of the following components:
 
-- `Deicer\Exception` - Semantic exception hierarchy
 - `Deicer\Model` - Base classes for DTO and Value Objects
 - `Deicer\Pubsub` - Publish-subscribe API
 - `Deicer\Query` - Read only Data Access Objects

@@ -10,7 +10,6 @@
 namespace Deicer\Query\Exception;
 
 use Deicer\Query\Exception\ExceptionInterface;
-use Deicer\Exception\ExceptionInterface as DeicerExceptionInterface;
 
 /**
  * Deicer Query Hydrator Exception
@@ -26,8 +25,6 @@ use Deicer\Exception\ExceptionInterface as DeicerExceptionInterface;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class ModelHydratorException extends \Exception implements
-    ExceptionInterface,
-    DeicerExceptionInterface
+class ModelHydratorException extends \Exception implements ExceptionInterface
 {
 }

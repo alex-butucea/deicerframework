@@ -13,7 +13,6 @@ use InvalidArgumentException;
 use Deicer\Pubsub\MessageInterface;
 use Deicer\Pubsub\PublisherInterface;
 use Deicer\Stdlib\StringSerializableInterface;
-use Deicer\Exception\Type\NonStringException;
 
 /**
  * Pubsub Message

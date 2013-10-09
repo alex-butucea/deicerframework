@@ -10,7 +10,7 @@
 namespace Deicer\Model;
 
 use OutOfBoundsException;
-use Deicer\Exception\Type\NonArrayException;
+use UnexpectedValueException;
 
 /**
  * Deicer Base Model
@@ -109,7 +109,7 @@ abstract class AbstractModel extends AbstractComponent implements ModelInterface
      *
      * Filters data structure passed through onExchangeArray() for pre-processing.
      *
-     * @throws NonArrayException If onExchangeArray returns non-array
+     * @throws UnexpectedValueException If onExchangeArray returns non-array
      * @param  array $values Properties to hydrate instance with
      * @param  bool $skipInvalid Whether invalid model properties should be skipped
      *
@@ -120,7 +120,11 @@ abstract class AbstractModel extends AbstractComponent implements ModelInterface
         // Pass vars through onExchangeArray processor and validate
         $vars = $this->onExchangeArray($values);
         if (!is_array($vars)) {
-            throw new NonArrayException();
+            $cls = get_called_class();
+            throw new UnexpectedValueException(
+                'Non-array returned from ' . $cls . '::onExchangeArray in: ' .
+                $cls . '::' . __METHOD__
+            );
         } elseif (empty($vars)) {
             return;
         }

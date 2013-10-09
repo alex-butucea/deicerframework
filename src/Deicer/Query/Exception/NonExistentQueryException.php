@@ -10,7 +10,6 @@
 namespace Deicer\Query\Exception;
 
 use Deicer\Query\Exception\ExceptionInterface;
-use Deicer\Exception\ExceptionInterface as DeicerExceptionInterface;
 
 /**
  * Deicer Non Existent Query Exception
@@ -26,7 +25,6 @@ use Deicer\Exception\ExceptionInterface as DeicerExceptionInterface;
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 class NonExistentQueryException extends \InvalidArgumentException implements
-    ExceptionInterface,
-    DeicerExceptionInterface
+    ExceptionInterface
 {
 }

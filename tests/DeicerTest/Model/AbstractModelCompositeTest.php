@@ -93,7 +93,7 @@ class AbstractModelCompositeTest extends TestCase
 
     public function testExchangeArrayWithMixedArrayThrowsException()
     {
-        $this->setExpectedException('Deicer\Exception\Type\NonInstanceException');
+        $this->setExpectedException('InvalidArgumentException');
         $fixture = new TestableModelComposite();
         $fixture->exchangeArray($this->mixedExchangeArrayArg);
     }
@@ -131,7 +131,7 @@ class AbstractModelCompositeTest extends TestCase
 
     public function testInvalidOnExchangeArrayReturnTypeThrowsException()
     {
-        $this->setExpectedException('Deicer\Exception\Type\NonArrayException');
+        $this->setExpectedException('UnexpectedValueException');
         $fixture = new TestableModelCompositeWithInvalidOnExchangeArray();
         $fixture->exchangeArray($this->validExchangeArrayArg);
     }
@@ -157,7 +157,7 @@ class AbstractModelCompositeTest extends TestCase
 
     public function testCurrentThrowsExceptionOnInvalidIndex()
     {
-        $this->setExpectedException('\OutOfRangeException');
+        $this->setExpectedException('OutOfRangeException');
         $fixture = new TestableModelComposite();
         $fixture->current();
     }
@@ -170,7 +170,7 @@ class AbstractModelCompositeTest extends TestCase
 
     public function testKeyThrowsExceptionOnInvalidIndex()
     {
-        $this->setExpectedException('\OutOfRangeException');
+        $this->setExpectedException('OutOfRangeException');
         $fixture = new TestableModelComposite();
         $fixture->key();
     }
@@ -225,7 +225,7 @@ class AbstractModelCompositeTest extends TestCase
 
     public function testOffsetExistsWithNonIntOffsetThrowsException()
     {
-        $this->setExpectedException('Deicer\Exception\Type\NonIntException');
+        $this->setExpectedException('InvalidArgumentException');
         $fixture = new TestableModelComposite();
         $fixture->offsetExists('foobar');
         $fixture->offsetExists(array ());
@@ -249,7 +249,7 @@ class AbstractModelCompositeTest extends TestCase
 
     public function testOffsetGetWithNonIntOffsetThrowsException()
     {
-        $this->setExpectedException('Deicer\Exception\Type\NonIntException');
+        $this->setExpectedException('InvalidArgumentException');
         $fixture = new TestableModelComposite();
         $fixture->offsetGet('foobar');
         $fixture->offsetGet(array ());
@@ -259,7 +259,7 @@ class AbstractModelCompositeTest extends TestCase
 
     public function testOffsetGetWithOutOfRangeOffsetThrowsException()
     {
-        $this->setExpectedException('\OutOfRangeException');
+        $this->setExpectedException('OutOfRangeException');
         $fixture = new TestableModelComposite($this->validExchangeArrayArg);
         $fixture->offsetGet(3);
     }
@@ -273,7 +273,7 @@ class AbstractModelCompositeTest extends TestCase
 
     public function testOffsetSetWithNonIntOffsetThrowsException()
     {
-        $this->setExpectedException('Deicer\Exception\Type\NonIntException');
+        $this->setExpectedException('InvalidArgumentException');
         $fixture = new TestableModelComposite();
         $fixture->offsetSet('foobar', $this->validExchangeArrayArg[0]);
         $fixture->offsetSet(array (), $this->validExchangeArrayArg[0]);
@@ -283,7 +283,7 @@ class AbstractModelCompositeTest extends TestCase
 
     public function testOffsetSetWithNonModelInstanceThrowsException()
     {
-        $this->setExpectedException('Deicer\Exception\Type\NonInstanceException');
+        $this->setExpectedException('InvalidArgumentException');
         $fixture = new TestableModelComposite();
         $fixture->offsetSet(0, 'foobar');
         $fixture->offsetSet(1, array ());
@@ -301,7 +301,7 @@ class AbstractModelCompositeTest extends TestCase
 
     public function testOffsetUnsetWithNonIntOffsetThrowsException()
     {
-        $this->setExpectedException('Deicer\Exception\Type\NonIntException');
+        $this->setExpectedException('InvalidArgumentException');
         $fixture = new TestableModelComposite();
         $fixture->offsetUnset('foobar');
         $fixture->offsetUnset(array ());
@@ -311,7 +311,7 @@ class AbstractModelCompositeTest extends TestCase
 
     public function testOffsetUnsetWithOutOfRangeOffsetThrowsException()
     {
-        $this->setExpectedException('\OutOfRangeException');
+        $this->setExpectedException('OutOfRangeException');
         $fixture = new TestableModelComposite($this->validExchangeArrayArg);
         $fixture->offsetUnset(3);
     }

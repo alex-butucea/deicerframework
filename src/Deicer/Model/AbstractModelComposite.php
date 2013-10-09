@@ -10,9 +10,8 @@
 namespace Deicer\Model;
 
 use OutOfRangeException;
-use Deicer\Exception\Type\NonIntException;
-use Deicer\Exception\Type\NonArrayException;
-use Deicer\Exception\Type\NonInstanceException;
+use InvalidArgumentException;
+use UnexpectedValueException;
 
 /**
  * Deicer Abstract Model Composite
@@ -140,7 +139,7 @@ abstract class AbstractModelComposite extends AbstractComponent implements
      * Asserts whether a particular model index exists
      *
      * @see    ArrayAccess::offsetExists
-     * @throws NonIntException If $offset is not an integer
+     * @throws InvalidArgumentException If $offset is not an integer
      * @param  integer $offset The offset to check for existence
      *
      * @return bool
@@ -148,7 +147,10 @@ abstract class AbstractModelComposite extends AbstractComponent implements
     public function offsetExists($offset)
     {
         if (!is_int($offset)) {
-            throw new NonIntException();
+            throw new InvalidArgumentException(
+                'Non-int $offset passed in: ' .
+                get_called_class() . '::' . __METHOD__
+            );
         }
 
         return isset($this->models[(integer) $offset]);
@@ -158,18 +160,24 @@ abstract class AbstractModelComposite extends AbstractComponent implements
      * Returns a model from the internalised set at a particualr index
      *
      * @see    ArrayAccess::offsetGet
-     * @throws NonIntException If $offset is not an integer
+     * @throws InvalidArgumentException If $offset is not an integer
      * @throws OutOfRangeException If no model exists at $offset
      * @param  integer $offset The offset to retrieve the model from
      *
-     * @return Deicer\Model\ModelInterface
+     * @return ModelInterface
      */
     public function offsetGet($offset)
     {
         if (!is_int($offset)) {
-            throw new NonIntException();
+            throw new InvalidArgumentException(
+                'Non-int $offset passed in: ' .
+                get_called_class() . '::' . __METHOD__
+            );
         } elseif (!$this->offsetExists($offset)) {
-            throw new OutOfRangeException();
+            throw new OutOfRangeException(
+                'Nonexistent $offset passed in: ' .
+                get_called_class() . '::' . __METHOD__
+            );
         }
 
         return $this->models[(integer) $offset];
@@ -179,8 +187,8 @@ abstract class AbstractModelComposite extends AbstractComponent implements
      * Sets a model instance at a particular index
      *
      * @see    ArrayAccess::offsetSet
-     * @throws NonIntException If $offset is not an integer
-     * @throws NonInstanceException If $value is not instance of ModelInterface
+     * @throws InvalidArgumentException If $offset is not an integer
+     * @throws InvalidArgumentException If $value is not ModelInterface instance
      * @param  integer $offset The index to set
      * @param  Deicer\Model\ModelInterface $value The model instance to set
      *
@@ -189,9 +197,15 @@ abstract class AbstractModelComposite extends AbstractComponent implements
     public function offsetSet($offset, $value)
     {
         if (!is_int($offset)) {
-            throw new NonIntException();
+            throw new InvalidArgumentException(
+                'Non-int $offset passed in: ' .
+                get_called_class() . '::' . __METHOD__
+            );
         } elseif (!$value instanceof ModelInterface) {
-            throw new NonInstanceException();
+            throw new InvalidArgumentException(
+                'Non-instance of ModelInterface $value passed in: ' .
+                get_called_class() . '::' . __METHOD__
+            );
         }
 
         $this->models[$offset] = $value;
@@ -202,7 +216,7 @@ abstract class AbstractModelComposite extends AbstractComponent implements
      * Clears a model from the internalised set at a particular index
      *
      * @see    ArrayAccess::offsetUnset
-     * @throws NonIntException If $offset is not an integer
+     * @throws InvalidArgumentException If $offset is not an integer
      * @throws OutOfRangeException If no model exists at $offset
      * @param  integer $offset The offset to remove the model instance from
      *
@@ -211,9 +225,15 @@ abstract class AbstractModelComposite extends AbstractComponent implements
     public function offsetUnset($offset)
     {
         if (!is_int($offset)) {
-            throw new NonIntException();
+            throw new InvalidArgumentException(
+                'Non-int $offset passed in: ' .
+                get_called_class() . '::' . __METHOD__
+            );
         } elseif (!$this->offsetExists($offset)) {
-            throw new OutOfRangeException();
+            throw new OutOfRangeException(
+                'Nonexistent $offset passed in: ' .
+                get_called_class() . '::' . __METHOD__
+            );
         }
 
         unset($this->models[(integer) $offset]);
@@ -225,8 +245,8 @@ abstract class AbstractModelComposite extends AbstractComponent implements
      *
      * Filters model set passed through onExchangeArray() for pre-processing.
      *
-     * @throws NonArrayException If onExchangeArray returns non-array
-     * @throws NonInstanceException If $skipInvalid & $values contains non-instance of ModelInterface
+     * @throws UnexpectedValueException If onExchangeArray returns non-array
+     * @throws InvalidArgumentException If !$skipInvalid & $values has non ModelInterface
      * @param  array $values Models to hydrate instance with
      * @param  bool $skipInvalid Whether invalid values should be skipped
      *
@@ -237,7 +257,11 @@ abstract class AbstractModelComposite extends AbstractComponent implements
         // Pass model set through onExchangeArray pre-processor and validate
         $set = $this->onExchangeArray($values);
         if (!is_array($set)) {
-            throw new NonArrayException();
+            $cls = get_called_class();
+            throw new UnexpectedValueException(
+                'Non-array returned from ' . $cls . '::onExchangeArray in: ' .
+                $cls . '::' . __METHOD__
+            );
         }
 
         // Iterate model set and accumulate if valid model instance
@@ -247,7 +271,10 @@ abstract class AbstractModelComposite extends AbstractComponent implements
                 if ((bool) $skipInvalid) {
                     continue;
                 } else {
-                    throw new NonInstanceException();
+                    throw new InvalidArgumentException(
+                        'Non-instance of ModelInterface in $values passed in: ' .
+                        get_called_class() . '::' . __METHOD__
+                    );
                 }
             } else {
                 $models[] = $model;

@@ -10,7 +10,6 @@
 namespace Deicer\Query\Exception;
 
 use Deicer\Query\Exception\ExceptionInterface;
-use Deicer\Exception\ExceptionInterface as DeicerExceptionInterface;
 
 /**
  * Deicer Parameterized Query Compatibility Exception
@@ -27,7 +26,6 @@ use Deicer\Exception\ExceptionInterface as DeicerExceptionInterface;
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 class IncompatibleParamsException extends \InvalidArgumentException implements
-    ExceptionInterface,
-    DeicerExceptionInterface
+    ExceptionInterface
 {
 }
