@@ -11,6 +11,7 @@ namespace Deicer\Query;
 
 use ReflectionClass;
 use LogicException;
+use ReflectionException;
 use UnexpectedValueException;
 use InvalidArgumentException;
 use Deicer\Query\QueryBuilderInterface;
@@ -161,7 +162,7 @@ class QueryBuilder implements QueryBuilderInterface
         $fullname = $this->namespace . $classname;
         try {
             $class = new ReflectionClass($fullname);
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             throw new NonExistentQueryException($e->getMessage(), 0, $e);
         }
 

@@ -9,6 +9,7 @@
 
 namespace Deicer\Model;
 
+use OutOfBoundsException;
 use InvalidArgumentException;
 use Deicer\Model\ModelInterface;
 use Deicer\Model\ModelCompositeInterface;
@@ -93,7 +94,7 @@ class RecursiveModelCompositeHydrator implements
             $model = clone $this->modelPrototype;
             try {
                 $models[] = $model->exchangeArray($value);
-            } catch (\OutOfBoundsException $e) {
+            } catch (OutOfBoundsException $e) {
                 throw new InvalidArgumentException(
                     '$values elements must match model properties in: ' .
                     get_called_class(),

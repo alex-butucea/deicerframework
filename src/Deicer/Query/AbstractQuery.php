@@ -9,6 +9,7 @@
 
 namespace Deicer\Query;
 
+use Exception;
 use Deicer\Query\QueryInterface;
 use Deicer\Query\MessageTopic;
 use Deicer\Query\Exception\DataTypeException;
@@ -142,7 +143,7 @@ abstract class AbstractQuery
         // Attempt to fetchData, rethrow exception if no decorated query exists
         try {
             $data = $this->fetchData();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
             // Build message based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
@@ -206,7 +207,7 @@ abstract class AbstractQuery
         // Attempt to hydrate model composite and fall back to decorated on fail
         try {
             $hydrated = clone $this->modelHydrator->exchangeArray($data);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
             // Build message based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?

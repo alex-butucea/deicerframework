@@ -10,6 +10,7 @@
 namespace DeicerTest\Model;
 
 use stdClass;
+use InvalidArgumentException;
 use Deicer\Model\RecursiveModelCompositeHydrator;
 use DeicerTestAsset\Model\TestableModel;
 use DeicerTestAsset\Model\TestableModelComposite;
@@ -144,8 +145,8 @@ class RecursiveModelCompositeHydratorTest extends TestCase
                     ),
                 )
             );
-        } catch (\InvalidArgumentException $e) {
-            $this->assertInstanceOf('\OutOfBoundsException', $e->getPrevious());
+        } catch (InvalidArgumentException $e) {
+            $this->assertInstanceOf('OutOfBoundsException', $e->getPrevious());
             return;
         }
 
