@@ -69,12 +69,12 @@ class RecursiveModelCompositeHydrator implements
         $models = array ();
 
         foreach ($values as $key => $value) {
-            if (! is_int($key)) {
+            if (!is_int($key)) {
                 throw new InvalidArgumentException(
                     '$values must be numerically indexed in: ' .
                     get_called_class()
                 );
-            } if (! is_array($value)) {
+            } if (!is_array($value)) {
                 throw new InvalidArgumentException(
                     '$values must contain array elements in: ' .
                     get_called_class()

@@ -176,7 +176,7 @@ abstract class AbstractQuery
         }
 
         // Enforce returned data type strength if no decorated query exists
-        if (! is_array($data)) {
+        if (!is_array($data)) {
             $topic = ($this->decorated) ?
                 MessageTopic::FALLBACK_DATA_TYPE :
                 MessageTopic::FAILURE_DATA_TYPE;

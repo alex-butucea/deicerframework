@@ -119,7 +119,7 @@ abstract class AbstractModel extends AbstractComponent implements ModelInterface
     {
         // Pass vars through onExchangeArray processor and validate
         $vars = $this->onExchangeArray($values);
-        if (! is_array($vars)) {
+        if (!is_array($vars)) {
             throw new NonArrayException();
         } elseif (empty($vars)) {
             return;
@@ -128,7 +128,7 @@ abstract class AbstractModel extends AbstractComponent implements ModelInterface
         // Iterate through each property and internalise only public properties
         $fields = static::getFields();
         foreach ($vars as $key => $val) {
-            if (! in_array($key, $fields) && (bool) $skipInvalid) {
+            if (!in_array($key, $fields) && (bool) $skipInvalid) {
                 continue;
             }
 

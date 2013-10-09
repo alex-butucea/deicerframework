@@ -77,7 +77,7 @@ abstract class AbstractModelComposite extends AbstractComponent implements
      */
     public function current()
     {
-        if (! $this->valid()) {
+        if (!$this->valid()) {
             throw new OutOfRangeException();
         }
 
@@ -93,7 +93,7 @@ abstract class AbstractModelComposite extends AbstractComponent implements
      */
     public function key()
     {
-        if (! $this->valid()) {
+        if (!$this->valid()) {
             throw new OutOfRangeException();
         }
 
@@ -147,7 +147,7 @@ abstract class AbstractModelComposite extends AbstractComponent implements
      */
     public function offsetExists($offset)
     {
-        if (! is_int($offset)) {
+        if (!is_int($offset)) {
             throw new NonIntException();
         }
 
@@ -166,9 +166,9 @@ abstract class AbstractModelComposite extends AbstractComponent implements
      */
     public function offsetGet($offset)
     {
-        if (! is_int($offset)) {
+        if (!is_int($offset)) {
             throw new NonIntException();
-        } elseif (! $this->offsetExists($offset)) {
+        } elseif (!$this->offsetExists($offset)) {
             throw new OutOfRangeException();
         }
 
@@ -188,9 +188,9 @@ abstract class AbstractModelComposite extends AbstractComponent implements
      */
     public function offsetSet($offset, $value)
     {
-        if (! is_int($offset)) {
+        if (!is_int($offset)) {
             throw new NonIntException();
-        } elseif (! $value instanceof ModelInterface) {
+        } elseif (!$value instanceof ModelInterface) {
             throw new NonInstanceException();
         }
 
@@ -210,9 +210,9 @@ abstract class AbstractModelComposite extends AbstractComponent implements
      */
     public function offsetUnset($offset)
     {
-        if (! is_int($offset)) {
+        if (!is_int($offset)) {
             throw new NonIntException();
-        } elseif (! $this->offsetExists($offset)) {
+        } elseif (!$this->offsetExists($offset)) {
             throw new OutOfRangeException();
         }
 
@@ -236,14 +236,14 @@ abstract class AbstractModelComposite extends AbstractComponent implements
     {
         // Pass model set through onExchangeArray pre-processor and validate
         $set = $this->onExchangeArray($values);
-        if (! is_array($set)) {
+        if (!is_array($set)) {
             throw new NonArrayException();
         }
 
         // Iterate model set and accumulate if valid model instance
         $models = array ();
         foreach ($set as $model) {
-            if (! $model instanceof ModelInterface) {
+            if (!$model instanceof ModelInterface) {
                 if ((bool) $skipInvalid) {
                     continue;
                 } else {
