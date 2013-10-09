@@ -9,6 +9,7 @@
 
 namespace Deicer\Query\Exception;
 
+use Exception;
 use Deicer\Query\Exception\ExceptionInterface;
 
 /**
@@ -24,6 +25,6 @@ use Deicer\Query\Exception\ExceptionInterface;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class DataTypeException extends \Exception implements ExceptionInterface
+class DataTypeException extends Exception implements ExceptionInterface
 {
 }

@@ -9,6 +9,7 @@
 
 namespace Deicer\Query\Exception;
 
+use OutOfRangeException;
 use Deicer\Query\Exception\ExceptionInterface;
 
 /**
@@ -24,7 +25,7 @@ use Deicer\Query\Exception\ExceptionInterface;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class NonExistentParamException extends \OutOfRangeException implements
+class NonExistentParamException extends OutOfRangeException implements
     ExceptionInterface
 {
 }

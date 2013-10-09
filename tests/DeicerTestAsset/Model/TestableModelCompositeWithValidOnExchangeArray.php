@@ -9,7 +9,7 @@
 
 namespace DeicerTestAsset\Model;
 
-use \Deicer\Model\AbstractModelComposite;
+use Deicer\Model\AbstractModelComposite;
 
 /**
  * Deicer Test Model Composite

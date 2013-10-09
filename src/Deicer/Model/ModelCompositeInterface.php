@@ -9,6 +9,10 @@
 
 namespace Deicer\Model;
 
+use Iterator;
+use Countable;
+use ArrayAccess;
+use Deicer\Model\ComponentInterface;
 use Deicer\Stdlib\ClearableInterface;
 use Deicer\Stdlib\ExtractableInterface;
 
@@ -28,8 +32,8 @@ interface ModelCompositeInterface extends
  ComponentInterface,
  ExtractableInterface,
  ClearableInterface,
- \Iterator,
- \Countable,
- \ArrayAccess
+ Iterator,
+ Countable,
+ ArrayAccess
 {
 }

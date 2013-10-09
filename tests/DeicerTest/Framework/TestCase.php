@@ -9,7 +9,7 @@
 
 namespace DeicerTest\Framework;
 
-use \PHPUnit_Framework_TestCase as PHPUnitTestCase;
+use PHPUnit_Framework_TestCase as PHPUnitTestCase;
 
 /**
  * PHPUnit Test Case extension
