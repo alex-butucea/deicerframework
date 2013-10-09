@@ -9,6 +9,7 @@
 
 namespace DeicerTestAsset\Query;
 
+use Exception;
 use Deicer\Query\AbstractTokenizedQuery;
 
 /**
@@ -32,10 +33,10 @@ class TestableTokenizedQueryWithExceptionThrowingFetchData extends
      */
     protected function fetchData()
     {
-        throw new \Exception(
+        throw new Exception(
             'foo',
             123,
-            new \Exception(
+            new Exception(
                 'bar',
                 456
             )

@@ -9,6 +9,7 @@
 
 namespace DeicerTest\Query;
 
+use stdClass;
 use DeicerTestAsset\Query\TestableTokenizedQueryWithValidFetchData;
 use DeicerTestAsset\Query\TestableTokenizedQueryWithExceptionThrowingFetchData;
 use DeicerTestAsset\Query\TestableTokenizedQueryWithNonArrayReturningFetchData;
@@ -31,7 +32,7 @@ class TokenizedQueryTest extends AbstractQueryTest
     {
         $this->fixture =
             new TestableTokenizedQueryWithValidFetchData(
-                new \stdClass(),
+                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -45,7 +46,7 @@ class TokenizedQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithExceptionThrowingFetchData =
             new TestableTokenizedQueryWithExceptionThrowingFetchData(
-                new \stdClass(),
+                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -59,7 +60,7 @@ class TokenizedQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithNonArrayReturningFetchData =
             new TestableTokenizedQueryWithNonArrayReturningFetchData(
-                new \stdClass(),
+                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -73,7 +74,7 @@ class TokenizedQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithModelIncompatibleFetchData =
             new TestableTokenizedQueryWithModelIncompatibleFetchData(
-                new \stdClass(),
+                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,

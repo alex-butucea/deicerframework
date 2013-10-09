@@ -9,6 +9,7 @@
 
 namespace DeicerTestAsset\Model;
 
+use stdClass;
 use \Deicer\Model\AbstractModelComposite;
 
 /**
@@ -33,6 +34,6 @@ class TestableModelCompositeWithInvalidOnExchangeArray extends AbstractModelComp
      */
     protected function onExchangeArray(array $values)
     {
-        return new \stdClass();
+        return new stdClass();
     }
 }

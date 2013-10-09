@@ -9,6 +9,9 @@
 
 namespace Deicer\Pubsub;
 
+use LengthException;
+use OutOfRangeException;
+use InvalidArgumentException;
 use Deicer\Pubsub\MessageInterface;
 use Deicer\Pubsub\SubscriberInterface;
 
@@ -37,14 +40,14 @@ abstract class AbstractMessageBroker
     public function addSubscribers(array $subscribers)
     {
         if (empty($subscribers)) {
-            throw new \LengthException('Empty $subscribers in: ' . __METHOD__);
+            throw new LengthException('Empty $subscribers in: ' . __METHOD__);
         }
 
         // Enforce subscriber array type strength
         $subs = array ();
         foreach ($subscribers as $sub) {
             if (!$sub instanceof SubscriberInterface) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'Non SubscriberInterface contained in $subscribers in: ' .
                     __METHOD__
                 );
@@ -111,11 +114,11 @@ abstract class AbstractMessageBroker
     protected function validateSubscriberIndex($index, $invoker)
     {
         if (!is_int($index)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Non int $index passed in: ' . __CLASS__ . '::' . $invoker
             );
         } elseif (empty($this->subscribers[$index])) {
-            throw new \OutOfRangeException(
+            throw new OutOfRangeException(
                 'Non-existent subscriber $index in: ' . __CLASS__ . '::' . $invoker
             );
         }

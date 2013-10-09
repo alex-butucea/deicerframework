@@ -9,6 +9,7 @@
 
 namespace DeicerTest\Model;
 
+use stdClass;
 use DeicerTestAsset\Model\TestableModelComposite;
 use DeicerTestAsset\Model\TestableModelCompositeWithValidOnExchangeArray;
 use DeicerTestAsset\Model\TestableModelCompositeWithInvalidOnExchangeArray;
@@ -59,7 +60,7 @@ class AbstractModelCompositeTest extends TestCase
             123,
             'foobar',
             array (),
-            new \stdClass(),
+            new stdClass(),
         );
 
         $this->mixedExchangeArrayArg = array (
@@ -68,7 +69,7 @@ class AbstractModelCompositeTest extends TestCase
             'foobar',
             $third,
             array (),
-            new \stdClass(),
+            new stdClass(),
         );
     }
 
@@ -228,7 +229,7 @@ class AbstractModelCompositeTest extends TestCase
         $fixture = new TestableModelComposite();
         $fixture->offsetExists('foobar');
         $fixture->offsetExists(array ());
-        $fixture->offsetExists(new \stdClass());
+        $fixture->offsetExists(new stdClass());
         $fixture->offsetExists(true);
     }
 
@@ -252,7 +253,7 @@ class AbstractModelCompositeTest extends TestCase
         $fixture = new TestableModelComposite();
         $fixture->offsetGet('foobar');
         $fixture->offsetGet(array ());
-        $fixture->offsetGet(new \stdClass());
+        $fixture->offsetGet(new stdClass());
         $fixture->offsetGet(true);
     }
 
@@ -276,7 +277,7 @@ class AbstractModelCompositeTest extends TestCase
         $fixture = new TestableModelComposite();
         $fixture->offsetSet('foobar', $this->validExchangeArrayArg[0]);
         $fixture->offsetSet(array (), $this->validExchangeArrayArg[0]);
-        $fixture->offsetSet(new \stdClass(), $this->validExchangeArrayArg[0]);
+        $fixture->offsetSet(new stdClass(), $this->validExchangeArrayArg[0]);
         $fixture->offsetSet(true, $this->validExchangeArrayArg[0]);
     }
 
@@ -286,7 +287,7 @@ class AbstractModelCompositeTest extends TestCase
         $fixture = new TestableModelComposite();
         $fixture->offsetSet(0, 'foobar');
         $fixture->offsetSet(1, array ());
-        $fixture->offsetSet(2, new \stdClass());
+        $fixture->offsetSet(2, new stdClass());
         $fixture->offsetSet(3, true);
     }
 
@@ -304,7 +305,7 @@ class AbstractModelCompositeTest extends TestCase
         $fixture = new TestableModelComposite();
         $fixture->offsetUnset('foobar');
         $fixture->offsetUnset(array ());
-        $fixture->offsetUnset(new \stdClass());
+        $fixture->offsetUnset(new stdClass());
         $fixture->offsetUnset(true);
     }
 

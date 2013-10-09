@@ -9,6 +9,7 @@
 
 namespace Deicer\Pubsub;
 
+use InvalidArgumentException;
 use Deicer\Pubsub\MessageInterface;
 use Deicer\Pubsub\PublisherInterface;
 use Deicer\Stdlib\StringSerializableInterface;
@@ -85,11 +86,11 @@ class Message implements MessageInterface
     public function getAttribute($name)
     {
         if (!is_string($name)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Non-string $name passed in: ' . __METHOD__
             );
         } elseif (empty($name)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Empty $name passed in: ' . __METHOD__
             );
         }
@@ -109,11 +110,11 @@ class Message implements MessageInterface
         array $attributes = array ()
     ) {
         if (empty($topic)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Empty $topic passed in: ' . __METHOD__
             );
         } elseif (!is_string($topic)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Non-string $topic passed in: ' . __METHOD__
             );
         }
@@ -121,17 +122,17 @@ class Message implements MessageInterface
         // Ensure attribute names are strings and values are null/scalar
         foreach ($attributes as $key => $value) {
             if (empty($key)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'Empty key in $attributes passed in: ' .
                     __METHOD__
                 );
             } elseif (!is_string($key)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'Non-int key in $attributes passed in: ' .
                     __METHOD__
                 );
             } elseif (!is_null($value) && !is_scalar($value)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'Non-null/non-scalar value in $attributes passed in: ' .
                     __METHOD__
                 );

@@ -9,6 +9,7 @@
 
 namespace DeicerTest\Query;
 
+use stdClass;
 use DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData;
 use DeicerTestAsset\Query\TestableInvariableQueryWithExceptionThrowingFetchData;
 use DeicerTestAsset\Query\TestableInvariableQueryWithNonArrayReturningFetchData;
@@ -31,7 +32,7 @@ class InvariableQueryTest extends AbstractQueryTest
     {
         $this->fixture =
             new TestableInvariableQueryWithValidFetchData(
-                new \stdClass(),
+                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -45,7 +46,7 @@ class InvariableQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithExceptionThrowingFetchData =
             new TestableInvariableQueryWithExceptionThrowingFetchData(
-                new \stdClass(),
+                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -59,7 +60,7 @@ class InvariableQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithNonArrayReturningFetchData =
             new TestableInvariableQueryWithNonArrayReturningFetchData(
-                new \stdClass(),
+                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -73,7 +74,7 @@ class InvariableQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithModelIncompatibleFetchData =
             new TestableInvariableQueryWithModelIncompatibleFetchData(
-                new \stdClass(),
+                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,

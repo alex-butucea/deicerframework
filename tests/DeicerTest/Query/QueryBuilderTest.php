@@ -9,6 +9,7 @@
 
 namespace DeicerTest\Query;
 
+use stdClass;
 use Deicer\Query\QueryBuilder;
 use DeicerTest\Framework\TestCase;
 
@@ -72,7 +73,7 @@ class QueryBuilderTest extends TestCase
 
     public function testWithDataProviderImplementsFluentInterface()
     {
-        $actual = $this->fixture->withDataProvider(new \stdClass());
+        $actual = $this->fixture->withDataProvider(new stdClass());
         $this->assertSame($actual, $this->fixture);
     }
 

@@ -9,6 +9,7 @@
 
 namespace Deicer\Query;
 
+use InvalidArgumentException;
 use Deicer\Query\AbstractQuery;
 use Deicer\Query\TokenizedQueryInterface;
 
@@ -48,7 +49,7 @@ abstract class AbstractTokenizedQuery extends AbstractQuery implements
     public function setToken($token)
     {
         if (!is_string($token)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Non-string $token passed in: ' .
                 get_called_class() . '::' . __FUNCTION__
             );

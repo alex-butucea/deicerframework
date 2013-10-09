@@ -9,6 +9,7 @@
 
 namespace DeicerTest\Model;
 
+use stdClass;
 use Deicer\Model\RecursiveModelCompositeHydrator;
 use DeicerTestAsset\Model\TestableModel;
 use DeicerTestAsset\Model\TestableModelComposite;
@@ -71,7 +72,7 @@ class RecursiveModelCompositeHydratorTest extends TestCase
             array (
                 'foo',
                 1234,
-                new \stdClass(),
+                new stdClass(),
             )
         );
     }
@@ -84,7 +85,7 @@ class RecursiveModelCompositeHydratorTest extends TestCase
                 array (
                     'foo',
                     1234,
-                    new \stdClass(),
+                    new stdClass(),
                 ),
             )
         );

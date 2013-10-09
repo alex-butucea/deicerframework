@@ -9,6 +9,7 @@
 
 namespace Deicer\Model;
 
+use OutOfBoundsException;
 use Deicer\Exception\Type\NonArrayException;
 
 /**
@@ -32,7 +33,7 @@ abstract class AbstractModel extends AbstractComponent implements ModelInterface
      */
     public function __set($key, $value)
     {
-        throw new \OutOfBoundsException(
+        throw new OutOfBoundsException(
             'Injection of additional property "' . $key . '" '.
             'denied in: ' . get_called_class()
         );
@@ -45,7 +46,7 @@ abstract class AbstractModel extends AbstractComponent implements ModelInterface
      */
     public function __unset($key)
     {
-        throw new \OutOfBoundsException(
+        throw new OutOfBoundsException(
             'Unsetting of nonexistent property "' . $key . '" '.
             'denied in: ' . get_called_class()
         );
@@ -58,7 +59,7 @@ abstract class AbstractModel extends AbstractComponent implements ModelInterface
      */
     public function __get($key)
     {
-        throw new \OutOfBoundsException(
+        throw new OutOfBoundsException(
             'Access of nonexistent property "' . $key . '" ' .
             'denied in: ' . get_called_class()
         );

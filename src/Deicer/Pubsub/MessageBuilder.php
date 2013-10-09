@@ -9,6 +9,8 @@
 
 namespace Deicer\Pubsub;
 
+use LogicException;
+use InvalidArgumentException;
 use Deicer\Pubsub\Message;
 use Deicer\Pubsub\MessageBuilderInterface;
 
@@ -58,11 +60,11 @@ class MessageBuilder implements MessageBuilderInterface
     public function withTopic($topic)
     {
         if (!is_string($topic)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'String topic required in: ' . __METHOD__
             );
         } elseif (empty($topic)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Non-empty topic required in: ' . __METHOD__
             );
         }
@@ -97,17 +99,17 @@ class MessageBuilder implements MessageBuilderInterface
         // Ensure attribute names are strings and values are null/scalar
         foreach ($attributes as $key => $value) {
             if (empty($key)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'Empty key in $attributes passed in: ' .
                     __METHOD__
                 );
             } elseif (!is_string($key)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'Non-int key in $attributes passed in: ' .
                     __METHOD__
                 );
             } elseif (!is_null($value) && !is_scalar($value)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'Non-null/non-scalar value in $attributes passed in: ' .
                     __METHOD__
                 );
@@ -124,11 +126,11 @@ class MessageBuilder implements MessageBuilderInterface
     public function build()
     {
         if (empty($this->topic)) {
-            throw new \LogicException(
+            throw new LogicException(
                 'Topic required for build in: ' . __METHOD__
             );
         } elseif (!$this->publisher) {
-            throw new \LogicException(
+            throw new LogicException(
                 'Publisher required for build in: ' . __METHOD__
             );
         }

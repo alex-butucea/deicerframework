@@ -9,6 +9,7 @@
 
 namespace Deicer\Query;
 
+use InvalidArgumentException;
 use Deicer\Query\AbstractQuery;
 use Deicer\Query\ParameterizedQueryInterface;
 use Deicer\Query\Exception\NonExistentParamException;
@@ -98,7 +99,7 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
             try {
                 $this->validateParamName($key, __FUNCTION__);
                 $this->validateParamValue($value, __FUNCTION__);
-            } catch (\InvalidArgumentException $e) {
+            } catch (InvalidArgumentException $e) {
                 continue;
             } catch (NonExistentParamException $e) {
                 continue;
@@ -165,7 +166,7 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
     protected function validateParamName($name, $method)
     {
         if (!is_string($name)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Non-string param name passed in: ' . $method
             );
         } elseif (!array_key_exists($name, $this->params)) {
@@ -187,7 +188,7 @@ abstract class AbstractParameterizedQuery extends AbstractQuery implements
     protected function validateParamValue($value, $method)
     {
         if (!is_null($value) && !is_scalar($value)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Non-scalar / non-null $value passed in: ' . $method
             );
         }

@@ -9,6 +9,9 @@
 
 namespace DeicerTest\Query;
 
+use InvalidArgumentException;
+use PHPUnit_Framework_MockObject_Generator as MockGenerator;
+use PHPUnit_Framework_ExpectationFailedException as ExpectationFailedException;
 use Deicer\Query\Exception\DataFetchException;
 use Deicer\Query\Exception\ModelHydratorException;
 use Deicer\Pubsub\MessageInterface;
@@ -101,7 +104,7 @@ abstract class AbstractQueryTest extends TestCase
 
         // Hydrator returns composite with count equal to array element count
         $callback = function ($values) {
-            $mockBuilder = new \PHPUnit_Framework_MockObject_Generator;
+            $mockBuilder = new MockGenerator;
             $composite   = $mockBuilder->getMock(
                 'Deicer\Model\ModelCompositeInterface'
             );
@@ -147,7 +150,7 @@ abstract class AbstractQueryTest extends TestCase
 
             // Ensure elapsed time is recorded
             if (empty($attribs['elapsed_time'])) {
-                throw new \PHPUnit_Framework_ExpectationFailedException(
+                throw new ExpectationFailedException(
                     'Failure to invoke message builder with elapsed_time attrib'
                 );
             }
@@ -159,7 +162,7 @@ abstract class AbstractQueryTest extends TestCase
             // Ensure supplementary attributes are present
             unset($attribs['elapsed_time']);
             if ($attribs != $supplementaryAttribs) {
-                throw new \PHPUnit_Framework_ExpectationFailedException(
+                throw new ExpectationFailedException(
                     'Failure to invoke message builder with correct supplementary attribs'
                 );
             }
@@ -200,7 +203,7 @@ abstract class AbstractQueryTest extends TestCase
         // Work-around for unsupported mutliple method invocation expectations
         $callback = function ($message) use ($expectedMessage) {
             if ($message != $expectedMessage) {
-                throw new \PHPUnit_Framework_ExpectationFailedException(
+                throw new ExpectationFailedException(
                     'Failure to invoke message brokers with correct message'
                 );
             }
@@ -277,14 +280,14 @@ abstract class AbstractQueryTest extends TestCase
         $msg = 'Unhandled hydrator exception';
         $this->hydrator->expects($this->at(1))
             ->method('exchangeArray')
-            ->will($this->throwException(new \InvalidArgumentException($msg)));
+            ->will($this->throwException(new InvalidArgumentException($msg)));
         $this->setUpFixtureWithModelIncompatibleFetchData();
 
         try {
             $this->fixtureWithModelIncompatibleFetchData->execute();
         } catch (ModelHydratorException $e) {
             $prev = $e->getPrevious();
-            $this->assertInstanceOf('\InvalidArgumentException', $prev);
+            $this->assertInstanceOf('InvalidArgumentException', $prev);
             return;
         }
 
@@ -318,7 +321,7 @@ abstract class AbstractQueryTest extends TestCase
         $msg = 'Unhandled hydrator exception';
         $this->hydrator->expects($this->at(1))
             ->method('exchangeArray')
-            ->will($this->throwException(new \InvalidArgumentException($msg)));
+            ->will($this->throwException(new InvalidArgumentException($msg)));
 
         $this->setUpFixtureWithModelIncompatibleFetchData();
         $this->fixtureWithModelIncompatibleFetchData->decorate($this->fixture);
@@ -389,7 +392,7 @@ abstract class AbstractQueryTest extends TestCase
         $msg = 'Unhandled hydrator exception';
         $this->hydrator->expects($this->at(1))
             ->method('exchangeArray')
-            ->will($this->throwException(new \InvalidArgumentException($msg)));
+            ->will($this->throwException(new InvalidArgumentException($msg)));
 
         $this->setUpMessageBuilder('failure.model_hydrator', $content);
         $this->setUpMessageBrokers($this->message);
@@ -429,7 +432,7 @@ abstract class AbstractQueryTest extends TestCase
         $msg = 'Unhandled hydrator exception';
         $this->hydrator->expects($this->at(1))
             ->method('exchangeArray')
-            ->will($this->throwException(new \InvalidArgumentException($msg)));
+            ->will($this->throwException(new InvalidArgumentException($msg)));
 
         $this->setUpMessageBuilder('fallback.model_hydrator', $content);
         $this->setUpMessageBrokers($this->message);

@@ -9,6 +9,7 @@
 
 namespace DeicerTest\Pubsub;
 
+use stdClass;
 use Deicer\Pubsub\MessageBuilder;
 use DeicerTest\Framework\TestCase;
 
@@ -74,7 +75,7 @@ class MessageBuilderTest extends TestCase
     public function testWithAttributesWithArrayContainingNonScalarValueThrowsException()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $this->attributes['quux'] = new \stdClass();
+        $this->attributes['quux'] = new stdClass();
         $this->fixture->withAttributes($this->attributes);
     }
 

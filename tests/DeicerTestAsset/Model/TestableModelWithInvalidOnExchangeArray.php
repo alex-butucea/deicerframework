@@ -9,6 +9,7 @@
 
 namespace DeicerTestAsset\Model;
 
+use stdClass;
 use DeicerTestAsset\Model\TestableModel;
 
 /**
@@ -33,6 +34,6 @@ class TestableModelWithInvalidOnExchangeArray extends TestableModel
      */
     protected function onExchangeArray(array $values)
     {
-        return new \stdClass();
+        return new stdClass();
     }
 }

@@ -9,6 +9,7 @@
 
 namespace Deicer\Pubsub;
 
+use InvalidArgumentException;
 use Deicer\Pubsub\AbstractMessageBroker;
 use Deicer\Pubsub\TopicFilteredMessageBrokerInterface;
 
@@ -177,12 +178,12 @@ class TopicFilteredMessageBroker extends AbstractMessageBroker implements
     public function validateTopic($topic, $invoker)
     {
         if (!is_string($topic)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Non string|array $topic passed in: '
                 . __CLASS__ . '::' . $invoker
             );
         } elseif (empty($topic)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Empty $topic passed in: '
                 . __CLASS__ . '::' . $invoker
             );

@@ -9,6 +9,7 @@
 
 namespace DeicerTest\Pubsub;
 
+use stdClass;
 use Deicer\Pubsub\Message;
 use DeicerTest\Framework\TestCase;
 
@@ -58,7 +59,7 @@ class MessageTest extends TestCase
     public function testConstructiWithNonStringTopicThrowsException()
     {
         $this->setExpectedException('InvalidArgumentException');
-        new Message(new \stdClass(), null, $this->publisher);
+        new Message(new stdClass(), null, $this->publisher);
     }
 
     public function testConstructWithAttributesArrayContainingNonSringKeyThrowsException()
@@ -86,7 +87,7 @@ class MessageTest extends TestCase
         $this->setExpectedException('InvalidArgumentException');
         $attributes = array (
             'foo'    => 'bar',
-            'baz'    => new \stdClass(),
+            'baz'    => new stdClass(),
             'foobar' => 'foobaz',
         );
         new Message('foo', null, $this->publisher, $attributes);
@@ -131,7 +132,7 @@ class MessageTest extends TestCase
 
     public function testToStringSerializesMessageStateCorrectly()
     {
-        $content = array ('foo' => array ('bar' => 'baz', 'qux' => new \stdClass()));
+        $content = array ('foo' => array ('bar' => 'baz', 'qux' => new stdClass()));
 
         $regex  = '^Topic: "foobar" \| ';
         $regex .= 'Content: ' . preg_quote(json_encode($content)) . ' \| ';

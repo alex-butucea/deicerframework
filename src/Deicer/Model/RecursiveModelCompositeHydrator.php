@@ -9,6 +9,7 @@
 
 namespace Deicer\Model;
 
+use InvalidArgumentException;
 use Deicer\Model\ModelInterface;
 use Deicer\Model\ModelCompositeInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
@@ -68,12 +69,12 @@ class RecursiveModelCompositeHydrator implements
 
         foreach ($values as $key => $value) {
             if (! is_int($key)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     '$values must be numerically indexed in: ' .
                     get_called_class()
                 );
             } if (! is_array($value)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     '$values must contain array elements in: ' .
                     get_called_class()
                 );
@@ -81,7 +82,7 @@ class RecursiveModelCompositeHydrator implements
 
             foreach ($value as $k => $v) {
                 if (is_int($k)) {
-                    throw new \InvalidArgumentException(
+                    throw new InvalidArgumentException(
                         '$values must contain assoc. arrays in: ' .
                         get_called_class()
                     );
@@ -93,7 +94,7 @@ class RecursiveModelCompositeHydrator implements
             try {
                 $models[] = $model->exchangeArray($value);
             } catch (\OutOfBoundsException $e) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     '$values elements must match model properties in: ' .
                     get_called_class(),
                     0,

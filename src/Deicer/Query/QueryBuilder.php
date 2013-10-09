@@ -9,6 +9,10 @@
 
 namespace Deicer\Query;
 
+use ReflectionClass;
+use LogicException;
+use UnexpectedValueException;
+use InvalidArgumentException;
 use Deicer\Query\QueryBuilderInterface;
 use Deicer\Model\ModelInterface;
 use Deicer\Model\ModelCompositeInterface;
@@ -63,8 +67,8 @@ class QueryBuilder implements QueryBuilderInterface
      */
     public function __construct($namespace)
     {
-        if (! is_string($namespace)) {
-            throw new \InvalidArgumentException(
+        if (!is_string($namespace)) {
+            throw new InvalidArgumentException(
                 'Non-string $namespace passed in: ' . __METHOD__
             );
         }
@@ -106,21 +110,21 @@ class QueryBuilder implements QueryBuilderInterface
     public function build($classname)
     {
         if (empty($classname)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 '$classname required for build in: ' . __METHOD__
             );
-        } elseif (! $this->modelPrototype) {
-            throw new \LogicException(
+        } elseif (!$this->modelPrototype) {
+            throw new LogicException(
                 'Model prototype required for build in: ' . __METHOD__
             );
-        } elseif (! $this->modelCompositePrototype) {
-            throw new \LogicException(
+        } elseif (!$this->modelCompositePrototype) {
+            throw new LogicException(
                 'Model composite prototype required for build in: ' . __METHOD__
             );
         }
 
-        if (! is_string($classname)) {
-            throw new \InvalidArgumentException(
+        if (!is_string($classname)) {
+            throw new InvalidArgumentException(
                 'Non-string $classname passed in: ' . __METHOD__
             );
         }
@@ -128,7 +132,7 @@ class QueryBuilder implements QueryBuilderInterface
         // Build absolute classname and validate
         $fullname = $this->namespace . $classname;
         try {
-            $class = new \ReflectionClass($fullname);
+            $class = new ReflectionClass($fullname);
         } catch (\ReflectionException $e) {
             throw new NonExistentQueryException($e->getMessage(), 0, $e);
         }
@@ -139,7 +143,7 @@ class QueryBuilder implements QueryBuilderInterface
             !isset($interfaces['Deicer\Query\TokenizedQueryInterface']) &&
             !isset($interfaces['Deicer\Query\ParameterizedQueryInterface'])
         ) {
-            throw new \UnexpectedValueException(
+            throw new UnexpectedValueException(
                 'Unexpected class interface in: ' . __METHOD__
             );
         }

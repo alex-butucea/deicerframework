@@ -9,6 +9,7 @@
 
 namespace Deicer\Model;
 
+use OutOfRangeException;
 use Deicer\Exception\Type\NonIntException;
 use Deicer\Exception\Type\NonArrayException;
 use Deicer\Exception\Type\NonInstanceException;
@@ -77,7 +78,7 @@ abstract class AbstractModelComposite extends AbstractComponent implements
     public function current()
     {
         if (! $this->valid()) {
-            throw new \OutOfRangeException();
+            throw new OutOfRangeException();
         }
 
         return $this->models[key($this->models)];
@@ -93,7 +94,7 @@ abstract class AbstractModelComposite extends AbstractComponent implements
     public function key()
     {
         if (! $this->valid()) {
-            throw new \OutOfRangeException();
+            throw new OutOfRangeException();
         }
 
         return key($this->models);
@@ -168,7 +169,7 @@ abstract class AbstractModelComposite extends AbstractComponent implements
         if (! is_int($offset)) {
             throw new NonIntException();
         } elseif (! $this->offsetExists($offset)) {
-            throw new \OutOfRangeException();
+            throw new OutOfRangeException();
         }
 
         return $this->models[(integer) $offset];
@@ -212,7 +213,7 @@ abstract class AbstractModelComposite extends AbstractComponent implements
         if (! is_int($offset)) {
             throw new NonIntException();
         } elseif (! $this->offsetExists($offset)) {
-            throw new \OutOfRangeException();
+            throw new OutOfRangeException();
         }
 
         unset($this->models[(integer) $offset]);
