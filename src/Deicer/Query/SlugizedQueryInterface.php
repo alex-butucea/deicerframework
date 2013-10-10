@@ -16,7 +16,7 @@ use Deicer\Stdlib\SlugProviderInterface;
 /**
  * Marker interface for slugized queries
  *
- * Slugized query used for fetching models using an id, slug or other slug.
+ * Slugized query used for fetching models using a unique slug.
  * Use cases would be retrieving a unique / sigular model from a data store or
  * all models matching a given tag / search term.
  *
