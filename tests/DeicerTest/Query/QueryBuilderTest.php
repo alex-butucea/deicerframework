@@ -147,7 +147,7 @@ class QueryBuilderTest extends TestCase
             ->build('FakeQuery');
     }
 
-    public function testBuildConstructsInvariableQueryWithAppropriateDependencies()
+    public function testBuildCanConstructInvariableQuery()
     {
         $actual = $this->fixture
             ->withModelPrototype($this->model)
@@ -160,7 +160,7 @@ class QueryBuilderTest extends TestCase
         );
     }
 
-    public function testBuildConstructsSlugizedQueryWithAppropriateDependencies()
+    public function testBuildCanConstructSlugizedQuery()
     {
         $actual = $this->fixture
             ->withModelPrototype($this->model)
@@ -173,7 +173,7 @@ class QueryBuilderTest extends TestCase
         );
     }
 
-    public function testBuildConstructsParameterizedQueryWithAppropriateDependencies()
+    public function testBuildCanConstructParameterizedQuery()
     {
         $actual = $this->fixture
             ->withModelPrototype($this->model)
@@ -186,7 +186,7 @@ class QueryBuilderTest extends TestCase
         );
     }
 
-    public function testBuildConstructsIdentifiedQueryWithAppropriateDependencies()
+    public function testBuildCanConstructIdentifiedQuery()
     {
         $actual = $this->fixture
             ->withModelPrototype($this->model)
