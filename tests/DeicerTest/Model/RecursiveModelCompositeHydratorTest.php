@@ -10,7 +10,7 @@
 namespace DeicerTest\Model;
 
 use stdClass;
-use InvalidArgumentException;
+use Deicer\Model\Exception\InvalidArgumentException;
 use Deicer\Model\RecursiveModelCompositeHydrator;
 use DeicerTestAsset\Model\TestableModel;
 use DeicerTestAsset\Model\TestableModelComposite;
