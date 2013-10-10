@@ -10,7 +10,7 @@
 namespace Deicer\Stdlib;
 
 /**
- * Interface for objects that provide a uniquely identifiable token
+ * Interface for objects that provide a uniquely identifiable slug
  * 
  * @category   Deicer
  * @package    Stdlib
@@ -19,12 +19,12 @@ namespace Deicer\Stdlib;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface TokenProviderInterface
+interface SlugProviderInterface
 {
     /**
-     * Get unique token
+     * Get unique slug
      *
      * @return string
      */
-    public function getToken();
+    public function getSlug();
 }

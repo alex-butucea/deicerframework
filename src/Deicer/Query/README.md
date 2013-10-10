@@ -7,7 +7,7 @@ Queries are designed to be single-responsibility data access objects to promote 
 There are three abstract query classes available, distinguished by the selection API they provide:
 
 - `Deicer\Query\AbstractInvariableQuery` - Fetch models using a fixed selection algorithm
-- `Deicer\Query\AbstractTokenizedQuery` - Use slug/ID based selection to fetch models
+- `Deicer\Query\AbstractSlugizedQuery` - Use slug/ID based selection to fetch models
 - `Deicer\Query\AbstractParameterizedQuery` - Retrieve models using a set of key, value parameters
 
 ## Implementation
@@ -38,20 +38,20 @@ class FetchAllActiveListingsFromEtsy extends AbstractInvariableQuery
 }
 ```
 
-### Tokenized Queries
-Tokenized queries provide you with a single scalar for selection:
+### Slugized Queries
+Slugized queries provide you with a single scalar for selection:
 
 ```php
 namespace My\Query;
 
-use Deicer\Query\AbstractTokenizedQuery;
+use Deicer\Query\AbstractSlugizedQuery;
 
-class FetchSingleListingFromEtsy extends AbstractTokenizedQuery
+class FetchSingleListingFromEtsy extends AbstractSlugizedQuery
 {
     protected function fetchData()
     {
         // Instance of My\Http\Client - cURL wrapper
-        $this->dataProvider->setUri('/v2/listings/' . (int) $this->getToken());
+        $this->dataProvider->setUri('/v2/listings/' . (int) $this->getSlug());
         $this->dataProvider->setOpt(CURLOPT_RETURNTRANSFER, true);
 
         $response = $this->dataProvider->execute();
@@ -221,7 +221,7 @@ class Logger implements SubcriberInterface
          * Query messages are string serialized as either:
          *
          * Invariable Query Execution: *concrete_class* | Result: "*topic*" | Elapsed Time: *time*ms | Content: *jsoned_content*
-         * Tokenized Query Execution: *concrete_class* | Result: "*topic*" | Elapsed Time: *time*ms | Token: "*token*" | Content: *jsoned_content*
+         * Slugized Query Execution: *concrete_class* | Result: "*topic*" | Elapsed Time: *time*ms | Slug: "*slug*" | Content: *jsoned_content*
          * Parameterized Query Execution: *concrete_class* | Result: "*topic*" | Elapsed Time: *time*ms | Params: *jsoned_params* | Content: *jsoned_content*
          */
          $message = (string) $message;

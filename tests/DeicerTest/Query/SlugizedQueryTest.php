@@ -10,14 +10,14 @@
 namespace DeicerTest\Query;
 
 use stdClass;
-use DeicerTestAsset\Query\TestableTokenizedQueryWithValidFetchData;
-use DeicerTestAsset\Query\TestableTokenizedQueryWithExceptionThrowingFetchData;
-use DeicerTestAsset\Query\TestableTokenizedQueryWithNonArrayReturningFetchData;
-use DeicerTestAsset\Query\TestableTokenizedQueryWithModelIncompatibleFetchData;
+use DeicerTestAsset\Query\TestableSlugizedQueryWithValidFetchData;
+use DeicerTestAsset\Query\TestableSlugizedQueryWithExceptionThrowingFetchData;
+use DeicerTestAsset\Query\TestableSlugizedQueryWithNonArrayReturningFetchData;
+use DeicerTestAsset\Query\TestableSlugizedQueryWithModelIncompatibleFetchData;
 use DeicerTest\Query\AbstractQueryTest;
 
 /**
- * Deicer Tokenized Query tests
+ * Deicer Slugized Query tests
  * 
  * @category   DeicerTest
  * @package    Query
@@ -26,12 +26,12 @@ use DeicerTest\Query\AbstractQueryTest;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TokenizedQueryTest extends AbstractQueryTest
+class SlugizedQueryTest extends AbstractQueryTest
 {
     public function setUpFixture()
     {
         $this->fixture =
-            new TestableTokenizedQueryWithValidFetchData(
+            new TestableSlugizedQueryWithValidFetchData(
                 new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
@@ -45,7 +45,7 @@ class TokenizedQueryTest extends AbstractQueryTest
     public function setUpFixtureWithExceptionThrowingFetchData()
     {
         $this->fixtureWithExceptionThrowingFetchData =
-            new TestableTokenizedQueryWithExceptionThrowingFetchData(
+            new TestableSlugizedQueryWithExceptionThrowingFetchData(
                 new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
@@ -59,7 +59,7 @@ class TokenizedQueryTest extends AbstractQueryTest
     public function setUpFixtureWithNonArrayReturningFetchData()
     {
         $this->fixtureWithNonArrayReturningFetchData =
-            new TestableTokenizedQueryWithNonArrayReturningFetchData(
+            new TestableSlugizedQueryWithNonArrayReturningFetchData(
                 new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
@@ -73,7 +73,7 @@ class TokenizedQueryTest extends AbstractQueryTest
     public function setUpFixtureWithModelIncompatibleFetchData()
     {
         $this->fixtureWithModelIncompatibleFetchData =
-            new TestableTokenizedQueryWithModelIncompatibleFetchData(
+            new TestableSlugizedQueryWithModelIncompatibleFetchData(
                 new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
@@ -87,13 +87,13 @@ class TokenizedQueryTest extends AbstractQueryTest
     public function setUpMockFixture()
     {
         $this->mockFixture = $this->getMock(
-            'Deicer\Query\TokenizedQueryInterface'
+            'Deicer\Query\SlugizedQueryInterface'
         );
 
         return $this;
     }
 
-    public function testPublishedMessagesContainTokenAttribute()
+    public function testPublishedMessagesContainSlugAttribute()
     {
         $content = array (
             array (
@@ -106,28 +106,28 @@ class TokenizedQueryTest extends AbstractQueryTest
             ),
         );
 
-        $this->setUpMessageBuilder('success', $content, array ('token' => 'foo'));
+        $this->setUpMessageBuilder('success', $content, array ('slug' => 'foo'));
         $this->setUpMessageBrokers($this->message);
         $this->setUpFixture();
-        $this->fixture->setToken('foo');
+        $this->fixture->setSlug('foo');
         $this->fixture->execute();
     }
 
-    public function testSetTokenImplementsFluentInterface()
+    public function testSetSlugImplementsFluentInterface()
     {
-        $actual = $this->fixture->setToken('foo');
+        $actual = $this->fixture->setSlug('foo');
         $this->assertSame($actual, $this->fixture);
     }
 
-    public function testSetTokenWithNonStringThrowsException()
+    public function testSetSlugWithNonStringThrowsException()
     {
         $this->setExpectedException('Deicer\Query\Exception\InvalidArgumentException');
-        $actual = $this->fixture->setToken(array (1, 2, 3, 4));
+        $actual = $this->fixture->setSlug(array (1, 2, 3, 4));
     }
 
-    public function testSetTokenInternalisesToken()
+    public function testSetSlugInternalisesSlug()
     {
-        $this->fixture->setToken('foo');
-        $this->assertSame('foo', $this->fixture->getToken());
+        $this->fixture->setSlug('foo');
+        $this->assertSame('foo', $this->fixture->getSlug());
     }
 }

@@ -10,7 +10,7 @@
 namespace Deicer\Stdlib;
 
 /**
- * Interface for objects that consume a uniquely identifiable token
+ * Interface for objects that consume a uniquely identifiable slug
  *
  * @category   Deicer
  * @package    Stdlib
@@ -19,14 +19,14 @@ namespace Deicer\Stdlib;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-interface TokenConsumerInterface
+interface SlugConsumerInterface
 {
     /**
-     * Set unique token
+     * Set unique slug
      *
-     * @throws InvalidArgumentException If $token is a non-string
-     * @param  mixed $token The token to set
-     * @return TokenConsumerInterface Fluen interface
+     * @throws InvalidArgumentException If $slug is a non-string
+     * @param  mixed $slug The slug to set
+     * @return SlugConsumerInterface Fluen interface
      */
-    public function setToken($token);
+    public function setSlug($slug);
 }

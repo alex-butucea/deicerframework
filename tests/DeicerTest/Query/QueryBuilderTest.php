@@ -160,15 +160,15 @@ class QueryBuilderTest extends TestCase
         );
     }
 
-    public function testBuildConstructsTokenizedQueryWithAppropriateDependencies()
+    public function testBuildConstructsSlugizedQueryWithAppropriateDependencies()
     {
         $actual = $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)
-            ->build('TestableTokenizedQueryWithValidFetchData');
+            ->build('TestableSlugizedQueryWithValidFetchData');
 
         $this->assertInstanceOf(
-            'DeicerTestAsset\Query\TestableTokenizedQueryWithValidFetchData',
+            'DeicerTestAsset\Query\TestableSlugizedQueryWithValidFetchData',
             $actual
         );
     }

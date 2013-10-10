@@ -11,7 +11,7 @@ namespace Deicer\Query;
 
 use Deicer\Query\Exception\InvalidArgumentException;
 use Deicer\Query\AbstractQuery;
-use Deicer\Query\TokenizedQueryInterface;
+use Deicer\Query\SlugizedQueryInterface;
 
 /**
  * {@inheritdoc}
@@ -23,20 +23,20 @@ use Deicer\Query\TokenizedQueryInterface;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-abstract class AbstractTokenizedQuery extends AbstractQuery implements
-     TokenizedQueryInterface
+abstract class AbstractSlugizedQuery extends AbstractQuery implements
+     SlugizedQueryInterface
 {
     /**
-     * Selection token
+     * Selection slug
      * 
      * @var string
      */
-    protected $token = '';
+    protected $slug = '';
 
     /**
      * {@inheritdoc}
      */
-    public function decorate(TokenizedQueryInterface $decorable)
+    public function decorate(SlugizedQueryInterface $decorable)
     {
         $this->decorated = $decorable;
         $this->syncDecorated();
@@ -46,25 +46,25 @@ abstract class AbstractTokenizedQuery extends AbstractQuery implements
     /**
      * {@inheritdoc}
      */
-    public function setToken($token)
+    public function setSlug($slug)
     {
-        if (!is_string($token)) {
+        if (!is_string($slug)) {
             throw new InvalidArgumentException(
-                'Non-string $token passed in: ' .
+                'Non-string $slug passed in: ' .
                 get_called_class() . '::' . __FUNCTION__
             );
         }
 
-        $this->token = $token;
+        $this->slug = $slug;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getToken()
+    public function getSlug()
     {
-        return $this->token;
+        return $this->slug;
     }
 
     /**
@@ -73,7 +73,7 @@ abstract class AbstractTokenizedQuery extends AbstractQuery implements
     protected function syncDecorated()
     {
         if ($this->decorated) {
-            $this->decorated->setToken($this->token);
+            $this->decorated->setSlug($this->slug);
         }
 
         return $this;
@@ -84,6 +84,6 @@ abstract class AbstractTokenizedQuery extends AbstractQuery implements
      */
     protected function getSupplementaryMessageAttributes()
     {
-        return array ('token' => $this->token);
+        return array ('slug' => $this->slug);
     }
 }

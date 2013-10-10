@@ -9,14 +9,13 @@
 
 namespace DeicerTestAsset\Query;
 
-use Exception;
-use Deicer\Query\AbstractTokenizedQuery;
+use Deicer\Query\AbstractSlugizedQuery;
 
 /**
- * Deicer Test Tokenized Query
+ * Deicer Test Slugized Query
  *
- * Represents a concrete implementation of a Deicer Tokenized Query
- * with an implementation of fetchData() that throws an exception
+ * Represents a concrete implementation of a Deicer Slugized Query
+ * with an valid implementation of fetchData()
  *
  * @category   DeicerTest
  * @package    Query
@@ -25,21 +24,22 @@ use Deicer\Query\AbstractTokenizedQuery;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableTokenizedQueryWithExceptionThrowingFetchData extends
- AbstractTokenizedQuery
+class TestableSlugizedQueryWithValidFetchData extends AbstractSlugizedQuery
 {
     /**
      * {@inheritdoc}
      */
     protected function fetchData()
     {
-        throw new Exception(
-            'foo',
-            123,
-            new Exception(
-                'bar',
-                456
-            )
+        return array (
+            array (
+                'id'   => 1,
+                'name' => 'foo',
+            ),
+            array (
+                'id'   => 2,
+                'name' => 'bar',
+            ),
         );
     }
 }
