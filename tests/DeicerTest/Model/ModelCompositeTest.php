@@ -16,7 +16,7 @@ use DeicerTestAsset\Model\TestableModelCompositeWithInvalidOnExchangeArray;
 use DeicerTest\Framework\TestCase;
 
 /**
- * Abstract Deicer Model Composite tests
+ * Deicer Model Composite tests
  * 
  * @category   DeicerTest
  * @package    Model
@@ -25,7 +25,7 @@ use DeicerTest\Framework\TestCase;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class AbstractModelCompositeTest extends TestCase
+class ModelCompositeTest extends TestCase
 {
     public $validExchangeArrayArg;
     public $invalidExchangeArrayArg;

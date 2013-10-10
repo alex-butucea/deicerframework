@@ -15,7 +15,7 @@ use DeicerTestAsset\Model\TestableModelWithInvalidOnExchangeArray;
 use DeicerTest\Framework\TestCase;
 
 /**
- * Abstract Deicer Model tests
+ * Deicer Model tests
  * 
  * @category   DeicerTest
  * @package    Model
@@ -24,7 +24,7 @@ use DeicerTest\Framework\TestCase;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class AbstractModelTest extends TestCase
+class ModelTest extends TestCase
 {
     protected $validExchangeArrayArg = array (
         'id'         => 456,
