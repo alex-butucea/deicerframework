@@ -48,7 +48,7 @@ abstract class AbstractMessageBrokerTest extends TestCase
 
     public function testAddSubscribersWithNonSubscriberInterfaceThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->fixture->addSubscribers(
             array (
                 $this->subscribers[0],
@@ -60,7 +60,7 @@ abstract class AbstractMessageBrokerTest extends TestCase
 
     public function testAddSubscribersWithEmptyArrayThrowsException()
     {
-        $this->setExpectedException('LengthException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\LengthException');
         $this->fixture->addSubscribers(array ());
     }
 
@@ -106,13 +106,13 @@ abstract class AbstractMessageBrokerTest extends TestCase
 
     public function testRemoveSubscribersWithNonIntIndexThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->fixture->removeSubscribers(array ('foo'));
     }
 
     public function testRemoveSubscribersWithNonExistentIndexThrowsException()
     {
-        $this->setExpectedException('OutOfRangeException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\OutOfRangeException');
         $this->fixture->removeSubscribers(array (2));
     }
 
@@ -125,13 +125,13 @@ abstract class AbstractMessageBrokerTest extends TestCase
 
     public function testRemoveSubscriberWithNonIntIndexThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->fixture->removeSubscriber('foo');
     }
 
     public function testRemoveSubscriberWithNonExistentIndexThrowsException()
     {
-        $this->setExpectedException('OutOfRangeException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\OutOfRangeException');
         $this->fixture->removeSubscriber(2);
     }
 

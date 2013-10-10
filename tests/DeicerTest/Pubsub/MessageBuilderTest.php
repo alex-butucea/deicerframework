@@ -60,40 +60,40 @@ class MessageBuilderTest extends TestCase
 
     public function testWithAttributesWithArrayContainingNonSringKeyThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->attributes[1] = 'quux';
         $this->fixture->withAttributes($this->attributes);
     }
 
     public function testWithAttributesWithArrayContainingEmptyKeyThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->attributes[''] = 'quux';
         $this->fixture->withAttributes($this->attributes);
     }
 
     public function testWithAttributesWithArrayContainingNonScalarValueThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->attributes['quux'] = new stdClass();
         $this->fixture->withAttributes($this->attributes);
     }
 
     public function testWithTopicThrowsExceptionIfTopicIsEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->fixture->withTopic('');
     }
 
     public function testWithTopicTypeStrength()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->fixture->withTopic(array ());
     }
 
     public function testBuildThrowsExceptionIfTopicIsEmpty()
     {
-        $this->setExpectedException('LogicException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\LogicException');
         $this->fixture
             ->withContent('foo')
             ->withPublisher($this->mockPublisher)
@@ -102,7 +102,7 @@ class MessageBuilderTest extends TestCase
 
     public function testBuildThrowsExceptionIfPublisherIsUnset()
     {
-        $this->setExpectedException('LogicException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\LogicException');
         $this->fixture
             ->withTopic('foo')
             ->withContent('bar')

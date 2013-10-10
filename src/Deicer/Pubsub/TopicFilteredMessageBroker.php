@@ -9,7 +9,7 @@
 
 namespace Deicer\Pubsub;
 
-use InvalidArgumentException;
+use Deicer\Pubsub\Exception\InvalidArgumentException;
 use Deicer\Pubsub\AbstractMessageBroker;
 use Deicer\Pubsub\TopicFilteredMessageBrokerInterface;
 

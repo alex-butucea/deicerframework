@@ -109,20 +109,20 @@ class TopicFilteredMessageBrokerTest extends AbstractMessageBrokerTest
     public function testSubscribeToTopicWithNonStringTopicThrowsException()
     {
         $this->fixture->addSubscriber($this->subscriber);
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->fixture->subscribeToTopic(0, array ());
     }
 
     public function testSubscribeToTopicWithEmptyTopicThrowsException()
     {
         $this->fixture->addSubscriber($this->subscriber);
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->fixture->subscribeToTopic(0, '');
     }
 
     public function testSubscribeToTopicWithNonExistentSubscriberIndexThrowsException()
     {
-        $this->setExpectedException('OutOfRangeException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\OutOfRangeException');
         $this->fixture->subscribeToTopic(0, 'foo');
     }
 
@@ -152,20 +152,20 @@ class TopicFilteredMessageBrokerTest extends AbstractMessageBrokerTest
     public function testSubscribeToTopicsWithTopicsContainingNonStringThrowsException()
     {
         $this->fixture->addSubscriber($this->subscriber);
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->fixture->subscribeToTopics(0, array ('foo', array (), 'bar'));
     }
 
     public function testSubscribeToTopicsWithTopicsContainingEmptyStringThrowsException()
     {
         $this->fixture->addSubscriber($this->subscriber);
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->fixture->subscribeToTopics(0, array (''));
     }
 
     public function testSubscribeToTopicsWithNonExistentSubscriberIndexThrowsException()
     {
-        $this->setExpectedException('OutOfRangeException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\OutOfRangeException');
         $this->fixture->subscribeToTopics(0, array('foo'));
     }
 
@@ -195,20 +195,20 @@ class TopicFilteredMessageBrokerTest extends AbstractMessageBrokerTest
     public function testUnsubscribeFromTopicWithNonStringTopicThrowsException()
     {
         $this->fixture->addSubscriber($this->subscriber);
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->fixture->unsubscribeFromTopic(0, array ());
     }
 
     public function testUnsubscribeFromTopicWithEmptyTopicThrowsException()
     {
         $this->fixture->addSubscriber($this->subscriber);
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->fixture->unsubscribeFromTopic(0, '');
     }
 
     public function testUnsubscribeFromTopicWithNonExistentSubscriberIndexThrowsException()
     {
-        $this->setExpectedException('OutOfRangeException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\OutOfRangeException');
         $this->fixture->unsubscribeFromTopic(0, 'foo');
     }
 
@@ -241,20 +241,20 @@ class TopicFilteredMessageBrokerTest extends AbstractMessageBrokerTest
     public function testUnsubscribeFromTopicsWithTopicsContainingNonStringThrowsException()
     {
         $this->fixture->addSubscriber($this->subscriber);
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->fixture->unsubscribeFromTopics(0, array ('foo', array (), 'bar'));
     }
 
     public function testUnsubscribeFromTopicsWithTopicsContainingEmptyStringThrowsException()
     {
         $this->fixture->addSubscriber($this->subscriber);
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $this->fixture->unsubscribeFromTopics(0, array (''));
     }
 
     public function testUnsubscribeFromTopicsWithNonExistentSubscriberIndexThrowsException()
     {
-        $this->setExpectedException('OutOfRangeException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\OutOfRangeException');
         $this->fixture->unsubscribeFromTopics(0, array ('foo'));
     }
 

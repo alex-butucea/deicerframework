@@ -52,19 +52,19 @@ class MessageTest extends TestCase
 
     public function testConstructiWithEmptyTopicThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         new Message('', null, $this->publisher);
     }
 
     public function testConstructiWithNonStringTopicThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         new Message(new stdClass(), null, $this->publisher);
     }
 
     public function testConstructWithAttributesArrayContainingNonSringKeyThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $attributes = array (
             'foo' => 'bar',
             1     => 'qux',
@@ -74,7 +74,7 @@ class MessageTest extends TestCase
 
     public function testConstructWithAttributesArrayContainingEmptyKeyThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $attributes = array (
             'foo' => 'bar',
             ''    => 'qux',
@@ -84,7 +84,7 @@ class MessageTest extends TestCase
 
     public function testConstructWithAttributesArrayContainingNonScalarValueThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $attributes = array (
             'foo'    => 'bar',
             'baz'    => new stdClass(),
@@ -106,14 +106,14 @@ class MessageTest extends TestCase
 
     public function testGetAttributeWithEmptyThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $fixture = new Message('foo', null, $this->publisher);
         $fixture->getAttribute('');
     }
 
     public function testGetAttributeWithNonStringThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Pubsub\Exception\InvalidArgumentException');
         $fixture = new Message('foo', null, $this->publisher);
         $fixture->getAttribute(array ());
     }

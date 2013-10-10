@@ -9,8 +9,8 @@
 
 namespace Deicer\Pubsub;
 
-use LogicException;
-use InvalidArgumentException;
+use Deicer\Pubsub\Exception\LogicException;
+use Deicer\Pubsub\Exception\InvalidArgumentException;
 use Deicer\Pubsub\Message;
 use Deicer\Pubsub\MessageBuilderInterface;
 

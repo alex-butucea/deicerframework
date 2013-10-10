@@ -9,9 +9,9 @@
 
 namespace Deicer\Pubsub;
 
-use LengthException;
-use OutOfRangeException;
-use InvalidArgumentException;
+use Deicer\Pubsub\Exception\LengthException;
+use Deicer\Pubsub\Exception\OutOfRangeException;
+use Deicer\Pubsub\Exception\InvalidArgumentException;
 use Deicer\Pubsub\MessageInterface;
 use Deicer\Pubsub\SubscriberInterface;
 

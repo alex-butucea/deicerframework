@@ -9,7 +9,7 @@
 
 namespace Deicer\Pubsub;
 
-use InvalidArgumentException;
+use Deicer\Pubsub\Exception\InvalidArgumentException;
 use Deicer\Pubsub\MessageInterface;
 use Deicer\Pubsub\PublisherInterface;
 use Deicer\Stdlib\StringSerializableInterface;
