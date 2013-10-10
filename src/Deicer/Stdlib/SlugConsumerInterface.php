@@ -26,7 +26,7 @@ interface SlugConsumerInterface
      *
      * @throws InvalidArgumentException If $slug is a non-string
      * @param  mixed $slug The slug to set
-     * @return SlugConsumerInterface Fluen interface
+     * @return SlugConsumerInterface Fluent interface
      */
     public function setSlug($slug);
 }
