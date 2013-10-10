@@ -170,6 +170,7 @@ class QueryBuilder implements QueryBuilderInterface
         $interfaces = $class->getInterfaces();
         if (!isset($interfaces['Deicer\Query\InvariableQueryInterface']) &&
             !isset($interfaces['Deicer\Query\SlugizedQueryInterface']) &&
+            !isset($interfaces['Deicer\Query\IdentifiedQueryInterface']) &&
             !isset($interfaces['Deicer\Query\ParameterizedQueryInterface'])
         ) {
             throw new UnexpectedValueException(

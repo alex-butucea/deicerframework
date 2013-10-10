@@ -186,6 +186,19 @@ class QueryBuilderTest extends TestCase
         );
     }
 
+    public function testBuildConstructsIdentifiedQueryWithAppropriateDependencies()
+    {
+        $actual = $this->fixture
+            ->withModelPrototype($this->model)
+            ->withModelCompositePrototype($this->composite)
+            ->build('TestableIdentifiedQueryWithValidFetchData');
+
+        $this->assertInstanceOf(
+            'DeicerTestAsset\Query\TestableIdentifiedQueryWithValidFetchData',
+            $actual
+        );
+    }
+
     public function testBuildUsesSetModelPrototype()
     {
         $this->model
