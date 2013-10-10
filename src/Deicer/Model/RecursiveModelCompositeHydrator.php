@@ -9,8 +9,8 @@
 
 namespace Deicer\Model;
 
-use OutOfBoundsException;
-use InvalidArgumentException;
+use Deicer\Model\Exception\OutOfBoundsException;
+use Deicer\Model\Exception\InvalidArgumentException;
 use Deicer\Model\ModelInterface;
 use Deicer\Model\ModelCompositeInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;

@@ -9,8 +9,8 @@
 
 namespace Deicer\Model;
 
-use OutOfBoundsException;
-use UnexpectedValueException;
+use Deicer\Model\Exception\OutOfBoundsException;
+use Deicer\Model\Exception\UnexpectedValueException;
 
 /**
  * Deicer Base Model

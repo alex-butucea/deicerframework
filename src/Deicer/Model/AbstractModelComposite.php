@@ -9,9 +9,9 @@
 
 namespace Deicer\Model;
 
-use OutOfRangeException;
-use InvalidArgumentException;
-use UnexpectedValueException;
+use Deicer\Model\Exception\OutOfRangeException;
+use Deicer\Model\Exception\InvalidArgumentException;
+use Deicer\Model\Exception\UnexpectedValueException;
 
 /**
  * Deicer Abstract Model Composite

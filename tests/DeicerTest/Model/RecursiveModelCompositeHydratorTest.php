@@ -56,7 +56,7 @@ class RecursiveModelCompositeHydratorTest extends TestCase
 
     public function testExchangeArrayWithAssociativeArrayThrowsException()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->setExpectedException('Deicer\Model\Exception\InvalidArgumentException');
         $this->fixture->exchangeArray(
             array (
                 'one' => 'foo',
@@ -68,7 +68,7 @@ class RecursiveModelCompositeHydratorTest extends TestCase
 
     public function testExchangeArrayWithIndexedArrayOfNonArraysThrowsException()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->setExpectedException('Deicer\Model\Exception\InvalidArgumentException');
         $this->fixture->exchangeArray(
             array (
                 'foo',
@@ -80,7 +80,7 @@ class RecursiveModelCompositeHydratorTest extends TestCase
 
     public function testExchangeArrayWithIndexedArrayOfIndexedArraysThrowsException()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->setExpectedException('Deicer\Model\Exception\InvalidArgumentException');
         $this->fixture->exchangeArray(
             array (
                 array (

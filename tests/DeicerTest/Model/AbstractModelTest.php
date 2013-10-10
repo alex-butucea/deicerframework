@@ -46,21 +46,21 @@ class AbstractModelTest extends TestCase
 
     public function testAccessingNonexistentPropertyThrowsException()
     {
-        $this->setExpectedException('OutOfBoundsException');
+        $this->setExpectedException('Deicer\Model\Exception\OutOfBoundsException');
         $model = new TestableModel();
         $model->foobar;
     }
 
     public function testInjectingAdditionalPropertyThrowsException()
     {
-        $this->setExpectedException('OutOfBoundsException');
+        $this->setExpectedException('Deicer\Model\Exception\OutOfBoundsException');
         $model = new TestableModel();
         $model->test = 'foobar';
     }
 
     public function testUnsettingExistingPropertyThrowsException()
     {
-        $this->setExpectedException('OutOfBoundsException');
+        $this->setExpectedException('Deicer\Model\Exception\OutOfBoundsException');
         $model = new TestableModel();
         unset($model->test);
     }
@@ -174,7 +174,7 @@ class AbstractModelTest extends TestCase
 
     public function testInvalidOnExchangeArrayReturnTypeThrowsException()
     {
-        $this->setExpectedException('UnexpectedValueException');
+        $this->setExpectedException('Deicer\Model\Exception\UnexpectedValueException');
         $model = new TestableModelWithInvalidOnExchangeArray();
         $model->exchangeArray($this->validExchangeArrayArg);
     }
