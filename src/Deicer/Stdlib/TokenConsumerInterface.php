@@ -24,7 +24,7 @@ interface TokenConsumerInterface
     /**
      * Set unique token
      *
-     * @throws NonStringException If $token is a non-string
+     * @throws InvalidArgumentException If $token is a non-string
      * @param  mixed $token The token to set
      * @return TokenConsumerInterface Fluen interface
      */

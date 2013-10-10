@@ -32,7 +32,7 @@ interface ParameterConsumerInterface
     /**
      * Set a single parameter
      *
-     * @throws NonStringException If $name is not a string
+     * @throws InvalidArgumentException If $name is not a string
      * @param  string $name  The name of the parameter to set
      * @param  mixed  $value The value to set
      * @return void
