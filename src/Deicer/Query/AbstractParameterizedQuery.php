@@ -9,7 +9,7 @@
 
 namespace Deicer\Query;
 
-use InvalidArgumentException;
+use Deicer\Query\Exception\InvalidArgumentException;
 use Deicer\Query\AbstractQuery;
 use Deicer\Query\ParameterizedQueryInterface;
 use Deicer\Query\Exception\NonExistentParamException;

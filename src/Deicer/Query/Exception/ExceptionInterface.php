@@ -12,8 +12,6 @@ namespace Deicer\Query\Exception;
 /**
  * Deicer Query Exception Marker Interface
  *
- * Provides a common marker interface for all exceptions thrown by queries
- *
  * @category   Deicer
  * @package    Query
  * @subpackage Exception

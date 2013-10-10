@@ -121,7 +121,7 @@ class TokenizedQueryTest extends AbstractQueryTest
 
     public function testSetTokenWithNonStringThrowsException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Query\Exception\InvalidArgumentException');
         $actual = $this->fixture->setToken(array (1, 2, 3, 4));
     }
 

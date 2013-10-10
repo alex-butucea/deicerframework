@@ -9,22 +9,20 @@
 
 namespace Deicer\Query\Exception;
 
-use InvalidArgumentException as SplException;
+use UnexpectedValueException as SplException;
 use Deicer\Query\Exception\ExceptionInterface;
 
 /**
- * Deicer Non Existent Query Exception
- *
- * Thrown by Query Builder when a non existent Query class is requested
+ * Deicer Query Unexpected Value Exception
  *
  * @category   Deicer
- * @package    Query 
+ * @package    Query
  * @subpackage Exception
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class NonExistentQueryException extends SplException implements ExceptionInterface
+class UnexpectedValueException extends SplException implements ExceptionInterface
 {
 }

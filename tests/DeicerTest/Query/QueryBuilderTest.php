@@ -91,13 +91,13 @@ class QueryBuilderTest extends TestCase
 
     public function testConstructNamespaceTypeStrength()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Query\Exception\InvalidArgumentException');
         new QueryBuilder(array ());
     }
 
     public function testBuildClassnameTypeStrength()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Query\Exception\InvalidArgumentException');
         $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)
@@ -106,7 +106,7 @@ class QueryBuilderTest extends TestCase
 
     public function testBuildThrowsExceptionIfModelPrototypeInUnset()
     {
-        $this->setExpectedException('LogicException');
+        $this->setExpectedException('Deicer\Query\Exception\LogicException');
         $this->fixture
             ->withModelPrototype($this->model)
             ->build('DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData');
@@ -114,7 +114,7 @@ class QueryBuilderTest extends TestCase
 
     public function testBuildThrowsExceptionIfModelCompositePrototypeInUnset()
     {
-        $this->setExpectedException('LogicException');
+        $this->setExpectedException('Deicer\Query\Exception\LogicException');
         $this->fixture
             ->withModelCompositePrototype($this->composite)
             ->build('DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData');
@@ -122,7 +122,7 @@ class QueryBuilderTest extends TestCase
 
     public function testBuildThrowsExceptionIfClassnameIsEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Query\Exception\InvalidArgumentException');
         $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)
@@ -140,7 +140,7 @@ class QueryBuilderTest extends TestCase
 
     public function testBuildThrowsExceptionIfClassDoesntImplementRecognisedInterface()
     {
-        $this->setExpectedException('UnexpectedValueException');
+        $this->setExpectedException('Deicer\Query\Exception\UnexpectedValueException');
         $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)

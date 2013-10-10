@@ -156,7 +156,7 @@ class ParameterizedQueryTest extends AbstractQueryTest
 
     public function testSetParamNameTypeStrength()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Query\Exception\InvalidArgumentException');
         $this->fixture->setParam(array (), 'bar');
     }
 
@@ -182,7 +182,7 @@ class ParameterizedQueryTest extends AbstractQueryTest
      */
     public function testSetParamValueTypeStrength($value)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Query\Exception\InvalidArgumentException');
         $this->fixture->setParam('author', $value);
     }
 
@@ -191,7 +191,7 @@ class ParameterizedQueryTest extends AbstractQueryTest
      */
     public function testSetParamsValueTypeStrength($params)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Query\Exception\InvalidArgumentException');
         $this->fixture->setParams($params);
     }
 
@@ -266,7 +266,7 @@ class ParameterizedQueryTest extends AbstractQueryTest
 
     public function testGetParamNameTypeStrength()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Deicer\Query\Exception\InvalidArgumentException');
         $this->fixture->getParam(array (), 'bar');
     }
 

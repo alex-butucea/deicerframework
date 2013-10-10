@@ -10,10 +10,10 @@
 namespace Deicer\Query;
 
 use ReflectionClass;
-use LogicException;
 use ReflectionException;
-use UnexpectedValueException;
-use InvalidArgumentException;
+use Deicer\Query\Exception\LogicException;
+use Deicer\Query\Exception\UnexpectedValueException;
+use Deicer\Query\Exception\InvalidArgumentException;
 use Deicer\Query\QueryBuilderInterface;
 use Deicer\Model\ModelInterface;
 use Deicer\Model\ModelCompositeInterface;
