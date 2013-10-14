@@ -56,60 +56,6 @@ class RecursiveModelCompositeHydrator implements
 
     /**
      * {@inheritdoc}
-     *
-     * Expects $values to be a numerically indexed array of associative arrays
-     *
-     * @throws InvalidArgumentException If $values contains associative indices
-     * @throws InvalidArgumentException If $values contains non array elements
-     * @throws InvalidArgumentException If $values elements are not associative
-     * @throws InvalidArgumentException If $values dont match model properties
-     */
-    public function exchangeArray(array $values)
-    {
-        $models = array ();
-
-        foreach ($values as $key => $value) {
-            if (!is_int($key)) {
-                throw new InvalidArgumentException(
-                    '$values must be numerically indexed in: ' .
-                    get_called_class()
-                );
-            } if (!is_array($value)) {
-                throw new InvalidArgumentException(
-                    '$values must contain array elements in: ' .
-                    get_called_class()
-                );
-            }
-
-            foreach ($value as $k => $v) {
-                if (is_int($k)) {
-                    throw new InvalidArgumentException(
-                        '$values must contain assoc. arrays in: ' .
-                        get_called_class()
-                    );
-                }
-            }
-
-            // Clone model protoype, hydrate and accumulate
-            $model = clone $this->modelPrototype;
-            try {
-                $models[] = $model->exchangeArray($value);
-            } catch (OutOfBoundsException $e) {
-                throw new InvalidArgumentException(
-                    '$values elements must match model properties in: ' .
-                    get_called_class(),
-                    0,
-                    $e
-                );
-            }
-        }
-
-        $this->modelComposite->exchangeArray($models);
-        return $this->modelComposite;
-    }
-
-    /**
-     * {@inheritdoc}
      */
     public function setModelPrototype(ModelInterface $modelPrototype)
     {
@@ -124,5 +70,88 @@ class RecursiveModelCompositeHydrator implements
     {
         $this->modelComposite = $modelComposite;
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Expects $values to be a numerically indexed array of associative arrays.
+     * Attempts to hydrate Model if $values is an associative array.
+     * Attempts to hydrate Model Composite if $values is an indexed array.
+     *
+     * @throws InvalidArgumentException If $values is empty
+     * @throws InvalidArgumentException If $values is indexed and contains non array elements
+     * @throws InvalidArgumentException If $values is indexed and elements are not associative
+     * @throws InvalidArgumentException If $values elements dont match model properties
+     */
+    public function exchangeArray(array $values)
+    {
+        if (empty($values)) {
+            throw new InvalidArgumentException('Empty $values passed in: ' . __METHOD__);
+        }
+
+        foreach ($values as $key => $value) {
+            if (is_int($key)) {
+                // Int index - assume composite
+                return $this->hydrateModelComposite($values);
+            } else {
+                // Associative index - assume model
+                return $this->hydrateModel($values);
+            }
+        }
+    }
+
+    /**
+     * Clones model prototype and hydrates with given values 
+     * 
+     * @param  array $values Model properties to set
+     * @return ModelInterface
+     */
+    protected function hydrateModel(array $values)
+    {
+        try {
+            $model = clone $this->modelPrototype;
+            $model->exchangeArray($values);
+        } catch (OutOfBoundsException $e) {
+            throw new InvalidArgumentException(
+                '$values elements must match model properties in: ' .
+                'RecursiveModelCompositeHydrator::exchangeArray',
+                0,
+                $e
+            );
+        }
+
+        return $model;
+    }
+
+    /**
+     * Clones model composite prototype and hydrates with sets of model properties
+     * 
+     * @param  array $values Array of model property arrays
+     * @return ModelCompositeInterface
+     */
+    protected function hydrateModelComposite(array $values)
+    {
+        $models = array ();
+        foreach ($values as $key => $value) {
+            if (!is_int($key)) {
+                throw new InvalidArgumentException(
+                    '$values must be numerically indexed in: ' .
+                    'RecursiveModelCompositeHydrator::exchangeArray'
+                );
+            } elseif (!is_array($value)) {
+                throw new InvalidArgumentException(
+                    '$values must contain array elements in: ' .
+                    'RecursiveModelCompositeHydrator::exchangeArray'
+                );
+            }
+
+            // Clone model protoype, hydrate and accumulate
+            $models[] = $this->hydrateModel($value);
+        }
+
+        $composite = clone $this->modelComposite;
+        $composite->exchangeArray($models);
+        return $composite;
     }
 }

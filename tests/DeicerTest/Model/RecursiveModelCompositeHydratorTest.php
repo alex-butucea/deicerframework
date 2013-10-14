@@ -54,18 +54,6 @@ class RecursiveModelCompositeHydratorTest extends TestCase
         );
     }
 
-    public function testExchangeArrayWithAssociativeArrayThrowsException()
-    {
-        $this->setExpectedException('Deicer\Model\Exception\InvalidArgumentException');
-        $this->fixture->exchangeArray(
-            array (
-                'one' => 'foo',
-                'two' => 'bar',
-                '3'   => 'baz',
-            )
-        );
-    }
-
     public function testExchangeArrayWithIndexedArrayOfNonArraysThrowsException()
     {
         $this->setExpectedException('Deicer\Model\Exception\InvalidArgumentException');
@@ -92,11 +80,25 @@ class RecursiveModelCompositeHydratorTest extends TestCase
         );
     }
 
-    public function testExchangeArrayWithEmptyArrayReturnsEmptyModelComposite()
+    public function testExchangeArrayWithEmptyArrayThrowsException()
     {
+        $this->setExpectedException('Deicer\Model\Exception\InvalidArgumentException');
         $actual = $this->fixture->exchangeArray(array ());
-        $this->assertInstanceOf('Deicer\Model\ModelCompositeInterface', $actual);
-        $this->assertSame(0, $actual->count());
+    }
+
+    public function testExchangeArrayWithAssociativeArrayHydratesModel()
+    {
+        $actual = $this->fixture->exchangeArray(
+            array (
+                'id'         => 1,
+                'name'       => 'foo',
+                'categories' => array ('baz', 'qux'),
+            )
+        );
+        $this->assertInstanceOf('Deicer\Model\ModelInterface', $actual);
+        $this->assertSame(1, $actual->id);
+        $this->assertSame('foo', $actual->name);
+        $this->assertSame(array ('baz', 'qux'), $actual->categories);
     }
 
     public function testExchangeArrayWithIndexedArrayOfAssociativeArraysHydratesModelComposite()
