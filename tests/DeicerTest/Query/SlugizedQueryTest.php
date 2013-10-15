@@ -13,6 +13,7 @@ use stdClass;
 use DeicerTestAsset\Query\TestableSlugizedQueryWithValidFetchData;
 use DeicerTestAsset\Query\TestableSlugizedQueryWithExceptionThrowingFetchData;
 use DeicerTestAsset\Query\TestableSlugizedQueryWithNonArrayReturningFetchData;
+use DeicerTestAsset\Query\TestableSlugizedQueryWithEmptyArrayReturningFetchData;
 use DeicerTestAsset\Query\TestableSlugizedQueryWithModelIncompatibleFetchData;
 use DeicerTest\Query\AbstractQueryTest;
 
@@ -60,6 +61,20 @@ class SlugizedQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithNonArrayReturningFetchData =
             new TestableSlugizedQueryWithNonArrayReturningFetchData(
+                new stdClass(),
+                $this->messageBuilder,
+                $this->unfilteredMessageBroker,
+                $this->topicFilteredMessageBroker,
+                $this->hydrator
+            );
+
+        return $this;
+    }
+
+    public function setUpFixtureWithEmptyArrayReturningFetchData()
+    {
+        $this->fixtureWithEmptyArrayReturningFetchData =
+            new TestableSlugizedQueryWithEmptyArrayReturningFetchData(
                 new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,

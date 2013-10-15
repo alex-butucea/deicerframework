@@ -86,6 +86,30 @@ class RecursiveModelCompositeHydratorTest extends TestCase
         $actual = $this->fixture->exchangeArray(array ());
     }
 
+    public function testExchangeArrayWithMixedIndexArrayThrowsException()
+    {
+        $this->setExpectedException('Deicer\Model\Exception\InvalidArgumentException');
+        $this->fixture->exchangeArray(
+            array (
+                0 => array (
+                    'id'         => 1,
+                    'name'       => 'foo',
+                    'categories' => array ('baz', 'qux'),
+                ),
+                'one' => array (
+                    'id'         => 1,
+                    'name'       => 'foo',
+                    'categories' => array ('baz', 'qux'),
+                ),
+                2 => array (
+                    'id'         => 1,
+                    'name'       => 'foo',
+                    'categories' => array ('baz', 'qux'),
+                ),
+            )
+        );
+    }
+
     public function testExchangeArrayWithAssociativeArrayHydratesModel()
     {
         $actual = $this->fixture->exchangeArray(

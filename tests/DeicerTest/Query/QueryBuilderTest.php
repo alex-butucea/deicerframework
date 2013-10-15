@@ -198,40 +198,4 @@ class QueryBuilderTest extends TestCase
             $actual
         );
     }
-
-    public function testBuildUsesSetModelPrototype()
-    {
-        $this->model
-            ->expects($this->atLeastOnce())
-            ->method('exchangeArray');
-
-        $actual = $this->fixture
-            ->withModelPrototype($this->model)
-            ->withModelCompositePrototype($this->composite)
-            ->build('TestableInvariableQueryWithValidFetchData');
-
-        $this->assertInstanceOf(
-            'DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData',
-            $actual
-        );
-
-        $actual->execute();
-    }
-
-    public function testBuildUsesSetModelCompositePrototype()
-    {
-        $this->composite
-            ->expects($this->atLeastOnce())
-            ->method('exchangeArray');
-
-        $actual = $this->fixture
-            ->withModelPrototype($this->model)
-            ->withModelCompositePrototype($this->composite)
-            ->build('TestableInvariableQueryWithValidFetchData');
-
-        $this->assertInstanceOf(
-            'DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData',
-            $actual
-        );
-    }
 }

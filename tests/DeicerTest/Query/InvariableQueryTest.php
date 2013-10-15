@@ -13,6 +13,7 @@ use stdClass;
 use DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData;
 use DeicerTestAsset\Query\TestableInvariableQueryWithExceptionThrowingFetchData;
 use DeicerTestAsset\Query\TestableInvariableQueryWithNonArrayReturningFetchData;
+use DeicerTestAsset\Query\TestableInvariableQueryWithEmptyArrayReturningFetchData;
 use DeicerTestAsset\Query\TestableInvariableQueryWithModelIncompatibleFetchData;
 use DeicerTest\Query\AbstractQueryTest;
 
@@ -60,6 +61,20 @@ class InvariableQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithNonArrayReturningFetchData =
             new TestableInvariableQueryWithNonArrayReturningFetchData(
+                new stdClass(),
+                $this->messageBuilder,
+                $this->unfilteredMessageBroker,
+                $this->topicFilteredMessageBroker,
+                $this->hydrator
+            );
+
+        return $this;
+    }
+
+    public function setUpFixtureWithEmptyArrayReturningFetchData()
+    {
+        $this->fixtureWithEmptyArrayReturningFetchData =
+            new TestableInvariableQueryWithEmptyArrayReturningFetchData(
                 new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,

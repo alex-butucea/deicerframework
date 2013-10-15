@@ -90,15 +90,10 @@ class RecursiveModelCompositeHydrator implements
             throw new InvalidArgumentException('Empty $values passed in: ' . __METHOD__);
         }
 
-        foreach ($values as $key => $value) {
-            if (is_int($key)) {
-                // Int index - assume composite
-                return $this->hydrateModelComposite($values);
-            } else {
-                // Associative index - assume model
-                return $this->hydrateModel($values);
-            }
-        }
+        // Assume composite if first int index is int, otherwise assume model
+        return (is_int(key($values))) ?
+            $this->hydrateModelComposite($values) :
+            $this->hydrateModel($values);
     }
 
     /**
@@ -132,6 +127,7 @@ class RecursiveModelCompositeHydrator implements
      */
     protected function hydrateModelComposite(array $values)
     {
+        // Walk array validating indices and accumulating hydrated models
         $models = array ();
         foreach ($values as $key => $value) {
             if (!is_int($key)) {

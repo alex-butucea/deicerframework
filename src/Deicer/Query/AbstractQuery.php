@@ -13,12 +13,14 @@ use Exception;
 use Deicer\Query\QueryInterface;
 use Deicer\Query\MessageTopic;
 use Deicer\Query\Exception\DataTypeException;
+use Deicer\Query\Exception\DataEmptyException;
 use Deicer\Query\Exception\DataFetchException;
 use Deicer\Query\Exception\ModelHydratorException;
 use Deicer\Pubsub\MessageInterface;
 use Deicer\Pubsub\MessageBuilderInterface;
 use Deicer\Pubsub\UnfilteredMessageBrokerInterface;
 use Deicer\Pubsub\TopicFilteredMessageBrokerInterface;
+use Deicer\Model\ComponentInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
 
 /**
@@ -97,7 +99,6 @@ abstract class AbstractQuery
         $this->unfilteredBroker    = $unfilteredBroker;
         $this->topicFilteredBroker = $topicFilteredBroker;
         $this->modelHydrator       = $modelHydrator;
-        $this->lastResponse        = $modelHydrator->exchangeArray(array ());
     }
 
     /**
@@ -129,15 +130,14 @@ abstract class AbstractQuery
      *
      * @throws DataFetchException If unhandled exception is thrown
      * @throws DataTypeException If non array type is returned by implementation
+     * @throws DataEmptyException If empty array is returned by implementation
      * @throws ModelHydratorException If data cannot be used to hydrate models
      */
     public function execute()
     {
-        // Initialize message and record time in milliseconds
-        $this->messageBuilder->withPublisher($this);
+        // Initialize message, sync selection criteria and record start time
         $time = round(microtime(true) * 1000);
-
-        // Sync selection criteria to reflect instance
+        $this->messageBuilder->withPublisher($this);
         $this->syncDecorated();
 
         // Attempt to fetchData, rethrow exception if no decorated query exists
@@ -204,9 +204,45 @@ abstract class AbstractQuery
             }
         }
 
-        // Attempt to hydrate model composite and fall back to decorated on fail
+        // Assert wherther data isnt empty and can be used for hydration
+        if (empty($data)) {
+            $topic = ($this->decorated) ?
+                MessageTopic::FALLBACK_DATA_EMPTY :
+                MessageTopic::FAILURE_DATA_EMPTY;
+            $message = $this->messageBuilder
+                ->withTopic($topic)
+                ->withContent(null)
+                ->withAttributes(
+                    $this->getSupplementaryMessageAttributes() +
+                    array ('elapsed_time' => $this->calculateElapsedTime($time))
+                )
+                ->build();
+            $this->publish($message);
+
+            // Update last response with decorated result and terminate
+            if ($this->decorated) {
+                $this->lastResponse = $this->decorated->execute();
+                return $this->lastResponse;
+            } else {
+
+                // Leave last response intact and terminate execution
+                throw new DataEmptyException(
+                    'Empty array data provider response returned in: ' .
+                    get_called_class() . '::' . __FUNCTION__
+                );
+            }
+        }
+
+        // Attempt to hydrate model(s) and enforce hydrator return type strength
         try {
-            $hydrated = clone $this->modelHydrator->exchangeArray($data);
+            $hydrated = $this->modelHydrator->exchangeArray($data);
+            if (!$hydrated instanceof ComponentInterface) {
+                throw new ModelHydratorException(
+                    'Non-instance of ComponentInterface returned from ' .
+                    'RecursiveModelCompositeHydratorInterface::exchangeArray() in:' .
+                    get_called_class() . '::' . __FUNCTION__
+                );
+            }
         } catch (Exception $e) {
 
             // Build message based on whether execution can fall back to decorated
@@ -238,8 +274,6 @@ abstract class AbstractQuery
             }
         }
 
-        $this->lastResponse = $hydrated;
-
         // Notify subscribers of successful query execution
         $message = $this->messageBuilder
             ->withTopic(MessageTopic::SUCCESS)
@@ -251,6 +285,7 @@ abstract class AbstractQuery
             ->build();
         $this->publish($message);
 
+        $this->lastResponse = $hydrated;
         return $hydrated;
     }
 

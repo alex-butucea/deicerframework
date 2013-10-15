@@ -55,6 +55,14 @@ class MessageTopic
      */
     const FAILURE_DATA_TYPE = 'failure.data_type';
 
+    /**
+     * Pubsub topic implying execution was a failure and caused by
+     * implementation of fetchData() returning empty array
+     *
+     * @const string
+     */
+    const FAILURE_DATA_EMPTY = 'failure.data_empty';
+
     // Query Fallback Topics
 
     /**
@@ -80,4 +88,12 @@ class MessageTopic
      * @const string
      */
     const FALLBACK_DATA_TYPE = 'fallback.data_type';
+
+    /**
+     * Pubsub topic implying query has fallen back to decorated instance due to
+     * implementation of fetchData() returning empty array
+     *
+     * @const string
+     */
+    const FALLBACK_DATA_EMPTY = 'fallback.data_empty';
 }

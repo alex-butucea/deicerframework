@@ -32,6 +32,7 @@ abstract class AbstractQueryTest extends TestCase
     public $fixture;
     public $fixtureWithExceptionThrowingFetchData;
     public $fixtureWithNonArrayReturningFetchData;
+    public $fixtureWithEmptyArrayReturningFetchData;
     public $fixtureWithModelIncompatibleFetchData;
     public $mockFixture;
     public $composite;
@@ -45,6 +46,7 @@ abstract class AbstractQueryTest extends TestCase
     abstract public function setUpFixture();
     abstract public function setUpFixtureWithExceptionThrowingFetchData();
     abstract public function setUpFixtureWithNonArrayReturningFetchData();
+    abstract public function setUpFixtureWithEmptyArrayReturningFetchData();
     abstract public function setUpFixtureWithModelIncompatibleFetchData();
     abstract public function setUpMockFixture();
 
@@ -117,7 +119,8 @@ abstract class AbstractQueryTest extends TestCase
             return $composite;
         };
 
-        $this->hydrator->expects($this->any())
+        $this->hydrator
+            ->expects($this->any())
             ->method('exchangeArray')
             ->with($this->isType('array'))
             ->will($this->returnCallback($callback));
@@ -126,6 +129,7 @@ abstract class AbstractQueryTest extends TestCase
             ->setUpFixture()
             ->setUpFixtureWithExceptionThrowingFetchData()
             ->setUpFixtureWithNonArrayReturningFetchData()
+            ->setUpFixtureWithEmptyArrayReturningFetchData()
             ->setUpFixtureWithModelIncompatibleFetchData()
             ->setUpMockFixture();
     }
@@ -225,11 +229,9 @@ abstract class AbstractQueryTest extends TestCase
         return $this;
     }
 
-    public function testGetLastResponseIsDefaultedToEmptyModelComposite()
+    public function testGetLastResponseIsDefaultedToNull()
     {
-        $actual = $this->fixture->getLastResponse();
-        $this->assertInstanceOf('Deicer\Model\ModelCompositeInterface', $actual);
-        $this->assertSame(0, $actual->count());
+        $this->assertNull($this->fixture->getLastResponse());
     }
 
     public function testGetUnfilteredMessageBrokerReturnsInstance()
@@ -254,6 +256,12 @@ abstract class AbstractQueryTest extends TestCase
         $this->fixtureWithNonArrayReturningFetchData->execute();
     }
 
+    public function testExecuteWithEmptyArrayReturningFetchDataThrowsException()
+    {
+        $this->setExpectedException('Deicer\Query\Exception\DataEmptyException');
+        $this->fixtureWithEmptyArrayReturningFetchData->execute();
+    }
+
     public function testExecuteRethrowsDataProviderException()
     {
         try {
@@ -274,11 +282,25 @@ abstract class AbstractQueryTest extends TestCase
         $this->fail('Failed to rethrow data provider exception');
     }
 
+    public function testExecuteEnforcesHydratorReturnTypeStrength()
+    {
+        $this->setExpectedException('Deicer\Query\Exception\ModelHydratorException');
+        $this->hydrator = $this->getMock(
+            'Deicer\Model\RecursiveModelCompositeHydratorInterface'
+        );
+        $this->hydrator
+            ->expects($this->any())
+            ->method('exchangeArray')
+            ->with($this->isType('array'))
+            ->will($this->returnValue(1234));
+        $this->setUpFixture();
+        $this->fixture->execute();
+    }
+
     public function testExecuteRethrowsModelCompositeHydratorException()
     {
-        // exchangeArray called first at instantiation to set empty last reponse
         $msg = 'Unhandled hydrator exception';
-        $this->hydrator->expects($this->at(1))
+        $this->hydrator->expects($this->once())
             ->method('exchangeArray')
             ->will($this->throwException(new InvalidArgumentException($msg)));
         $this->setUpFixtureWithModelIncompatibleFetchData();
@@ -317,11 +339,15 @@ abstract class AbstractQueryTest extends TestCase
 
     public function testExecuteFallsBackToDecoratedExecutableOnModelHydratorFailure()
     {
-        // exchangeArray called first at instantiation to set empty last reponse
         $msg = 'Unhandled hydrator exception';
-        $this->hydrator->expects($this->at(1))
+        $this->hydrator
+            ->expects($this->at(0))
             ->method('exchangeArray')
             ->will($this->throwException(new InvalidArgumentException($msg)));
+        $this->hydrator
+            ->expects($this->at(1))
+            ->method('exchangeArray')
+            ->will($this->returnValue($this->composite));
 
         $this->setUpFixtureWithModelIncompatibleFetchData();
         $this->fixtureWithModelIncompatibleFetchData->decorate($this->fixture);
@@ -348,10 +374,22 @@ abstract class AbstractQueryTest extends TestCase
 
     public function testExecuteFallsBackToDecoratedExecutableOnDataTypeFailure()
     {
-        $this->fixtureWithNonArrayReturningFetchData->decorate($this->fixture);
+        $this->fixtureWithEmptyArrayReturningFetchData->decorate($this->fixture);
 
-        $actual = $this->fixtureWithNonArrayReturningFetchData->execute();
-        $lastResponse = $this->fixtureWithNonArrayReturningFetchData->getLastResponse();
+        $actual = $this->fixtureWithEmptyArrayReturningFetchData->execute();
+        $lastResponse = $this->fixtureWithEmptyArrayReturningFetchData->getLastResponse();
+
+        $this->assertInstanceOf('Deicer\Model\ModelCompositeInterface', $actual);
+        $this->assertSame(2, $actual->count());
+        $this->assertSame($actual, $lastResponse);
+    }
+
+    public function testExecuteFallsBackToDecoratedExecutableOnDataEmptyFailure()
+    {
+        $this->fixtureWithEmptyArrayReturningFetchData->decorate($this->fixture);
+
+        $actual = $this->fixtureWithEmptyArrayReturningFetchData->execute();
+        $lastResponse = $this->fixtureWithEmptyArrayReturningFetchData->getLastResponse();
 
         $this->assertInstanceOf('Deicer\Model\ModelCompositeInterface', $actual);
         $this->assertSame(2, $actual->count());
@@ -388,9 +426,8 @@ abstract class AbstractQueryTest extends TestCase
             ),
         );
 
-        // exchangeArray called first at instantiation to set empty last reponse
         $msg = 'Unhandled hydrator exception';
-        $this->hydrator->expects($this->at(1))
+        $this->hydrator->expects($this->at(0))
             ->method('exchangeArray')
             ->will($this->throwException(new InvalidArgumentException($msg)));
 
@@ -418,6 +455,15 @@ abstract class AbstractQueryTest extends TestCase
         $this->fixtureWithNonArrayReturningFetchData->execute();
     }
 
+    public function testExecuteNotifiesSubscribersOfDataEmptyFailure()
+    {
+        $this->setExpectedException('Deicer\Query\Exception\DataEmptyException');
+        $this->setUpMessageBuilder('failure.data_empty', null);
+        $this->setUpMessageBrokers($this->message);
+        $this->setUpFixtureWithEmptyArrayReturningFetchData();
+        $this->fixtureWithEmptyArrayReturningFetchData->execute();
+    }
+
     public function testExecuteNotifiesSubscribersOfFallbackDueToModelHydratorFailure()
     {
         $content = array (
@@ -428,9 +474,8 @@ abstract class AbstractQueryTest extends TestCase
             ),
         );
 
-        // exchangeArray called first at instantiation to set empty last reponse
         $msg = 'Unhandled hydrator exception';
-        $this->hydrator->expects($this->at(1))
+        $this->hydrator->expects($this->at(0))
             ->method('exchangeArray')
             ->will($this->throwException(new InvalidArgumentException($msg)));
 
@@ -457,5 +502,14 @@ abstract class AbstractQueryTest extends TestCase
         $this->setUpFixtureWithNonArrayReturningFetchData();
         $this->fixtureWithNonArrayReturningFetchData->decorate($this->mockFixture);
         $this->fixtureWithNonArrayReturningFetchData->execute();
+    }
+
+    public function testExecuteNotifiesSubscribersOfFallbackDueToDataEmptyFailure()
+    {
+        $this->setUpMessageBuilder('fallback.data_empty', null);
+        $this->setUpMessageBrokers($this->message);
+        $this->setUpFixtureWithEmptyArrayReturningFetchData();
+        $this->fixtureWithEmptyArrayReturningFetchData->decorate($this->mockFixture);
+        $this->fixtureWithEmptyArrayReturningFetchData->execute();
     }
 }

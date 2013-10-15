@@ -13,6 +13,7 @@ use stdClass;
 use DeicerTestAsset\Query\TestableParameterizedQueryWithValidFetchData;
 use DeicerTestAsset\Query\TestableParameterizedQueryWithExceptionThrowingFetchData;
 use DeicerTestAsset\Query\TestableParameterizedQueryWithNonArrayReturningFetchData;
+use DeicerTestAsset\Query\TestableParameterizedQueryWithEmptyArrayReturningFetchData;
 use DeicerTestAsset\Query\TestableParameterizedQueryWithModelIncompatibleFetchData;
 use DeicerTestAsset\Query\TestableParameterizedQueryWithIncompatibleParams;
 use DeicerTest\Query\AbstractQueryTest;
@@ -61,6 +62,20 @@ class ParameterizedQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithNonArrayReturningFetchData =
             new TestableParameterizedQueryWithNonArrayReturningFetchData(
+                new stdClass(),
+                $this->messageBuilder,
+                $this->unfilteredMessageBroker,
+                $this->topicFilteredMessageBroker,
+                $this->hydrator
+            );
+
+        return $this;
+    }
+
+    public function setUpFixtureWithEmptyArrayReturningFetchData()
+    {
+        $this->fixtureWithEmptyArrayReturningFetchData =
+            new TestableParameterizedQueryWithEmptyArrayReturningFetchData(
                 new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
