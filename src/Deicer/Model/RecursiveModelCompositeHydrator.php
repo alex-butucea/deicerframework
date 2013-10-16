@@ -10,7 +10,10 @@
 namespace Deicer\Model;
 
 use Deicer\Model\Exception\OutOfBoundsException;
-use Deicer\Model\Exception\InvalidArgumentException;
+use Deicer\Model\Exception\EmptyDataException;
+use Deicer\Model\Exception\IncompatibleDataException;
+use Deicer\Model\Exception\InvalidElementException;
+use Deicer\Model\Exception\InvalidIndexException;
 use Deicer\Model\ModelInterface;
 use Deicer\Model\ModelCompositeInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
@@ -79,15 +82,15 @@ class RecursiveModelCompositeHydrator implements
      * Attempts to hydrate Model if $values is an associative array.
      * Attempts to hydrate Model Composite if $values is an indexed array.
      *
-     * @throws InvalidArgumentException If $values is empty
-     * @throws InvalidArgumentException If $values is indexed and contains non array elements
-     * @throws InvalidArgumentException If $values is indexed and elements are not associative
-     * @throws InvalidArgumentException If $values elements dont match model properties
+     * @throws EmptyDataException If $values is empty
+     * @throws InvalidElementException If $values is indexed and contains non array element
+     * @throws InvalidIndexException If $values is indexed and elements are not associative
+     * @throws IncompatibleDataException If $values elements dont match model properties
      */
     public function exchangeArray(array $values)
     {
         if (empty($values)) {
-            throw new InvalidArgumentException('Empty $values passed in: ' . __METHOD__);
+            throw new EmptyDataException('Empty $values passed in: ' . __METHOD__);
         }
 
         // Assume composite if first int index is int, otherwise assume model
@@ -108,7 +111,7 @@ class RecursiveModelCompositeHydrator implements
             $model = clone $this->modelPrototype;
             $model->exchangeArray($values);
         } catch (OutOfBoundsException $e) {
-            throw new InvalidArgumentException(
+            throw new IncompatibleDataException(
                 '$values elements must match model properties in: ' .
                 'RecursiveModelCompositeHydrator::exchangeArray',
                 0,
@@ -131,12 +134,12 @@ class RecursiveModelCompositeHydrator implements
         $models = array ();
         foreach ($values as $key => $value) {
             if (!is_int($key)) {
-                throw new InvalidArgumentException(
+                throw new InvalidIndexException(
                     '$values must be numerically indexed in: ' .
                     'RecursiveModelCompositeHydrator::exchangeArray'
                 );
             } elseif (!is_array($value)) {
-                throw new InvalidArgumentException(
+                throw new InvalidElementException(
                     '$values must contain array elements in: ' .
                     'RecursiveModelCompositeHydrator::exchangeArray'
                 );

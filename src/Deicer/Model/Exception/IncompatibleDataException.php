@@ -7,28 +7,24 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace DeicerTestAsset\Model;
+namespace Deicer\Model\Exception;
 
-use Deicer\Model\AbstractModel;
+use InvalidArgumentException as SplException;
+use Deicer\Model\Exception\ExceptionInterface;
 
 /**
- * Deicer Test Model
+ * Deicer Hydrator Model Incompatible Data Exception
  *
- * Represents a generic concrete implementation of a Deicer Model
+ * Thrown when keys in data structure don't match prototype model properties
  *
- * @category   DeicerTest
+ * @category   Deicer
  * @package    Model
+ * @subpackage Exception
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableModel extends AbstractModel
+class IncompatibleDataException extends SplException implements ExceptionInterface
 {
-    public $id = 0;
-    public $name = '';
-    public $categories = array ();
-    public $child;
-    protected $foo;
-    private $bar;
 }

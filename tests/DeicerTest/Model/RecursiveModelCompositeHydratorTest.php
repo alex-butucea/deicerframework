@@ -10,7 +10,7 @@
 namespace DeicerTest\Model;
 
 use stdClass;
-use Deicer\Model\Exception\InvalidArgumentException;
+use Deicer\Model\Exception\IncompatibleDataException;
 use Deicer\Model\RecursiveModelCompositeHydrator;
 use DeicerTestAsset\Model\TestableModel;
 use DeicerTestAsset\Model\TestableModelComposite;
@@ -56,7 +56,7 @@ class RecursiveModelCompositeHydratorTest extends TestCase
 
     public function testExchangeArrayWithIndexedArrayOfNonArraysThrowsException()
     {
-        $this->setExpectedException('Deicer\Model\Exception\InvalidArgumentException');
+        $this->setExpectedException('Deicer\Model\Exception\InvalidElementException');
         $this->fixture->exchangeArray(
             array (
                 'foo',
@@ -68,7 +68,7 @@ class RecursiveModelCompositeHydratorTest extends TestCase
 
     public function testExchangeArrayWithIndexedArrayOfIndexedArraysThrowsException()
     {
-        $this->setExpectedException('Deicer\Model\Exception\InvalidArgumentException');
+        $this->setExpectedException('Deicer\Model\Exception\IncompatibleDataException');
         $this->fixture->exchangeArray(
             array (
                 array (
@@ -82,13 +82,13 @@ class RecursiveModelCompositeHydratorTest extends TestCase
 
     public function testExchangeArrayWithEmptyArrayThrowsException()
     {
-        $this->setExpectedException('Deicer\Model\Exception\InvalidArgumentException');
+        $this->setExpectedException('Deicer\Model\Exception\EmptyDataException');
         $actual = $this->fixture->exchangeArray(array ());
     }
 
     public function testExchangeArrayWithMixedIndexArrayThrowsException()
     {
-        $this->setExpectedException('Deicer\Model\Exception\InvalidArgumentException');
+        $this->setExpectedException('Deicer\Model\Exception\InvalidIndexException');
         $this->fixture->exchangeArray(
             array (
                 0 => array (
@@ -171,7 +171,7 @@ class RecursiveModelCompositeHydratorTest extends TestCase
                     ),
                 )
             );
-        } catch (InvalidArgumentException $e) {
+        } catch (IncompatibleDataException $e) {
             $this->assertInstanceOf('OutOfBoundsException', $e->getPrevious());
             return;
         }

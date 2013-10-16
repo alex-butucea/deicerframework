@@ -22,6 +22,7 @@ use Deicer\Pubsub\UnfilteredMessageBrokerInterface;
 use Deicer\Pubsub\TopicFilteredMessageBrokerInterface;
 use Deicer\Model\ComponentInterface;
 use Deicer\Model\RecursiveModelCompositeHydratorInterface;
+use Deicer\Model\Exception\ExceptionInterface as HydratorException;
 
 /**
  * Abstract Deicer Query
@@ -233,17 +234,10 @@ abstract class AbstractQuery
             }
         }
 
-        // Attempt to hydrate model(s) and enforce hydrator return type strength
+        // Attempt to hydrate model(s)
         try {
             $hydrated = $this->modelHydrator->exchangeArray($data);
-            if (!$hydrated instanceof ComponentInterface) {
-                throw new ModelHydratorException(
-                    'Non-instance of ComponentInterface returned from ' .
-                    'RecursiveModelCompositeHydratorInterface::exchangeArray() in:' .
-                    get_called_class() . '::' . __FUNCTION__
-                );
-            }
-        } catch (Exception $e) {
+        } catch (HydratorException $e) {
 
             // Build message based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
@@ -270,6 +264,38 @@ abstract class AbstractQuery
                     $e->getMessage(),
                     $e->getCode(),
                     $e
+                );
+            }
+        }
+
+        // Enfore hydrator return type strength
+        if (!$hydrated instanceof ComponentInterface) {
+
+            // Build message based on whether execution can fall back to decorated
+            $topic = ($this->decorated) ?
+                MessageTopic::FALLBACK_MODEL_HYDRATOR :
+                MessageTopic::FAILURE_MODEL_HYDRATOR;
+            $message = $this->messageBuilder
+                ->withTopic($topic)
+                ->withContent($data)
+                ->withAttributes(
+                    $this->getSupplementaryMessageAttributes() +
+                    array ('elapsed_time' => $this->calculateElapsedTime($time))
+                )
+                ->build();
+            $this->publish($message);
+
+            // Update last response with decorated result and terminate
+            if ($this->decorated) {
+                $this->lastResponse = $this->decorated->execute();
+                return $this->lastResponse;
+            } else {
+
+                // Leave last response intact and terminate execution
+                throw new ModelHydratorException(
+                    'Non-instance of ComponentInterface returned from ' .
+                    'RecursiveModelCompositeHydratorInterface::exchangeArray() in:' .
+                    get_called_class() . '::' . __FUNCTION__
                 );
             }
         }

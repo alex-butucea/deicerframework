@@ -7,14 +7,13 @@
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
 
-namespace DeicerTestAsset\Model;
+namespace DeicerTestAsset\Model\Exception;
 
-use Deicer\Model\AbstractModel;
+use InvalidArgumentException as SplException;
+use Deicer\Model\Exception\ExceptionInterface;
 
 /**
- * Deicer Test Model
- *
- * Represents a generic concrete implementation of a Deicer Model
+ * Deicer Test Hydrator Exception
  *
  * @category   DeicerTest
  * @package    Model
@@ -23,12 +22,6 @@ use Deicer\Model\AbstractModel;
  * @author     Alex Butucea <alex826@gmail.com>
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class TestableModel extends AbstractModel
+class TestableHydratorException extends SplException implements ExceptionInterface
 {
-    public $id = 0;
-    public $name = '';
-    public $categories = array ();
-    public $child;
-    protected $foo;
-    private $bar;
 }

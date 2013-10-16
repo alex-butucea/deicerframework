@@ -16,6 +16,7 @@ use Deicer\Query\Exception\DataFetchException;
 use Deicer\Query\Exception\ModelHydratorException;
 use Deicer\Pubsub\MessageInterface;
 use DeicerTest\Framework\TestCase;
+use DeicerTestAsset\Model\Exception\TestableHydratorException;
 
 /**
  * Deicer Abstract Query tests
@@ -37,6 +38,7 @@ abstract class AbstractQueryTest extends TestCase
     public $mockFixture;
     public $composite;
     public $hydrator;
+    public $hydratorException;
     public $message;
     public $unfilteredMessageBroker;
     public $topicFilteredMessageBroker;
@@ -66,6 +68,9 @@ abstract class AbstractQueryTest extends TestCase
         );
         $this->hydrator = $this->getMock(
             'Deicer\Model\RecursiveModelCompositeHydratorInterface'
+        );
+        $this->hydratorException = new TestableHydratorException(
+            'Unhandled hydrator exception'
         );
         $this->message = $this->getMock(
             'Deicer\Pubsub\MessageInterface'
@@ -299,10 +304,9 @@ abstract class AbstractQueryTest extends TestCase
 
     public function testExecuteRethrowsModelCompositeHydratorException()
     {
-        $msg = 'Unhandled hydrator exception';
         $this->hydrator->expects($this->once())
             ->method('exchangeArray')
-            ->will($this->throwException(new InvalidArgumentException($msg)));
+            ->will($this->throwException($this->hydratorException));
         $this->setUpFixtureWithModelIncompatibleFetchData();
 
         try {
@@ -339,11 +343,10 @@ abstract class AbstractQueryTest extends TestCase
 
     public function testExecuteFallsBackToDecoratedExecutableOnModelHydratorFailure()
     {
-        $msg = 'Unhandled hydrator exception';
         $this->hydrator
             ->expects($this->at(0))
             ->method('exchangeArray')
-            ->will($this->throwException(new InvalidArgumentException($msg)));
+            ->will($this->throwException($this->hydratorException));
         $this->hydrator
             ->expects($this->at(1))
             ->method('exchangeArray')
@@ -426,10 +429,9 @@ abstract class AbstractQueryTest extends TestCase
             ),
         );
 
-        $msg = 'Unhandled hydrator exception';
         $this->hydrator->expects($this->at(0))
             ->method('exchangeArray')
-            ->will($this->throwException(new InvalidArgumentException($msg)));
+            ->will($this->throwException($this->hydratorException));
 
         $this->setUpMessageBuilder('failure.model_hydrator', $content);
         $this->setUpMessageBrokers($this->message);
@@ -474,10 +476,9 @@ abstract class AbstractQueryTest extends TestCase
             ),
         );
 
-        $msg = 'Unhandled hydrator exception';
         $this->hydrator->expects($this->at(0))
             ->method('exchangeArray')
-            ->will($this->throwException(new InvalidArgumentException($msg)));
+            ->will($this->throwException($this->hydratorException));
 
         $this->setUpMessageBuilder('fallback.model_hydrator', $content);
         $this->setUpMessageBrokers($this->message);
