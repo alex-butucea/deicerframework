@@ -16,7 +16,7 @@ use Deicer\Model\AbstractModelComposite;
  *
  * Represents a concrete implementation of a Deicer Model Composite
  *
- * @category   DeicerTest
+ * @category   DeicerTestAsset
  * @package    Model
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>

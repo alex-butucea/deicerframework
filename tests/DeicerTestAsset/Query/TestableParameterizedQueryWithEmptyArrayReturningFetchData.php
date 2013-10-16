@@ -17,7 +17,7 @@ use Deicer\Query\AbstractParameterizedQuery;
  * Represents a concrete implementation of a Deicer Parameterized Query with
  * an invalid implementation of fetchData() that returns an empty array
  *
- * @category   DeicerTest
+ * @category   DeicerTestAsset
  * @package    Query
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>

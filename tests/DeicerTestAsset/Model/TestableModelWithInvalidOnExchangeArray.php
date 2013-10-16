@@ -18,7 +18,7 @@ use DeicerTestAsset\Model\TestableModel;
  * Represents a concrete implementation of a Deicer Model
  * with an invalid implementation of onExchangeArray()
  *
- * @category   DeicerTest
+ * @category   DeicerTestAsset
  * @package    Model
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>

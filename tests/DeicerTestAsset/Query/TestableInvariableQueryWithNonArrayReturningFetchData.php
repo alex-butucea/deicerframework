@@ -17,7 +17,7 @@ use Deicer\Query\AbstractInvariableQuery;
  * Represents a concrete implementation of a Deicer Invariable Query with
  * an invalid implementation of fetchData() that returns a non array
  *
- * @category   DeicerTest
+ * @category   DeicerTestAsset
  * @package    Query
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>

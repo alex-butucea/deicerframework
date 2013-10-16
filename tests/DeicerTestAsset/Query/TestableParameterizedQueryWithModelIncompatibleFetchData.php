@@ -17,7 +17,7 @@ use Deicer\Query\AbstractParameterizedQuery;
  * Represents a concrete implementation of a Deicer Parameterized Query with
  * an implementation of fetchData() incompatible with model properties
  *
- * @category   DeicerTest
+ * @category   DeicerTestAsset
  * @package    Query
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>

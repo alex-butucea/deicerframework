@@ -18,7 +18,7 @@ use Deicer\Query\AbstractParameterizedQuery;
  * with a set of param not compatible with other queries.
  * Used to test decorator API.
  *
- * @category   DeicerTest
+ * @category   DeicerTestAsset
  * @package    Query
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>

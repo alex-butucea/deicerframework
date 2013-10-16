@@ -17,7 +17,7 @@ use Deicer\Query\AbstractSlugizedQuery;
  * Represents a concrete implementation of a Deicer Slugized Query with
  * an invalid implementation of fetchData() that returns a non array
  *
- * @category   DeicerTest
+ * @category   DeicerTestAsset
  * @package    Query
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>

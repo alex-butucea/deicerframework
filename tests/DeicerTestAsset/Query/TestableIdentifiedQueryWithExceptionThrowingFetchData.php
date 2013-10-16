@@ -18,7 +18,7 @@ use Deicer\Query\AbstractIdentifiedQuery;
  * Represents a concrete implementation of a Deicer Identified Query
  * with an implementation of fetchData() that throws an exception
  *
- * @category   DeicerTest
+ * @category   DeicerTestAsset
  * @package    Query
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>

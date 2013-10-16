@@ -14,7 +14,7 @@ namespace DeicerTestAsset\Query;
  *
  * Used to test Deicer Query Builder return type strength
  *
- * @category   DeicerTest
+ * @category   DeicerTestAsset
  * @package    Query
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>

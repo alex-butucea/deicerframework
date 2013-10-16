@@ -15,7 +15,7 @@ use Deicer\Model\Exception\ExceptionInterface;
 /**
  * Deicer Test Hydrator Exception
  *
- * @category   DeicerTest
+ * @category   DeicerTestAsset
  * @package    Model
  * @version    $id$
  * @copyright  2013 Alex Butucea <alex826@gmail.com>
