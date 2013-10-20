@@ -16,6 +16,7 @@ use Deicer\Query\Exception\DataTypeException;
 use Deicer\Query\Exception\DataEmptyException;
 use Deicer\Query\Exception\DataFetchException;
 use Deicer\Query\Exception\ModelHydratorException;
+use Deicer\Query\Exception\MissingDataProviderException;
 use Deicer\Pubsub\MessageInterface;
 use Deicer\Pubsub\MessageBuilderInterface;
 use Deicer\Pubsub\UnfilteredMessageBrokerInterface;
@@ -89,13 +90,11 @@ abstract class AbstractQuery
      * {@inheritdoc}
      */
     public function __construct(
-        $dataProvider,
         MessageBuilderInterface $messageBuilder,
         UnfilteredMessageBrokerInterface $unfilteredBroker,
         TopicFilteredMessageBrokerInterface $topicFilteredBroker,
         RecursiveModelCompositeHydratorInterface $modelHydrator
     ) {
-        $this->dataProvider        = $dataProvider;
         $this->messageBuilder      = $messageBuilder;
         $this->unfilteredBroker    = $unfilteredBroker;
         $this->topicFilteredBroker = $topicFilteredBroker;
@@ -140,6 +139,37 @@ abstract class AbstractQuery
         $time = round(microtime(true) * 1000);
         $this->messageBuilder->withPublisher($this);
         $this->syncDecorated();
+
+        // Halt execution if data provider missing and query is dependant
+        if (method_exists($this, 'setDataProvider') && !$this->dataProvider) {
+
+            // Build message based on whether execution can fall back to decorated
+            $topic = ($this->decorated) ?
+                MessageTopic::FALLBACK_MISSING_DATA_PROVIDER :
+                MessageTopic::FAILURE_MISSING_DATA_PROVIDER;
+            $message = $this->messageBuilder
+                ->withTopic($topic)
+                ->withContent(null)
+                ->withAttributes(
+                    $this->getSupplementaryMessageAttributes() +
+                    array ('elapsed_time' => $this->calculateElapsedTime($time))
+                )
+                ->build();
+            $this->publish($message);
+
+            // Update last response with decorated result and terminate
+            if ($this->decorated) {
+                $this->lastResponse = $this->decorated->execute();
+                return $this->lastResponse;
+            } else {
+
+                // Leave last response intact and terminate execution
+                throw new MissingDataProviderException(
+                    'Data provider missing in: ' .
+                    get_called_class() . '::' . __FUNCTION__
+                );
+            }
+        }
 
         // Attempt to fetchData, rethrow exception if no decorated query exists
         try {

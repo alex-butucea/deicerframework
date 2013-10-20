@@ -9,12 +9,12 @@
 
 namespace DeicerTest\Query;
 
-use stdClass;
 use DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData;
 use DeicerTestAsset\Query\TestableInvariableQueryWithExceptionThrowingFetchData;
 use DeicerTestAsset\Query\TestableInvariableQueryWithNonArrayReturningFetchData;
 use DeicerTestAsset\Query\TestableInvariableQueryWithEmptyArrayReturningFetchData;
 use DeicerTestAsset\Query\TestableInvariableQueryWithModelIncompatibleFetchData;
+use DeicerTestAsset\Query\TestableInvariableQueryWithDataProviderDependency;
 use DeicerTest\Query\AbstractQueryTest;
 
 /**
@@ -33,7 +33,6 @@ class InvariableQueryTest extends AbstractQueryTest
     {
         $this->fixture =
             new TestableInvariableQueryWithValidFetchData(
-                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -47,7 +46,6 @@ class InvariableQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithExceptionThrowingFetchData =
             new TestableInvariableQueryWithExceptionThrowingFetchData(
-                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -61,7 +59,6 @@ class InvariableQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithNonArrayReturningFetchData =
             new TestableInvariableQueryWithNonArrayReturningFetchData(
-                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -75,7 +72,6 @@ class InvariableQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithEmptyArrayReturningFetchData =
             new TestableInvariableQueryWithEmptyArrayReturningFetchData(
-                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -89,7 +85,19 @@ class InvariableQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithModelIncompatibleFetchData =
             new TestableInvariableQueryWithModelIncompatibleFetchData(
-                new stdClass(),
+                $this->messageBuilder,
+                $this->unfilteredMessageBroker,
+                $this->topicFilteredMessageBroker,
+                $this->hydrator
+            );
+
+        return $this;
+    }
+
+    public function setUpFixtureWithDataProviderDependency()
+    {
+        $this->fixtureWithDataProviderDependency =
+            new TestableInvariableQueryWithDataProviderDependency(
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,

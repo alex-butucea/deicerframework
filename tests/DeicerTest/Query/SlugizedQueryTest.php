@@ -9,12 +9,12 @@
 
 namespace DeicerTest\Query;
 
-use stdClass;
 use DeicerTestAsset\Query\TestableSlugizedQueryWithValidFetchData;
 use DeicerTestAsset\Query\TestableSlugizedQueryWithExceptionThrowingFetchData;
 use DeicerTestAsset\Query\TestableSlugizedQueryWithNonArrayReturningFetchData;
 use DeicerTestAsset\Query\TestableSlugizedQueryWithEmptyArrayReturningFetchData;
 use DeicerTestAsset\Query\TestableSlugizedQueryWithModelIncompatibleFetchData;
+use DeicerTestAsset\Query\TestableSlugizedQueryWithDataProviderDependency;
 use DeicerTest\Query\AbstractQueryTest;
 
 /**
@@ -33,7 +33,6 @@ class SlugizedQueryTest extends AbstractQueryTest
     {
         $this->fixture =
             new TestableSlugizedQueryWithValidFetchData(
-                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -47,7 +46,6 @@ class SlugizedQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithExceptionThrowingFetchData =
             new TestableSlugizedQueryWithExceptionThrowingFetchData(
-                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -61,7 +59,6 @@ class SlugizedQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithNonArrayReturningFetchData =
             new TestableSlugizedQueryWithNonArrayReturningFetchData(
-                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -75,7 +72,6 @@ class SlugizedQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithEmptyArrayReturningFetchData =
             new TestableSlugizedQueryWithEmptyArrayReturningFetchData(
-                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -89,7 +85,19 @@ class SlugizedQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithModelIncompatibleFetchData =
             new TestableSlugizedQueryWithModelIncompatibleFetchData(
-                new stdClass(),
+                $this->messageBuilder,
+                $this->unfilteredMessageBroker,
+                $this->topicFilteredMessageBroker,
+                $this->hydrator
+            );
+
+        return $this;
+    }
+
+    public function setUpFixtureWithDataProviderDependency()
+    {
+        $this->fixtureWithDataProviderDependency =
+            new TestableSlugizedQueryWithDataProviderDependency(
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,

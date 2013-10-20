@@ -35,6 +35,7 @@ abstract class AbstractQueryTest extends TestCase
     public $fixtureWithNonArrayReturningFetchData;
     public $fixtureWithEmptyArrayReturningFetchData;
     public $fixtureWithModelIncompatibleFetchData;
+    public $fixtureWithDataProviderDependency;
     public $mockFixture;
     public $composite;
     public $hydrator;
@@ -50,6 +51,7 @@ abstract class AbstractQueryTest extends TestCase
     abstract public function setUpFixtureWithNonArrayReturningFetchData();
     abstract public function setUpFixtureWithEmptyArrayReturningFetchData();
     abstract public function setUpFixtureWithModelIncompatibleFetchData();
+    abstract public function setUpFixtureWithDataProviderDependency();
     abstract public function setUpMockFixture();
 
     public function setUp()
@@ -136,6 +138,7 @@ abstract class AbstractQueryTest extends TestCase
             ->setUpFixtureWithNonArrayReturningFetchData()
             ->setUpFixtureWithEmptyArrayReturningFetchData()
             ->setUpFixtureWithModelIncompatibleFetchData()
+            ->setUpFixtureWithDataProviderDependency()
             ->setUpMockFixture();
     }
 
@@ -287,6 +290,12 @@ abstract class AbstractQueryTest extends TestCase
         $this->fail('Failed to rethrow data provider exception');
     }
 
+    public function testExecuteWithDataProviderDependantQueryAndMissingProivderThrowsException()
+    {
+        $this->setExpectedException('Deicer\Query\Exception\MissingDataProviderException');
+        $this->fixtureWithDataProviderDependency->execute();
+    }
+
     public function testExecuteEnforcesHydratorReturnTypeStrength()
     {
         $this->setExpectedException('Deicer\Query\Exception\ModelHydratorException');
@@ -354,10 +363,8 @@ abstract class AbstractQueryTest extends TestCase
 
         $this->setUpFixtureWithModelIncompatibleFetchData();
         $this->fixtureWithModelIncompatibleFetchData->decorate($this->fixture);
-
         $actual = $this->fixtureWithModelIncompatibleFetchData->execute();
         $lastResponse = $this->fixtureWithModelIncompatibleFetchData->getLastResponse();
-
         $this->assertInstanceOf('Deicer\Model\ModelCompositeInterface', $actual);
         $this->assertSame(2, $actual->count());
         $this->assertSame($actual, $lastResponse);
@@ -366,10 +373,8 @@ abstract class AbstractQueryTest extends TestCase
     public function testExecuteFallsBackToDecoratedExecutableOnDataFetchFailure()
     {
         $this->fixtureWithExceptionThrowingFetchData->decorate($this->fixture);
-
         $actual = $this->fixtureWithExceptionThrowingFetchData->execute();
         $lastResponse = $this->fixtureWithExceptionThrowingFetchData->getLastResponse();
-
         $this->assertInstanceOf('Deicer\Model\ModelCompositeInterface', $actual);
         $this->assertSame(2, $actual->count());
         $this->assertSame($actual, $lastResponse);
@@ -378,10 +383,8 @@ abstract class AbstractQueryTest extends TestCase
     public function testExecuteFallsBackToDecoratedExecutableOnDataTypeFailure()
     {
         $this->fixtureWithEmptyArrayReturningFetchData->decorate($this->fixture);
-
         $actual = $this->fixtureWithEmptyArrayReturningFetchData->execute();
         $lastResponse = $this->fixtureWithEmptyArrayReturningFetchData->getLastResponse();
-
         $this->assertInstanceOf('Deicer\Model\ModelCompositeInterface', $actual);
         $this->assertSame(2, $actual->count());
         $this->assertSame($actual, $lastResponse);
@@ -390,10 +393,18 @@ abstract class AbstractQueryTest extends TestCase
     public function testExecuteFallsBackToDecoratedExecutableOnDataEmptyFailure()
     {
         $this->fixtureWithEmptyArrayReturningFetchData->decorate($this->fixture);
-
         $actual = $this->fixtureWithEmptyArrayReturningFetchData->execute();
         $lastResponse = $this->fixtureWithEmptyArrayReturningFetchData->getLastResponse();
+        $this->assertInstanceOf('Deicer\Model\ModelCompositeInterface', $actual);
+        $this->assertSame(2, $actual->count());
+        $this->assertSame($actual, $lastResponse);
+    }
 
+    public function testExecuteFallsBackToDecoratedExecutableOnMissingDataProviderFailure()
+    {
+        $this->fixtureWithDataProviderDependency->decorate($this->fixture);
+        $actual = $this->fixtureWithDataProviderDependency->execute();
+        $lastResponse = $this->fixtureWithDataProviderDependency->getLastResponse();
         $this->assertInstanceOf('Deicer\Model\ModelCompositeInterface', $actual);
         $this->assertSame(2, $actual->count());
         $this->assertSame($actual, $lastResponse);
@@ -466,6 +477,15 @@ abstract class AbstractQueryTest extends TestCase
         $this->fixtureWithEmptyArrayReturningFetchData->execute();
     }
 
+    public function testExecuteNotifiesSubscribersOfMissingDataProviderFailure()
+    {
+        $this->setExpectedException('Deicer\Query\Exception\MissingDataProviderException');
+        $this->setUpMessageBuilder('failure.missing_data_provider', null);
+        $this->setUpMessageBrokers($this->message);
+        $this->setUpFixtureWithDataProviderDependency();
+        $this->fixtureWithDataProviderDependency->execute();
+    }
+
     public function testExecuteNotifiesSubscribersOfFallbackDueToModelHydratorFailure()
     {
         $content = array (
@@ -512,5 +532,14 @@ abstract class AbstractQueryTest extends TestCase
         $this->setUpFixtureWithEmptyArrayReturningFetchData();
         $this->fixtureWithEmptyArrayReturningFetchData->decorate($this->mockFixture);
         $this->fixtureWithEmptyArrayReturningFetchData->execute();
+    }
+
+    public function testExecuteNotifiesSubscribersOfFallbackDueToMissingDataProviderFailure()
+    {
+        $this->setUpMessageBuilder('fallback.missing_data_provider', null);
+        $this->setUpMessageBrokers($this->message);
+        $this->setUpFixtureWithDataProviderDependency();
+        $this->fixtureWithDataProviderDependency->decorate($this->mockFixture);
+        $this->fixtureWithDataProviderDependency->execute();
     }
 }

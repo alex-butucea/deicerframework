@@ -169,7 +169,7 @@ class QueryBuilder implements QueryBuilderInterface
         // Ensure query implements a valid interface
         $interfaces = $class->getInterfaces();
         if (!isset($interfaces['Deicer\Query\InvariableQueryInterface']) &&
-            !isset($interfaces['Deicer\Query\SlugizedQueryInterface']) &&
+            !isset($interfaces['Deicer\Query\SlugizedQueryInterface'])   &&
             !isset($interfaces['Deicer\Query\IdentifiedQueryInterface']) &&
             !isset($interfaces['Deicer\Query\ParameterizedQueryInterface'])
         ) {
@@ -179,8 +179,7 @@ class QueryBuilder implements QueryBuilderInterface
         }
 
         // Assemble and return query
-        return new $fullname(
-            $this->dataProvider,
+        $query = new $fullname(
             $this->getMessageBuilder(),
             $this->getUnfilteredMessageBroker(),
             $this->getTopicFilteredMessageBroker(),
@@ -188,6 +187,19 @@ class QueryBuilder implements QueryBuilderInterface
                 ->setModelPrototype($this->modelPrototype)
                 ->setModelComposite($this->modelCompositePrototype)
         );
+
+        // Assert whether query is data provider aware
+        if (method_exists($query, 'setDataProvider')) {
+            if (!$this->dataProvider) {
+                throw new LogicException(
+                    'Data provider required for build in: ' . __METHOD__
+                );
+            } else {
+                $query->setDataProvider($this->dataProvider);
+            }
+        }
+
+        return $query;
     }
 
     /**

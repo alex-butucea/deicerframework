@@ -67,6 +67,7 @@ interface QueryBuilderInterface
      * 
      * @throws LogicException If model prototype has not been set 
      * @throws LogicException If model composite prototype has not been set 
+     * @throws LogicException If data provider is unset and query has method setDataProider
      * @throws InvalidArgumentException If $classname is empty
      * @throws InvalidArgumentException If $classname is not a string
      * @throws UnexpectedValueException If query doesnt implement QueryInterface

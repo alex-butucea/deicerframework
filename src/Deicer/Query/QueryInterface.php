@@ -39,7 +39,6 @@ interface QueryInterface extends
     /**
      * Query Constructor
      *
-     * @param  mixed $dataProvider Query data provider - DB connection, CURl client, etc.
      * @param  MessageBuilderInterface $messageBuilder Assembles pubsub messages
      * @param  UnfilteredPublisherInterface $unfilteredBroker Unfiltered message broker
      * @param  TopicFilteredMessageBrokerInterface $topicFilteredBroker Topic filtered broker
@@ -48,7 +47,6 @@ interface QueryInterface extends
      * @return QueryInterface
      */
     public function __construct(
-        $dataProvider,
         MessageBuilderInterface $messageBuilder,
         UnfilteredMessageBrokerInterface $unfilteredBroker,
         TopicFilteredMessageBrokerInterface $topicFilteredBroker,

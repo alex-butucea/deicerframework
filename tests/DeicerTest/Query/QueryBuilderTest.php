@@ -147,6 +147,15 @@ class QueryBuilderTest extends TestCase
             ->build('FakeQuery');
     }
 
+    public function testBuildThrowsExceptionIfQueryDependsOnDataProviderAndDataProviderIsUnset()
+    {
+        $this->setExpectedException('Deicer\Query\Exception\LogicException');
+        $this->fixture
+            ->withModelPrototype($this->model)
+            ->withModelCompositePrototype($this->composite)
+            ->build('TestableInvariableQueryWithDataProviderDependency');
+    }
+
     public function testBuildCanConstructInvariableQuery()
     {
         $actual = $this->fixture
@@ -195,6 +204,20 @@ class QueryBuilderTest extends TestCase
 
         $this->assertInstanceOf(
             'DeicerTestAsset\Query\TestableIdentifiedQueryWithValidFetchData',
+            $actual
+        );
+    }
+
+    public function testBuildCanConstructDataProviderDependantQuery()
+    {
+        $actual = $this->fixture
+            ->withDataProvider(new stdClass())
+            ->withModelPrototype($this->model)
+            ->withModelCompositePrototype($this->composite)
+            ->build('TestableInvariableQueryWithDataProviderDependency');
+
+        $this->assertInstanceOf(
+            'DeicerTestAsset\Query\TestableInvariableQueryWithDataProviderDependency',
             $actual
         );
     }

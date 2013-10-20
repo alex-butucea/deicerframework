@@ -63,6 +63,14 @@ class MessageTopic
      */
     const FAILURE_DATA_EMPTY = 'failure.data_empty';
 
+    /**
+     * Pubsub topic implying execution was a failure and caused by
+     * a data provider not being set
+     *
+     * @const string
+     */
+    const FAILURE_MISSING_DATA_PROVIDER = 'failure.missing_data_provider';
+
     // Query Fallback Topics
 
     /**
@@ -96,4 +104,12 @@ class MessageTopic
      * @const string
      */
     const FALLBACK_DATA_EMPTY = 'fallback.data_empty';
+
+    /**
+     * Pubsub topic implying query has fallen back to decorated instance due to
+     * a data provider not being set
+     *
+     * @const string
+     */
+    const FALLBACK_MISSING_DATA_PROVIDER = 'fallback.missing_data_provider';
 }

@@ -16,6 +16,7 @@ use DeicerTestAsset\Query\TestableParameterizedQueryWithNonArrayReturningFetchDa
 use DeicerTestAsset\Query\TestableParameterizedQueryWithEmptyArrayReturningFetchData;
 use DeicerTestAsset\Query\TestableParameterizedQueryWithModelIncompatibleFetchData;
 use DeicerTestAsset\Query\TestableParameterizedQueryWithIncompatibleParams;
+use DeicerTestAsset\Query\TestableParameterizedQueryWithDataProviderDependency;
 use DeicerTest\Query\AbstractQueryTest;
 
 /**
@@ -34,7 +35,6 @@ class ParameterizedQueryTest extends AbstractQueryTest
     {
         $this->fixture =
             new TestableParameterizedQueryWithValidFetchData(
-                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -48,7 +48,6 @@ class ParameterizedQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithExceptionThrowingFetchData =
             new TestableParameterizedQueryWithExceptionThrowingFetchData(
-                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -62,7 +61,6 @@ class ParameterizedQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithNonArrayReturningFetchData =
             new TestableParameterizedQueryWithNonArrayReturningFetchData(
-                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -76,7 +74,6 @@ class ParameterizedQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithEmptyArrayReturningFetchData =
             new TestableParameterizedQueryWithEmptyArrayReturningFetchData(
-                new stdClass(),
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -90,7 +87,19 @@ class ParameterizedQueryTest extends AbstractQueryTest
     {
         $this->fixtureWithModelIncompatibleFetchData =
             new TestableParameterizedQueryWithModelIncompatibleFetchData(
-                new stdClass(),
+                $this->messageBuilder,
+                $this->unfilteredMessageBroker,
+                $this->topicFilteredMessageBroker,
+                $this->hydrator
+            );
+
+        return $this;
+    }
+
+    public function setUpFixtureWithDataProviderDependency()
+    {
+        $this->fixtureWithDataProviderDependency =
+            new TestableParameterizedQueryWithDataProviderDependency(
                 $this->messageBuilder,
                 $this->unfilteredMessageBroker,
                 $this->topicFilteredMessageBroker,
@@ -340,7 +349,6 @@ class ParameterizedQueryTest extends AbstractQueryTest
     {
         $this->setExpectedException('Deicer\Query\Exception\IncompatibleParamsException');
         $incompatible = new TestableParameterizedQueryWithIncompatibleParams(
-            new stdClass(),
             $this->messageBuilder,
             $this->unfilteredMessageBroker,
             $this->topicFilteredMessageBroker,
