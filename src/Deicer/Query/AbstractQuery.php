@@ -137,13 +137,12 @@ abstract class AbstractQuery
     {
         // Initialize message, sync selection criteria and record start time
         $time = round(microtime(true) * 1000);
+        $method = get_called_class() . '::' . __FUNCTION__;
         $this->messageBuilder->withPublisher($this);
         $this->syncDecorated();
 
         // Halt execution if data provider missing and query is dependant
         if (method_exists($this, 'setDataProvider') && !$this->dataProvider) {
-
-            // Build message based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
                 MessageTopic::FALLBACK_MISSING_DATA_PROVIDER :
                 MessageTopic::FAILURE_MISSING_DATA_PROVIDER;
@@ -157,16 +156,11 @@ abstract class AbstractQuery
                 ->build();
             $this->publish($message);
 
-            // Update last response with decorated result and terminate
             if ($this->decorated) {
-                $this->lastResponse = $this->decorated->execute();
-                return $this->lastResponse;
+                return $this->delegateExecute();
             } else {
-
-                // Leave last response intact and terminate execution
                 throw new MissingDataProviderException(
-                    'Data provider missing in: ' .
-                    get_called_class() . '::' . __FUNCTION__
+                    'Data provider missing in: ' . $method
                 );
             }
         }
@@ -175,8 +169,6 @@ abstract class AbstractQuery
         try {
             $data = $this->fetchData();
         } catch (Exception $e) {
-
-            // Build message based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
                 MessageTopic::FALLBACK_DATA_FETCH :
                 MessageTopic::FAILURE_DATA_FETCH;
@@ -190,18 +182,11 @@ abstract class AbstractQuery
                 ->build();
             $this->publish($message);
 
-            // Update last response with decorated result and terminate
             if ($this->decorated) {
-                $this->lastResponse = $this->decorated->execute();
-                return $this->lastResponse;
+                return $this->delegateExecute();
             } else {
-
-                // Leave last response intact and terminate execution
                 throw new DataFetchException(
-                    'Unhandled data provider exception in: ' .
-                    get_called_class() . '::' . __FUNCTION__,
-                    0,
-                    $e
+                    'Unhandled data provider exception in: ' . $method, 0, $e
                 );
             }
         }
@@ -221,16 +206,11 @@ abstract class AbstractQuery
                 ->build();
             $this->publish($message);
 
-            // Update last response with decorated result and terminate
             if ($this->decorated) {
-                $this->lastResponse = $this->decorated->execute();
-                return $this->lastResponse;
+                return $this->delegateExecute();
             } else {
-
-                // Leave last response intact and terminate execution
                 throw new DataTypeException(
-                    'Non array data provider response returned in: ' .
-                    get_called_class() . '::' . __FUNCTION__
+                    'Non array data provider response returned in: ' . $method
                 );
             }
         }
@@ -250,16 +230,11 @@ abstract class AbstractQuery
                 ->build();
             $this->publish($message);
 
-            // Update last response with decorated result and terminate
             if ($this->decorated) {
-                $this->lastResponse = $this->decorated->execute();
-                return $this->lastResponse;
+                return $this->delegateExecute();
             } else {
-
-                // Leave last response intact and terminate execution
                 throw new DataEmptyException(
-                    'Empty array data provider response returned in: ' .
-                    get_called_class() . '::' . __FUNCTION__
+                    'Empty array data provider response returned in: ' . $method
                 );
             }
         }
@@ -283,13 +258,9 @@ abstract class AbstractQuery
                 ->build();
             $this->publish($message);
 
-            // Update last response with decorated result and terminate
             if ($this->decorated) {
-                $this->lastResponse = $this->decorated->execute();
-                return $this->lastResponse;
+                return $this->delegateExecute();
             } else {
-
-                // Leave last response intact and terminate execution
                 throw new ModelHydratorException(
                     $e->getMessage(),
                     $e->getCode(),
@@ -315,17 +286,12 @@ abstract class AbstractQuery
                 ->build();
             $this->publish($message);
 
-            // Update last response with decorated result and terminate
             if ($this->decorated) {
-                $this->lastResponse = $this->decorated->execute();
-                return $this->lastResponse;
+                return $this->delegateExecute();
             } else {
-
-                // Leave last response intact and terminate execution
                 throw new ModelHydratorException(
-                    'Non-instance of ComponentInterface returned from ' .
-                    'RecursiveModelCompositeHydratorInterface::exchangeArray() in:' .
-                    get_called_class() . '::' . __FUNCTION__
+                    'Non-instance of ComponentInterface returned from Model Hydrator in: ' .
+                    $method
                 );
             }
         }
@@ -366,6 +332,17 @@ abstract class AbstractQuery
     {
         $this->unfilteredBroker->publish($message);
         $this->topicFilteredBroker->publish($message);
+    }
+
+    /**
+     * Delegates execution to decorated query instance and updates last response
+     *
+     * @return ComponentInterface
+     */
+    protected function delegateExecute()
+    {
+        $this->lastResponse = $this->decorated->execute();
+        return $this->lastResponse;
     }
 
     /**
