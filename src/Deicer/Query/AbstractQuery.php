@@ -186,7 +186,9 @@ abstract class AbstractQuery
                 return $this->delegateExecute();
             } else {
                 throw new DataFetchException(
-                    'Unhandled data provider exception in: ' . $method, 0, $e
+                    'Unhandled data provider exception in: ' . $method,
+                    0,
+                    $e
                 );
             }
         }
@@ -243,8 +245,6 @@ abstract class AbstractQuery
         try {
             $hydrated = $this->modelHydrator->exchangeArray($data);
         } catch (HydratorException $e) {
-
-            // Build message based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
                 MessageTopic::FALLBACK_MODEL_HYDRATOR :
                 MessageTopic::FAILURE_MODEL_HYDRATOR;
@@ -271,8 +271,6 @@ abstract class AbstractQuery
 
         // Enfore hydrator return type strength
         if (!$hydrated instanceof ComponentInterface) {
-
-            // Build message based on whether execution can fall back to decorated
             $topic = ($this->decorated) ?
                 MessageTopic::FALLBACK_MODEL_HYDRATOR :
                 MessageTopic::FAILURE_MODEL_HYDRATOR;
@@ -290,8 +288,7 @@ abstract class AbstractQuery
                 return $this->delegateExecute();
             } else {
                 throw new ModelHydratorException(
-                    'Non-instance of ComponentInterface returned from Model Hydrator in: ' .
-                    $method
+                    'Non-instance of ComponentInterface returned from Hydrator in: ' . $method
                 );
             }
         }
