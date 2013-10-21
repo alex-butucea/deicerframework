@@ -12,7 +12,6 @@ namespace Deicer\Query;
 use ReflectionClass;
 use ReflectionException;
 use Deicer\Query\Exception\InvalidArgumentException;
-use Deicer\Query\Exception\MissingDataProviderException;
 use Deicer\Query\Exception\InvalidQueryInterfaceException;
 use Deicer\Query\Exception\MissingModelPrototypeException;
 use Deicer\Query\Exception\MissingModelCompositePrototypeException;
@@ -191,14 +190,8 @@ class QueryBuilder implements QueryBuilderInterface
         );
 
         // Assert whether query is data provider aware
-        if (method_exists($query, 'setDataProvider')) {
-            if (!$this->dataProvider) {
-                throw new MissingDataProviderException(
-                    'Data provider required for build in: ' . __METHOD__
-                );
-            } else {
-                $query->setDataProvider($this->dataProvider);
-            }
+        if (method_exists($query, 'setDataProvider') && $this->dataProvider) {
+            $query->setDataProvider($this->dataProvider);
         }
 
         return $query;

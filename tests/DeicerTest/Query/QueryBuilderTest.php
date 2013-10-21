@@ -151,15 +151,6 @@ class QueryBuilderTest extends TestCase
             ->build('FakeQuery');
     }
 
-    public function testBuildThrowsExceptionIfQueryDependsOnDataProviderAndDataProviderIsUnset()
-    {
-        $this->setExpectedException('Deicer\Query\Exception\MissingDataProviderException');
-        $this->fixture
-            ->withModelPrototype($this->model)
-            ->withModelCompositePrototype($this->composite)
-            ->build('TestableInvariableQueryWithDataProviderDependency');
-    }
-
     public function testBuildCanConstructInvariableQuery()
     {
         $actual = $this->fixture

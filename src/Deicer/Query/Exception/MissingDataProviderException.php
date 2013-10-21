@@ -15,8 +15,7 @@ use Deicer\Query\Exception\ExceptionInterface;
 /**
  * Deicer Missing Data Provider Exception
  *
- * Thrown by query builder and queries implementing setDataProvider() on execute()
- * if query data provider hasn't been set
+ * Thrown by queries implementing setDataProvider() on execution
  *
  * @category   Deicer
  * @package    Query
@@ -26,6 +25,7 @@ use Deicer\Query\Exception\ExceptionInterface;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class MissingDataProviderException extends SplException implements ExceptionInterface
+class MissingDataProviderException extends SplException implements
+    ExceptionInterface
 {
 }
