@@ -11,9 +11,11 @@ namespace Deicer\Query;
 
 use ReflectionClass;
 use ReflectionException;
-use Deicer\Query\Exception\LogicException;
-use Deicer\Query\Exception\UnexpectedValueException;
 use Deicer\Query\Exception\InvalidArgumentException;
+use Deicer\Query\Exception\MissingDataProviderException;
+use Deicer\Query\Exception\InvalidQueryInterfaceException;
+use Deicer\Query\Exception\MissingModelPrototypeException;
+use Deicer\Query\Exception\MissingModelCompositePrototypeException;
 use Deicer\Query\QueryBuilderInterface;
 use Deicer\Model\ModelInterface;
 use Deicer\Model\ModelCompositeInterface;
@@ -143,11 +145,11 @@ class QueryBuilder implements QueryBuilderInterface
                 '$classname required for build in: ' . __METHOD__
             );
         } elseif (!$this->modelPrototype) {
-            throw new LogicException(
+            throw new MissingModelPrototypeException(
                 'Model prototype required for build in: ' . __METHOD__
             );
         } elseif (!$this->modelCompositePrototype) {
-            throw new LogicException(
+            throw new MissingModelCompositePrototypeException(
                 'Model composite prototype required for build in: ' . __METHOD__
             );
         }
@@ -173,8 +175,8 @@ class QueryBuilder implements QueryBuilderInterface
             !isset($interfaces['Deicer\Query\IdentifiedQueryInterface']) &&
             !isset($interfaces['Deicer\Query\ParameterizedQueryInterface'])
         ) {
-            throw new UnexpectedValueException(
-                'Unexpected class interface in: ' . __METHOD__
+            throw new InvalidQueryInterfaceException(
+                'Invalid class interface in: ' . __METHOD__
             );
         }
 
@@ -191,7 +193,7 @@ class QueryBuilder implements QueryBuilderInterface
         // Assert whether query is data provider aware
         if (method_exists($query, 'setDataProvider')) {
             if (!$this->dataProvider) {
-                throw new LogicException(
+                throw new MissingDataProviderException(
                     'Data provider required for build in: ' . __METHOD__
                 );
             } else {

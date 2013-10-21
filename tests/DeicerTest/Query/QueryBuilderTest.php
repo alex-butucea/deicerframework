@@ -106,17 +106,21 @@ class QueryBuilderTest extends TestCase
 
     public function testBuildThrowsExceptionIfModelPrototypeInUnset()
     {
-        $this->setExpectedException('Deicer\Query\Exception\LogicException');
+        $this->setExpectedException(
+            'Deicer\Query\Exception\MissingModelPrototypeException'
+        );
         $this->fixture
-            ->withModelPrototype($this->model)
+            ->withModelCompositePrototype($this->composite)
             ->build('DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData');
     }
 
     public function testBuildThrowsExceptionIfModelCompositePrototypeInUnset()
     {
-        $this->setExpectedException('Deicer\Query\Exception\LogicException');
+        $this->setExpectedException(
+            'Deicer\Query\Exception\MissingModelCompositePrototypeException'
+        );
         $this->fixture
-            ->withModelCompositePrototype($this->composite)
+            ->withModelPrototype($this->model)
             ->build('DeicerTestAsset\Query\TestableInvariableQueryWithValidFetchData');
     }
 
@@ -140,7 +144,7 @@ class QueryBuilderTest extends TestCase
 
     public function testBuildThrowsExceptionIfClassDoesntImplementRecognisedInterface()
     {
-        $this->setExpectedException('Deicer\Query\Exception\UnexpectedValueException');
+        $this->setExpectedException('Deicer\Query\Exception\InvalidQueryInterfaceException');
         $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)
@@ -149,7 +153,7 @@ class QueryBuilderTest extends TestCase
 
     public function testBuildThrowsExceptionIfQueryDependsOnDataProviderAndDataProviderIsUnset()
     {
-        $this->setExpectedException('Deicer\Query\Exception\LogicException');
+        $this->setExpectedException('Deicer\Query\Exception\MissingDataProviderException');
         $this->fixture
             ->withModelPrototype($this->model)
             ->withModelCompositePrototype($this->composite)

@@ -13,7 +13,7 @@ use LogicException as SplException;
 use Deicer\Query\Exception\ExceptionInterface;
 
 /**
- * Deicer Query Logic Exception
+ * Deicer Invalid Query Interface Exception
  *
  * @category   Deicer
  * @package    Query
@@ -23,6 +23,6 @@ use Deicer\Query\Exception\ExceptionInterface;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class LogicException extends SplException implements ExceptionInterface
+class InvalidQueryInterfaceException extends SplException implements ExceptionInterface
 {
 }

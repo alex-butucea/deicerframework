@@ -9,11 +9,11 @@
 
 namespace Deicer\Query\Exception;
 
-use UnexpectedValueException as SplException;
+use LogicException as SplException;
 use Deicer\Query\Exception\ExceptionInterface;
 
 /**
- * Deicer Query Unexpected Value Exception
+ * Deicer Missing Model Prototype Exception
  *
  * @category   Deicer
  * @package    Query
@@ -23,6 +23,7 @@ use Deicer\Query\Exception\ExceptionInterface;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class UnexpectedValueException extends SplException implements ExceptionInterface
+class MissingModelPrototypeException extends SplException implements
+    ExceptionInterface
 {
 }
