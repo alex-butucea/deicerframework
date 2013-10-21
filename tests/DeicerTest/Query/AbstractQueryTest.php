@@ -370,6 +370,37 @@ abstract class AbstractQueryTest extends TestCase
         $this->assertSame($actual, $lastResponse);
     }
 
+    public function testExecuteFallsBackToDecoratedExecutableOnModelHydratorTypeStrengthFailure()
+    {
+        $this->composite = $this->getMock(
+            'Deicer\Model\ModelCompositeInterface'
+        );
+        $this->hydrator = $this->getMock(
+            'Deicer\Model\RecursiveModelCompositeHydratorInterface'
+        );
+
+        $this->composite
+            ->expects($this->any())
+            ->method('count')
+            ->will($this->returnValue(2));
+        $this->hydrator
+            ->expects($this->at(0))
+            ->method('exchangeArray')
+            ->will($this->returnValue(1234));
+        $this->hydrator
+            ->expects($this->at(1))
+            ->method('exchangeArray')
+            ->will($this->returnValue($this->composite));
+
+        $this->setUpFixture();
+        $this->fixture->decorate($this->fixture);
+        $actual = $this->fixture->execute();
+        $lastResponse = $this->fixture->getLastResponse();
+        $this->assertInstanceOf('Deicer\Model\ModelCompositeInterface', $actual);
+        $this->assertSame(2, $actual->count());
+        $this->assertSame($actual, $lastResponse);
+    }
+
     public function testExecuteFallsBackToDecoratedExecutableOnDataFetchFailure()
     {
         $this->fixtureWithExceptionThrowingFetchData->decorate($this->fixture);
