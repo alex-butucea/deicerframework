@@ -4,14 +4,15 @@ Queries are designed to provide read-only access to a back-end DB, API or other 
 [Wikipedia Article on Command Query Separation][0]
 
 Queries are designed to be single-responsibility data access objects to promote separation of concern in your application's data access layer.
-There are three abstract query classes available, distinguished by the selection API they provide:
+There are four abstract query classes available, distinguished by the selection API they provide:
 
 - `Deicer\Query\AbstractInvariableQuery` - Fetch models using a fixed selection algorithm
-- `Deicer\Query\AbstractSlugizedQuery` - Use slug/ID based selection to fetch models
+- `Deicer\Query\AbstractIdentifiedQuery` - Use integer based ID selection to fetch models
+- `Deicer\Query\AbstractSlugizedQuery` - Use slug based selection to fetch models
 - `Deicer\Query\AbstractParameterizedQuery` - Retrieve models using a set of key, value parameters
 
 ## Implementation
-Extend one of the above abstract classes based on the selection algorithm required to fetch models from a data store.
+Extend one of the above abstract classes based on the required selection algorithm to fetch models from a data store.
 
 ### Invariable Queries
 
@@ -38,35 +39,51 @@ class FetchAllActiveListingsFromEtsy extends AbstractInvariableQuery
 }
 ```
 
+### Identified Queries
+Identified queries provide you with a integer scalar for selection:
+
+```php
+namespace My\Query;
+
+use Deicer\Query\AbstractIdentifiedQuery;
+
+class GetListingFromEtsyById extends AbstractIdentifiedQuery
+{
+    protected function fetchData()
+    {
+        // ...
+
+        $this->dataProvider->setUri('/v2/listings/' . $this->getId());
+
+        // ...
+    }
+}
+```
+
 ### Slugized Queries
-Slugized queries provide you with a single scalar for selection:
+Slugized queries provide you with a string scalar for selection:
 
 ```php
 namespace My\Query;
 
 use Deicer\Query\AbstractSlugizedQuery;
 
-class FetchSingleListingFromEtsy extends AbstractSlugizedQuery
+class GetActiveListingsFromEtsyByTag extends AbstractSlugizedQuery
 {
     protected function fetchData()
     {
-        // Instance of My\Http\Client - cURL wrapper
-        $this->dataProvider->setUri('/v2/listings/' . (int) $this->getSlug());
-        $this->dataProvider->setOpt(CURLOPT_RETURNTRANSFER, true);
+        // ...
 
-        $response = $this->dataProvider->execute();
+        $this->dataProvider->setUri('/v2/listings/active?tags=' . $this->getSlug());
 
-        // Validate response and return array to Model Hydrator if valid
-        if (!empty($response['results']) {
-            return $response['results'];
-        }
+        // ...
     }
 }
 ```
 
 ### Parameterized Queries
 Concrete Parameterized Queries are expected to define their parameters.
-This helps identify logical problems early where unexpected parameters could be referenced:
+This helps identify logical problems early where unexpected parameters could be referenced.
 
 ```php
 namespace My\Query;
@@ -84,32 +101,34 @@ class SearchActiveEtsyListings extends AbstractParameterizedQuery
 
     protected function fetchData()
     {
-        // Instance of My\Http\Client - cURL wrapper
+        // ...
+
         $this->dataProvider->setUri('/v2/listings/active?' . http_build_query($this->getParams()));
-        $this->dataProvider->setOpt(CURLOPT_RETURNTRANSFER, true);
 
-        $response = $this->dataProvider->execute();
-
-        // Validate response and return array to Model Hydrator if valid
-        if (!empty($response['results']) {
-            return $response['results'];
-        }
+        // ...
     }
 }
 ```
 
+## Expectations
 Concrete queries are expected to implement the abstract method `fetchData` and have an associated model and model composite class.
-A [Query Builder](#query-builder) is available to ease the composition of your concrete queries.
-`fetchData` is called on query execution and is expected to return an array that meets the following criteria:
+Please see the Query Builder section for an easy way to compose your concrete queries and populate then with model prototypes.
+`fetchData` is called on query execution and is expected to return an array that is either:
 
-- Numerically indexed<a id="fetch-data-criteria"></a>
-- Elements must be associative arrays
-- Keys of associative arrays must match properties of associated model class
+- Numerically indexed - Implies data is a set of models with each array element mapping to a single model.
+- Associative - Implies data is a single model.
 
-An exception will be thrown, should any of the above expectations not be met, unless there is a [Decorated](#decorator-api) query available to fall back to.
-The array returned is then used to hydrate and return a set of models using the prototypes specified.
+The array returned from `fetchData` is then used to hydrate and return either a single model or composite using the prototypes specified.
+An exception will be thrown, should any of the above expectations not be met, unless there is a decorated query available to fall back to.
+Please see the Decorator API section for a guide on how to create fall back hierarchies using queries.
 
-## Query Builder<a id="query-builder"></a>
+## Data Provider Injection
+In order to ease testability, you may wish to inject a data provider into your queries that can be mocked.
+To do this, simply implement the method `setDataProvider` and internalise the passed value to the protected property `dataProvider`.
+Calling execute with an empty `dataProvider` property on queries that implement `setDataProvider`, will cause an exception to be thrown.
+This is to provide early indication of a logical defect and increase problem traceability.
+
+## Query Builder
 The Query Builder simplifies the composition of your concrete queries by abstracting framework details:
 
 ```php
@@ -120,17 +139,32 @@ use Deicer\Query\Exception\ExceptionInterface as QueryException;
 
 class FetchAllListingsFromEtsy extends AbstractInvariableQuery
 {
-    ...
+    public function setDataProvider(My\Http\Client $provider)
+    {
+        $this->dataProvider = $provider;
+    }
+
+    // ...
 }
 
 class FetchAllListingsFromLocalDb extends AbstractInvariableQuery
 {
-    ...
+    public function setDataProvider(My\Mysql\Client $provider)
+    {
+        $this->dataProvider = $provider;
+    }
+
+    // ...
 }
 
 class FetchAllListingsFromCache extends AbstractInvariableQuery
 {
-    ...
+    public function setDataProvider(My\Memcache\Client $provider)
+    {
+        $this->dataProvider = $provider;
+    }
+
+    // ...
 }
 
 namespace My\Model;
@@ -170,15 +204,9 @@ $etsyQuery = $builder
     ->build('FetchAllListingsFromEtsy');
 ```
 
-## Decorator API<a id="decorator-api"></a>
+## Decorator API
 A decorator pattern is implemented to allow for queries of the same interface to decorate each other.
-Query execution will then fall back to the decorated child query, should the parent execution fail.
-The following conditions are classified as a failure and therefore cause a query to fall back to it's decorated instance if available:
-
-- Concrete implementation of `fetchData` throws an exception
-- `fetchData` returns a non-array
-- Array returned by `fetchData` doesn't meet the following [Criteria](#fetch-data-criteria)
-
+Query execution will then fall back to the decorated child query, should the parent execution fail for any reason.
 Fall back strategies using the above decorator API can be easily set up to fetch data from progressively less volatile data stores:
 
 ```php
@@ -190,8 +218,8 @@ $localDbQuery->decorate($etsyQuery);
 $cacheQuery->decorate($localDbQuery);
 
 /**
- * Cache query will fall back to local db on cache miss
- * Local db will fall back to Etsy API on empty result
+ * Cache query will fall back to local DB on cache miss
+ * Local DB will fall back to Etsy API on empty result
  * Etsy query will throw exception on empty result
  */
 try {
@@ -201,15 +229,19 @@ try {
 }
 ```
 
+Please note, Parameterized Queries will throw an exception when asked to decorate another query that doesn't share the same parameters.
+This stops potentially undesirable behaviour where incompatible queries could dilute selection criteria and cause silent problems that only manifest at runtime.
+
 ## PubSub API
+Queries implement both unfiltered and topic-filters publisher interfaces; `Deicer\PubSub\UnfilteredPublisherInterface` and `Deicer\PubSub\TopicFilteredPublisherInterface`.
 Whenever a query is executed, a PubSub message is published to any subscribers with the content being the data returned from the `fetchData` implementation.
-Subscribers need only implement `Deicer\Stdlib\Pubsub\SubscriberInterface` to subscribe to key message types / topics raised from a query's execution:
+Subscribers need only implement `Deicer\Pubsub\SubscriberInterface` to subscribe to key message types / topics raised from a query's execution.
 
 ```php
 namespace My;
 
-use Deicer\Stdlib\Pubsub\MessageInterface;
-use Deicer\Stdlib\Pubsub\SubcriberInterface;
+use Deicer\Pubsub\MessageInterface;
+use Deicer\Pubsub\SubcriberInterface;
 use Deicer\Query\Message\MessageTopic;
 use Deicer\Query\Exception\ExceptionInterface as QueryException;
 
@@ -218,33 +250,58 @@ class Logger implements SubcriberInterface
     public function update(MessageInterface $message)
     {
         /**
-         * Query messages are string serialized as either:
-         *
-         * Invariable Query Execution: *concrete_class* | Result: "*topic*" | Elapsed Time: *time*ms | Content: *jsoned_content*
-         * Slugized Query Execution: *concrete_class* | Result: "*topic*" | Elapsed Time: *time*ms | Slug: "*slug*" | Content: *jsoned_content*
-         * Parameterized Query Execution: *concrete_class* | Result: "*topic*" | Elapsed Time: *time*ms | Params: *jsoned_params* | Content: *jsoned_content*
+         * Only failure messages are received - log as error
+         * Please see the Pubsub component readme for breakdown of message serialization format
          */
-         $message = (string) $message;
-
-        // Only failure messages are received - log as error
-        $this->log('error', $message);
+        $this->log('error', (string) $message);
     }
 }
 
-$query  = new \My\Query\FetchAllActiveListingsFromEtsy(...);
-$logger = new Logger();
+class Debugger implements SubcriberInterface
+{
+    public function update(MessageInterface $message)
+    {
+        /**
+         * All messages are received
+         * Add message to a pretty message trace for later rendering
+         */
+        $this->addToTrace((string) $message);
+    }
+}
+
+$query    = new \My\Query\FetchAllActiveListingsFromEtsy(...);
+$logger   = new Logger();
+$debugger = new Debugger();
 
 // Subscribe logger to only query failure messages
-$query->
-    subscribe($logger, MessageTopic::FAILURE_DATA_TYPE)
-    subscribe($logger, MessageTopic::FAILURE_DATA_FETCH)
-    subscribe($logger, MessageTopic::FAILURE_MODEL_HYDRATOR);
+$loggerIndex = $query->getTopicFilteredMessageBroker()->addSubscriber($logger);
+$query->getTopicFilteredMessageBroker()->subscribeToTopics(
+    $loggerIndex,
+    array (
+        MessageTopic::FAILURE_DATA_TYPE,
+        MessageTopic::FAILURE_DATA_EMPTY,
+        MessageTopic::FAILURE_DATA_FETCH,
+        MessageTopic::FAILURE_MODEL_HYDRATOR,
+        MessageTopic::FAILURE_MISSING_DATA_PROVIDER,
+    )
+);
+
+// Subscribe debugger to messages of all topics
+$debuggerIndex = $query->getUnfilteredMessageBroker()->addSubscriber($debugger);
+
 try {
     $listings = $cacheQuery->execute();
 } catch (QueryException $e) {
-    // Render graceful error
+
+    // Render graceful error if not in production environment
+    if (getenv('ENVIRONMENT' != 'live') {
+        $debugger->renderTrace();
+    }
 }
 ```
+Identified and Slugized queries set a supplementary message attribute denoting what the `id` / `slug` selector was set to at the time of execution,
+Parameterized queries capture selection criteria at the time of execution in a similar way by dumping all parameters into message attributes.
+For a more detailed explanation of the Pubsub component, please see the README.md contained under `src/Deicer/Pubsub`.
 
 For concrete examples of the above, check out the `DeicerTestAsset\Query` namespace.
 
