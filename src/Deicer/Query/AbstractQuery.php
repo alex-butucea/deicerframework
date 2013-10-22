@@ -13,7 +13,7 @@ use Exception;
 use Deicer\Query\QueryInterface;
 use Deicer\Query\MessageTopic;
 use Deicer\Query\Exception\DataTypeException;
-use Deicer\Query\Exception\DataEmptyException;
+use Deicer\Query\Exception\EmptyDataException;
 use Deicer\Query\Exception\DataFetchException;
 use Deicer\Query\Exception\ModelHydratorException;
 use Deicer\Query\Exception\MissingDataProviderException;
@@ -130,7 +130,7 @@ abstract class AbstractQuery
      *
      * @throws DataFetchException If unhandled exception is thrown
      * @throws DataTypeException If non array type is returned by implementation
-     * @throws DataEmptyException If empty array is returned by implementation
+     * @throws EmptyDataException If empty array is returned by implementation
      * @throws ModelHydratorException If data cannot be used to hydrate models
      */
     public function execute()
@@ -235,7 +235,7 @@ abstract class AbstractQuery
             if ($this->decorated) {
                 return $this->delegateExecute();
             } else {
-                throw new DataEmptyException(
+                throw new EmptyDataException(
                     'Empty array data provider response returned in: ' . $method
                 );
             }

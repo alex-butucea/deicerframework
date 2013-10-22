@@ -266,7 +266,7 @@ abstract class AbstractQueryTest extends TestCase
 
     public function testExecuteWithEmptyArrayReturningFetchDataThrowsException()
     {
-        $this->setExpectedException('Deicer\Query\Exception\DataEmptyException');
+        $this->setExpectedException('Deicer\Query\Exception\EmptyDataException');
         $this->fixtureWithEmptyArrayReturningFetchData->execute();
     }
 
@@ -501,7 +501,7 @@ abstract class AbstractQueryTest extends TestCase
 
     public function testExecuteNotifiesSubscribersOfDataEmptyFailure()
     {
-        $this->setExpectedException('Deicer\Query\Exception\DataEmptyException');
+        $this->setExpectedException('Deicer\Query\Exception\EmptyDataException');
         $this->setUpMessageBuilder('failure.data_empty', null);
         $this->setUpMessageBrokers($this->message);
         $this->setUpFixtureWithEmptyArrayReturningFetchData();

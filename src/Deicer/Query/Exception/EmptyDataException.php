@@ -25,6 +25,6 @@ use Deicer\Query\Exception\ExceptionInterface;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class DataEmptyException extends SplException implements ExceptionInterface
+class EmptyDataException extends SplException implements ExceptionInterface
 {
 }
