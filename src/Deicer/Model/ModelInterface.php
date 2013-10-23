@@ -32,7 +32,7 @@ interface ModelInterface extends
     /**
      * Prevents additional properties to be injected into instance at runtime
      *
-     * @throws OutOfBoundsException
+     * @throws NonExistentPropertyException
      * @return void
      */
     public function __set($key, $value);
@@ -40,7 +40,7 @@ interface ModelInterface extends
     /**
      * Throws exception when nonexistent property is unset at runtime
      *
-     * @throws OutOfBoundsException
+     * @throws NonExistentPropertyException
      * @return void
      */
     public function __unset($key);
@@ -48,7 +48,7 @@ interface ModelInterface extends
     /**
      * Throws exception when nonexistent property is accessed at runtime
      *
-     * @throws OutOfBoundsException
+     * @throws NonExistentPropertyException
      * @return void
      */
     public function __get($key);

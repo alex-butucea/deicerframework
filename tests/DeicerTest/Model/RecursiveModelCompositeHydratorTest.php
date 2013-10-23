@@ -172,7 +172,10 @@ class RecursiveModelCompositeHydratorTest extends TestCase
                 )
             );
         } catch (IncompatibleDataException $e) {
-            $this->assertInstanceOf('OutOfBoundsException', $e->getPrevious());
+            $this->assertInstanceOf(
+                'Deicer\Model\Exception\NonExistentPropertyException',
+                $e->getPrevious()
+            );
             return;
         }
 

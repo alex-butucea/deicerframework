@@ -9,7 +9,7 @@
 
 namespace Deicer\Model;
 
-use Deicer\Model\Exception\OutOfBoundsException;
+use Deicer\Model\Exception\NonExistentPropertyException;
 use Deicer\Model\Exception\UnexpectedValueException;
 
 /**
@@ -29,39 +29,39 @@ abstract class AbstractModel extends AbstractComponent implements ModelInterface
     /**
      * Prevents additional properties to be injected into instance at runtime
      *
-     * @throws OutOfBoundsException
+     * @throws NonExistentPropertyException
      */
     public function __set($key, $value)
     {
-        throw new OutOfBoundsException(
-            'Injection of additional property "' . $key . '" '.
-            'denied in: ' . get_called_class()
+        throw new NonExistentPropertyException(
+            'Setting of nonexistent property "' . $key . '" in: '.
+            get_called_class()
         );
     }
 
     /**
      * Throws exception when nonexistent property is unset at runtime
      *
-     * @throws OutOfBoundsException
+     * @throws NonExistentPropertyException
      */
     public function __unset($key)
     {
-        throw new OutOfBoundsException(
-            'Unsetting of nonexistent property "' . $key . '" '.
-            'denied in: ' . get_called_class()
+        throw new NonExistentPropertyException(
+            'Unsetting of nonexistent property "' . $key . '" in: '.
+            get_called_class()
         );
     }
 
     /**
      * Throws exception when nonexistent property is accessed at runtime
      *
-     * @throws OutOfBoundsException
+     * @throws NonExistentPropertyException
      */
     public function __get($key)
     {
-        throw new OutOfBoundsException(
-            'Access of nonexistent property "' . $key . '" ' .
-            'denied in: ' . get_called_class()
+        throw new NonExistentPropertyException(
+            'Accessing of nonexistent property "' . $key . '" in: ' .
+            get_called_class()
         );
     }
 

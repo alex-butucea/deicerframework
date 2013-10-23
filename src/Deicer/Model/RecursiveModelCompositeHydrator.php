@@ -9,7 +9,7 @@
 
 namespace Deicer\Model;
 
-use Deicer\Model\Exception\OutOfBoundsException;
+use Deicer\Model\Exception\NonExistentPropertyException;
 use Deicer\Model\Exception\EmptyDataException;
 use Deicer\Model\Exception\IncompatibleDataException;
 use Deicer\Model\Exception\InvalidElementException;
@@ -110,7 +110,7 @@ class RecursiveModelCompositeHydrator implements
         try {
             $model = clone $this->modelPrototype;
             $model->exchangeArray($values);
-        } catch (OutOfBoundsException $e) {
+        } catch (NonExistentPropertyException $e) {
             throw new IncompatibleDataException(
                 '$values elements must match model properties in: ' .
                 'RecursiveModelCompositeHydrator::exchangeArray',

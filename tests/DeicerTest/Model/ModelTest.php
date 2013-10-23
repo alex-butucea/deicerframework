@@ -46,21 +46,21 @@ class ModelTest extends TestCase
 
     public function testAccessingNonexistentPropertyThrowsException()
     {
-        $this->setExpectedException('Deicer\Model\Exception\OutOfBoundsException');
+        $this->setExpectedException('Deicer\Model\Exception\NonExistentPropertyException');
         $model = new TestableModel();
         $model->foobar;
     }
 
     public function testInjectingAdditionalPropertyThrowsException()
     {
-        $this->setExpectedException('Deicer\Model\Exception\OutOfBoundsException');
+        $this->setExpectedException('Deicer\Model\Exception\NonExistentPropertyException');
         $model = new TestableModel();
         $model->test = 'foobar';
     }
 
     public function testUnsettingExistingPropertyThrowsException()
     {
-        $this->setExpectedException('Deicer\Model\Exception\OutOfBoundsException');
+        $this->setExpectedException('Deicer\Model\Exception\NonExistentPropertyException');
         $model = new TestableModel();
         unset($model->test);
     }

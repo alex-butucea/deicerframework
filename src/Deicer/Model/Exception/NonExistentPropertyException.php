@@ -13,7 +13,9 @@ use OutOfBoundsException as SplException;
 use Deicer\Model\Exception\ExceptionInterface;
 
 /**
- * Deicer Model Out of Bounds Exception
+ * Deicer Model Non Existent Propterty Exception
+ *
+ * Thrown by models when nonexistent properties are accessed
  *
  * @category   Deicer
  * @package    Model
@@ -23,6 +25,6 @@ use Deicer\Model\Exception\ExceptionInterface;
  * @author     Alex Butucea <alex826@gmail.com> 
  * @license    The MIT License (MIT) {@link http://opensource.org/licenses/MIT}
  */
-class OutOfBoundsException extends SplException implements ExceptionInterface
+class NonExistentPropertyException extends SplException implements ExceptionInterface
 {
 }
