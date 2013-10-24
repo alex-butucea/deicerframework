@@ -14,7 +14,5 @@ See the README.md contained within the root of each component for more info.
 ## System Requirements
 Deicer Framework requires PHP 5.3.3 or later.
 
-This is very much a work in progress, however if this helps you or you're just passing through and like what you see, feel free to drop me a line.
-
 ---------------------------------------------------
 Copyright (c) 2013 Alex Butucea <alex826@gmail.com>
