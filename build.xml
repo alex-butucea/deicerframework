@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="deicerframework" default="build">
+<project name="deicerframework" basedir="." default="build">
+
+    <!-- ============================================  -->
+    <!-- Directories used by dependent targets         -->
+    <!-- ============================================  -->
+    <property name="source-dir"                 value="${project.basedir}/src"/>
+    <property name="tests-dir"                  value="${project.basedir}/tests"/>
+    <property name="build-dir"                  value="${project.basedir}/build"/>
+    <property name="doc-dir"                    value="${build-dir}/doc"/>
+    <property name="standards-report-dir"       value="${build-dir}/standards-report"/>
+    <property name="phplint-report-dir"         value="${build-dir}/phplint-report"/>
+    <property name="test-log-dir"               value="${build-dir}/test-log"/>
+    <property name="test-report-dir"            value="${build-dir}/test-report"/>
+    <property name="coverage-report-dir"        value="${build-dir}/coverage-report"/>
+    <property name="coverage-report-styles-dir" value="/usr/share/php/data/phing/etc"/>
+
+    <!-- ============================================  -->
+    <!-- Filenames used by dependent targets           -->
+    <!-- ============================================  -->
+    <property name="standards-report-file" value="standards"/>
+    <property name="phplint-report-file"   value="phplint"/>
+    <property name="test-bootstrap"        value="bootstrap.php"/>
+    <property name="test-log-file"         value="tests.xml"/>
+    <property name="coverage-report-db"    value="database"/>
+    <property name="coverage-report-file"  value="coverage.xml"/>
 
     <!-- ============================================  -->
     <!-- (DEFAULT) Target: build                       -->
@@ -14,12 +38,12 @@
     <!-- Target: clean                                 -->
     <!-- ============================================  -->
     <target name="clean" description="Cleanup build artifacts">
-        <delete dir="./build/doc"/>
-        <delete dir="./build/test-log"/>
-        <delete dir="./build/test-report"/>
-        <delete dir="./build/coverage-report"/>
-        <delete dir="./build/standards-report"/>
-        <delete dir="./build/phplint-report"/>
+        <delete dir="${doc-dir}"/>
+        <delete dir="${test-log-dir}"/>
+        <delete dir="${test-report-dir}"/>
+        <delete dir="${coverage-report-dir}"/>
+        <delete dir="${standards-report-dir}"/>
+        <delete dir="${phplint-report-dir}"/>
     </target>
 
     <!-- ============================================  -->
@@ -35,13 +59,13 @@
     <!-- Target: prepare-build-dir                     -->
     <!-- ============================================  -->
     <target name="prepare-build-dir" description="Prepare build output dir" depends="clean">
-        <mkdir dir="./build"/>
-        <mkdir dir="./build/doc"/>
-        <mkdir dir="./build/test-log"/>
-        <mkdir dir="./build/test-report"/>
-        <mkdir dir="./build/coverage-report"/>
-        <mkdir dir="./build/standards-report"/>
-        <mkdir dir="./build/phplint-report"/>
+        <mkdir dir="${build-dir}"/>
+        <mkdir dir="${doc-dir}"/>
+        <mkdir dir="${test-log-dir}"/>
+        <mkdir dir="${test-report-dir}"/>
+        <mkdir dir="${coverage-report-dir}"/>
+        <mkdir dir="${standards-report-dir}"/>
+        <mkdir dir="${phplint-report-dir}"/>
     </target>
 
     <!-- ============================================  -->
@@ -61,8 +85,8 @@
     <!-- Target: prepare-coverage-report               -->
     <!-- ============================================  -->
     <target name="prepare-coverage-report" description="Setup test coverage db" depends="prepare-build-dir">
-        <coverage-setup database="./build/coverage-report/database">
-            <fileset dir="./src">
+        <coverage-setup database="${coverage-report-dir}/${coverage-report-db}">
+            <fileset dir="${source-dir}">
                 <include name="**/*.php"/>
             </fileset>
         </coverage-setup>
@@ -77,11 +101,11 @@
             haltonfailure="true"
             haltonerror="true"
             codecoverage="true"
-            bootstrap="./tests/bootstrap.php"
+            bootstrap="${tests-dir}/${test-bootstrap}"
         >
-            <formatter type="xml" todir="./build/test-log" outfile="tests.xml"/>
+            <formatter type="xml" todir="${test-log-dir}" outfile="${test-log-file}"/>
             <batchtest>
-                <fileset dir="./tests">
+                <fileset dir="${tests-dir}">
                     <include name="**/*Test.php" />
                 </fileset>
             </batchtest>
@@ -98,11 +122,11 @@
             haltonfailure="true"
             haltonerror="true"
             codecoverage="true"
-            bootstrap="./tests/bootstrap.php"
+            bootstrap="${tests-dir}/${test-bootstrap}"
         >
-            <formatter type="xml" todir="./build/test-log" outfile="tests.xml"/>
+            <formatter type="xml" todir="${test-log-dir}" outfile="${test-log-file}"/>
             <batchtest>
-                <fileset dir="./tests">
+                <fileset dir="${tests-dir}">
                     <include name="${test}.php" />
                 </fileset>
             </batchtest>
@@ -125,10 +149,10 @@
     <target name="generate-phpdoc" description="Generate PHP Documenter 2 Docs" depends="prepare">
         <phpdoc2
             title="API Documentation"
-            destdir="./build/doc"
+            destdir="${doc-dir}"
             template="responsive"
         >
-            <fileset dir="./src">
+            <fileset dir="${source-dir}">
                 <include name="**/*.php" />
             </fileset>
         </phpdoc2>
@@ -139,13 +163,13 @@
     <!-- ============================================  -->
     <target name="generate-coverage-report" description="Generate code coverage report" depends="prepare">
         <phpunitreport
-            infile="./build/test-log/tests.xml"
-            styledir="/usr/share/php/data/phing/etc"
+            infile="${test-log-dir}/${test-log-file}"
+            styledir="${coverage-report-styles-dir}"
             format="frames"
-            todir="./build/test-report"
+            todir="${test-report-dir}"
         />
-        <coverage-report outfile="./build/coverage-report/coverage.xml">
-            <report styledir="/usr/share/php/data/phing/etc" todir="./build/coverage-report"/>
+        <coverage-report outfile="${coverage-report-dir}/${coverage-report-file}">
+            <report styledir="${coverage-report-styles-dir}" todir="${coverage-report-dir}"/>
         </coverage-report>
     </target>
 
@@ -157,11 +181,11 @@
             standard="PSR2"
             allowedFileExtensions="php"
         >
-            <formatter type="full" outfile="./build/standards-report/standards"/>
-            <fileset dir="./src">
+            <formatter type="full" outfile="${standards-report-dir}/${standards-report-file}"/>
+            <fileset dir="${source-dir}">
                 <include name="**/*.php" />
             </fileset>
-            <fileset dir="./tests">
+            <fileset dir="${tests-dir}">
                 <include name="**/*.php" />
             </fileset>
         </phpcodesniffer>
@@ -172,17 +196,16 @@
     <!-- ============================================  -->
     <target name="generate-phplint-report" description="Generate PHP Lint report" depends="prepare">
         <phplint
-            tofile="./build/phplint-report/phplint"
+            tofile="${phplint-report-dir}/${phplint-report-file}"
             deprecatedAsError="true"
         >
-            <fileset dir="./src">
+            <fileset dir="${source-dir}">
                 <include name="**/*.php" />
             </fileset>
-            <fileset dir="./tests">
+            <fileset dir="${tests-dir}">
                 <include name="**/*.php" />
             </fileset>
         </phplint>
     </target>
 
 </project>
-
