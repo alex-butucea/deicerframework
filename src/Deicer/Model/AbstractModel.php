@@ -9,6 +9,8 @@
 
 namespace Deicer\Model;
 
+use \ReflectionClass;
+use \ReflectionProperty;
 use Deicer\Model\Exception\NonExistentPropertyException;
 use Deicer\Model\Exception\UnexpectedValueException;
 
@@ -26,6 +28,13 @@ use Deicer\Model\Exception\UnexpectedValueException;
  */
 abstract class AbstractModel extends AbstractComponent implements ModelInterface
 {
+    /**
+     * Lazy-loaded list of all the public class properties
+     *
+     * @var array
+     */
+    private static $publicProperties = array ();
+
     /**
      * Prevents additional properties to be injected into instance at runtime
      *
@@ -147,10 +156,16 @@ abstract class AbstractModel extends AbstractComponent implements ModelInterface
      */
     protected static function getPublicProperties()
     {
-        $getFields = function ($class) {
-            return get_class_vars($class);
-        };
+        if (!self::$publicProperties) {
+            $class    = new ReflectionClass(get_called_class());
+            $props    = $class->getProperties(ReflectionProperty::IS_PUBLIC);
+            $defaults = $class->getDefaultProperties();
 
-        return $getFields(get_called_class());
+            foreach ($props as $prop) {
+                self::$publicProperties[$prop->name] = $defaults[$prop->name];
+            }
+        }
+
+        return self::$publicProperties;
     }
 }
