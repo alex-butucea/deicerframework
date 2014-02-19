@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="deicerframework" basedir="." default="build">
-    <import file="${project.basedir}/../commoner/commoner.xml"/>
+    <import file="${project.basedir}/vendor/alex-butucea/commoner/commoner.xml"/>
 </project>
